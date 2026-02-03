@@ -33,8 +33,10 @@
         </div>
 
         <div class="box">
-            <h3>Timeline Analysis: Pending</h3>
-            <p>Insufficient longitudinal data to generate timeline correlations. Pending further scrape duration.</p>
+            <h3>Explicit Claims</h3>
+            <ul id="claims-list">
+                <li>Loading claims...</li>
+            </ul>
         </div>
     </div>
 
@@ -42,6 +44,11 @@
         Generated report; patterns only; no inference of intent.<br>
         Analysis Repo: Context-Reviewer/analysis
     </footer>
+
+    <script src="assets/site.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', renderContradictions);
+    </script>
 
 </body>
 

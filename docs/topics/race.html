@@ -27,9 +27,8 @@
 
     <div class="container">
         <h1>Topic Analysis: Race & Identity</h1>
-        <div class="box">
-            <h3>Status: Data Pending</h3>
-            <p>Deep-dive analysis for this topic is currently queuing for data ingestion. </p>
+        <div id="topic-deep-dive">
+            <p>Loading topic data...</p>
         </div>
         <a href="../report.html">Back to Main Report</a>
     </div>
@@ -38,6 +37,11 @@
         Generated report; patterns only; no inference of intent.<br>
         Analysis Repo: Context-Reviewer/analysis
     </footer>
+
+    <script src="../assets/site.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => renderTopicPage('race_identity'));
+    </script>
 
 </body>
 
