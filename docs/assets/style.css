@@ -1,0 +1,143 @@
+/* Base Layout */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fdfdfd;
+    color: #111;
+    line-height: 1.6;
+}
+
+/* Navigation */
+nav {
+    background: #222;
+    color: #fff;
+    padding: 0 20px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    color: #ccc;
+    text-decoration: none;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s, background 0.2s;
+}
+
+nav a:hover, nav a.active {
+    color: #fff;
+    background: #333;
+}
+
+nav .brand {
+    font-weight: bold;
+    color: #fff;
+    margin-right: 20px;
+    border-right: 1px solid #444;
+    padding-right: 20px;
+}
+
+nav .dropdown {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+nav .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+nav .dropdown-content a {
+    height: 40px;
+    padding: 10px 15px;
+    border-top: 1px solid #444;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    min-height: 80vh;
+}
+
+/* Headings */
+h1, h2, h3 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+h1 { font-size: 2em; margin-bottom: 0.5em; }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-size: 0.9em;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+}
+
+tr:nth-child(even) { background-color: #fcfcfc; }
+
+/* Metrics */
+.neg { color: #d00; font-weight: bold; }
+.pos { color: #080; font-weight: bold; }
+.neu { color: #666; }
+
+/* Boxes */
+.box {
+    background: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.intro-box {
+    background: #eef;
+    border-left: 5px solid #44a;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Footer */
+footer {
+    background: #eee;
+    color: #666;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.8em;
+    margin-top: 50px;
+    border-top: 1px solid #ddd;
+}

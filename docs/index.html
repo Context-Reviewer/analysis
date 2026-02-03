@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Context Reviewer: Pattern Analysis</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="brand">Context Reviewer</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="report.html">Report</a>
+        <div class="dropdown">
+            <a href="#">Topics ▾</a>
+            <div class="dropdown-content">
+                <a href="topics/israel.html">Israel / Palestine</a>
+                <a href="topics/race.html">Race & Identity</a>
+                <a href="topics/religion.html">Religion</a>
+            </div>
+        </div>
+        <a href="contradictions.html">Contradictions</a>
+    </nav>
+
+    <div class="container">
+        <h1>Analysis Hub</h1>
+
+        <div class="intro-box">
+            <strong>Project Scope:</strong> This site hosts static analysis reports visualizing behavioral patterns in
+            social media comments.
+            The goal is to provide a neutral, evidence-based view of posting habits, specifically focusing on topic
+            obsession, cross-topic intrusion, and tone intensity.
+        </div>
+
+        <div class="box">
+            <h3>Available Datasets</h3>
+            <ul>
+                <li><strong>Subject:</strong> Sean's Posts</li>
+                <li><strong>Status:</strong> Active Analysis (Level 2 Evidence)</li>
+                <li><strong>Latest Update:</strong> <a href="report.html">View Executive Summary</a></li>
+            </ul>
+        </div>
+
+        <h3>Methodology</h3>
+        <p>All analysis is generated programmatically using deterministic keyword taxonomies and VADER sentiment
+            scoring. No manual editorializing is applied to the metrics.</p>
+        <ul>
+            <li><strong>Sentiment Scale:</strong> -1.0 (Most Negative) to +1.0 (Most Positive)</li>
+            <li><strong>Taxonomy:</strong> Fixed keyword lists for Religion, Politics, Race, etc.</li>
+            <li><strong>Privacy:</strong> IDs are hashed or anonymized where applicable.</li>
+        </ul>
+
+    </div>
+
+    <footer>
+        Generated report; patterns only; no inference of intent.<br>
+        Analysis Repo: Context-Reviewer/analysis
+    </footer>
+
+</body>
+
+</html>

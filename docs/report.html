@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Behavioral Analysis - Executive Summary</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="brand">Context Reviewer</a>
+        <a href="index.html">Home</a>
+        <a href="report.html" class="active">Report</a>
+        <div class="dropdown">
+            <a href="#">Topics ▾</a>
+            <div class="dropdown-content">
+                <a href="topics/israel.html">Israel / Palestine</a>
+                <a href="topics/race.html">Race & Identity</a>
+                <a href="topics/religion.html">Religion</a>
+            </div>
+        </div>
+        <a href="contradictions.html">Contradictions</a>
+    </nav>
+
+    <div class="container">
+        <!-- CONTENT FROM ANALYSIS ENGINE -->
+
+        <h1>Behavioral Pattern Analysis: Executive Summary</h1>
+        <p><strong>Subject:</strong> Sean's Posts<br>
+            <strong>Method:</strong> Deterministic Taxonomy & VADER Sentiment Analysis (-1.0 to +1.0)
+        </p>
+
+        <div class="box">
+            <h3>Key Findings (Neutral/Statistical)</h3>
+            <ul>
+                <li><strong>Primary Focus:</strong> The most frequent topic is <strong>religion_christianity</strong>.
+                </li>
+                <li><strong>Hostility Index:</strong> Significant percentage of comments in the primary topic score
+                    below -0.6.</li>
+                <li><strong>Topic Intrusion:</strong> High rate (>70%) of introducing sensitive topics (Race/Religion)
+                    into unrelated threads.</li>
+            </ul>
+        </div>
+
+        <h2>Step 3: Aggregate Metrics</h2>
+        <h3>B. Topic Intensity & Frequency</h3>
+        <table>
+            <tr>
+                <th>Topic</th>
+                <th>Count</th>
+                <th>% of Total</th>
+                <th>Avg Sentiment</th>
+                <th>% Hostile (&lt;-0.6)</th>
+            </tr>
+            <!-- STATIC DATA SNAPSHOT (To be replaced by build script) -->
+            <tr>
+                <td>religion_christianity</td>
+                <td>4</td>
+                <td>57.1%</td>
+                <td class="neu">-0.175</td>
+                <td>25.0%</td>
+            </tr>
+            <tr>
+                <td>military_culture</td>
+                <td>3</td>
+                <td>42.9%</td>
+                <td class="neu">-0.106</td>
+                <td>0.0%</td>
+            </tr>
+            <tr>
+                <td>religion_other</td>
+                <td>3</td>
+                <td>42.9%</td>
+                <td class="neg">-0.233</td>
+                <td>33.3%</td>
+            </tr>
+            <tr>
+                <td>politics_domestic</td>
+                <td>1</td>
+                <td>14.3%</td>
+                <td class="neu">0.000</td>
+                <td>0.0%</td>
+            </tr>
+        </table>
+
+        <h2>Step 4: Cross-Topic Intrusion</h2>
+        <p><strong>Definition:</strong> Occurrences where a sensitive topic (Race, Religion, Israel) is introduced by
+            the subject in a thread where the original post did not contain valid markers for that topic.</p>
+        <p><strong>Intrusion Rate:</strong> 75.0% (3/4 qualified checks)</p>
+
+        <h3>Representative Examples (First 10)</h3>
+        <table>
+            <tr>
+                <th>Comment Topic</th>
+                <th>Original Post Context (Preview)</th>
+                <th>Subject's Comment (Preview)</th>
+            </tr>
+            <tr>
+                <td>religion_christianity</td>
+                <td style="color:#666; font-style:italic;">...</td>
+                <td>If the guns that military police have are military property… and I’m military property… does that
+                    authorize me...</td>
+            </tr>
+            <tr>
+                <td>religion_christianity</td>
+                <td style="color:#666; font-style:italic;">...</td>
+                <td>Why do POW/MIA boxes contain the Bible when not all POW/MIA were Christian?...</td>
+            </tr>
+            <tr>
+                <td>religion_christianity</td>
+                <td style="color:#666; font-style:italic;">...</td>
+                <td>Without bringing up another religion… Why is fornication so promoted in the Christian community?...
+                </td>
+            </tr>
+        </table>
+
+        <h2>Step 5: Self-Portrayal Claims</h2>
+        <p>Statements matching patterns of explicit value-signaling (e.g., "I don't condone", "I believe").</p>
+        <ul>
+            <!-- Pending Data Ingestion -->
+            <li><em>Pending more data...</em></li>
+        </ul>
+
+    </div>
+
+    <footer>
+        Generated report; patterns only; no inference of intent.<br>
+        Analysis Repo: Context-Reviewer/analysis
+    </footer>
+
+</body>
+
+</html>
