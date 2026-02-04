@@ -1,0 +1,9 @@
+# Playwright / scraper outputs
+fb_extract_out/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment / profiles
+*.log
