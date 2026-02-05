@@ -93,7 +93,8 @@ TOPIC_RULES: Dict[str, List[str]] = {
         r"\bmilitary\b", r"\barmy\b", r"\bnavy\b", r"\bmarines?\b",
         r"\bair force\b", r"\bveteran\b", r"\brecruiter\b",
         r"\bnational guard\b", r"\bactive duty\b", r"\benlisted\b",
-        r"\bdeployed\b", r"\bpurple heart\b"
+        r"\bdeployed\b", r"\bpurple heart\b", r"\brakkasan\b",
+        r"\b101st\b", r"\bairborne\b", r"\bchaplain\b"
     ],
     "crime_news": [
         r"\barrested\b", r"\bcharged\b", r"\bsentenced\b", r"\bconvicted\b",
@@ -107,7 +108,8 @@ TOPIC_RULES: Dict[str, List[str]] = {
     "race_ethnicity": [
         r"\bwhite\b", r"\bblack\b", r"\bafrican\b", r"\brace\b", r"\bracist\b",
         r"\bmixed race\b", r"\bethnicity\b", r"\bn[\-\s]?word\b", r"\bperson of color\b",
-        r"\bpoc\b", r"\bwhitey?\b", r"\bblacky?\b"
+        r"\bpoc\b", r"\bwhitey?\b", r"\bblacky?\b", r"\basian\b", r"\bblasian\b",
+        r"\bhispanic\b", r"\blatino?a?\b", r"\bcaucasian\b"
     ],
     "geopolitics": [
         r"\bisrael\b", r"\bpalestine\b", r"\bvenezuela\b", r"\bgreenland\b",
@@ -123,7 +125,61 @@ TOPIC_RULES: Dict[str, List[str]] = {
         r"\bblock me\b", r"\bblock you\b", r"\bmute me\b", r"\bscroll on\b",
         r"\bblocked\b"
     ],
+    # Broad catch-all categories
+    "juvenile_banter": [
+        r"\blmao+\b", r"\blol+\b", r"\brofl\b", r"\bhaha+\b", r"\blmfao+\b",
+        r"\byour mom\b", r"\byour nuts\b", r"\bdeez nuts\b", r"\bnah\b",
+        r"\bbruh\b", r"\bbro\b", r"\bdude\b", r"\bcope\b", r"\bseeth\b",
+        r"\btriggered\b", r"\bsalty\b", r"\bbutt\s*hurt\b", r"\bowned\b",
+        r"\brekt\b", r"\bL\b", r"\bW\b", r"\bban me\b", r"\bfight me\b",
+        r"\b@\w+\b", r"\bcooked\b", r"\bgoalpost\b", r"\becho chamber\b",
+        r"\bautozucc\b", r"\bzuck\b", r"\btroll\b"
+    ],
+    "media_shares": [
+        r"\bgiphy\b", r"\btenor\b", r"\byoutube\b", r"\btiktok\b", r"\breels?\b",
+        r"\b\d+:\d+\s*/\s*\d+:\d+\b",  # video timestamps like 0:00 / 1:09
+        r"\blink in bio\b", r"\bwatch\b", r"\bvideo\b"
+    ],
+    "agreement_reactions": [
+        r"\btrue\b", r"\bfacts?\b", r"\bvalid\b", r"\bbased\b", r"\bthis\b",
+        r"\bagree\b", r"\bexactly\b", r"\byep\b", r"\byup\b", r"\byes\b",
+        r"\bnope\b", r"\bno\b", r"\bdefinitely\b", r"\bobviously\b"
+    ],
+    "questions_curiosity": [
+        r"\bwhy\b", r"\bhow\b", r"\bwhat\b", r"\bwho\b", r"\bwhen\b",
+        r"\bdoes anyone\b", r"\banyone know\b", r"\bany advice\b",
+        r"\bthoughts\b", r"\bopinion\b", r"\?$"
+    ],
+    "personal_life": [
+        r"\badopted\b", r"\bbirth parents\b", r"\braised\b", r"\bgrew up\b",
+        r"\bfamily\b", r"\bparents?\b", r"\bsibling\b", r"\bbrother\b",
+        r"\bsister\b", r"\bhomeless\b", r"\bhouseless\b", r"\blive in\b"
+    ],
+    "crude_sexual": [
+        r"\bcock\b", r"\bballs\b", r"\bnuts\b", r"\bsuck\b", r"\bmouth\b",
+        r"\bsweaty\b", r"\bh0rny\b", r"\bhorny\b", r"\bsex\b", r"\bdick\b",
+        r"\bass\b", r"\btits\b", r"\bb00bs\b"
+    ],
+    "ableist_insults": [
+        r"\bretard(ed)?\b", r"\bautistic\b", r"\bautism\b", r"\bspecial needs\b",
+        r"\bmental\b", r"\bcrazy\b", r"\binsane\b", r"\bpsycho\b"
+    ],
+    "investing_finance": [
+        r"\btsp\b", r"\binvest\b", r"\bportfolio\b", r"\bbudget\b",
+        r"\breal estate\b", r"\bhouse\b", r"\bloan\b", r"\binterest\b",
+        r"\bdiversify\b", r"\bper week\b", r"\bper month\b", r"\bmiles per\b"
+    ],
+    "substance_use": [
+        r"\bnicotine\b", r"\bsmoke\b", r"\bvape\b", r"\bquit\b", r"\baddicted\b",
+        r"\baddiction\b", r"\bdrunk\b", r"\balcohol\b", r"\bbeer\b", r"\bweed\b"
+    ],
+    "history_politics": [
+        r"\blincoln\b", r"\bcrusades?\b", r"\bold testament\b", r"\bhistory\b",
+        r"\bvp\b", r"\bpresident\b", r"\belected\b", r"\badmins?\b"
+    ],
 }
+
+
 
 
 
