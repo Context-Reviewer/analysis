@@ -54,7 +54,10 @@ async function renderReport() {
     const findingsList = document.getElementById('key-findings-list');
     if (findingsList && data.topics.length > 0) {
         const topTopic = data.topics[0];
-        const intrusionRate = fmtPct(data.intrusion.sensitive_intrusion_rate);
+        // Guard: intrusion may be null (not computed)
+        const intrusionRate = (data.intrusion && data.intrusion.sensitive_intrusion_rate != null)
+            ? fmtPct(data.intrusion.sensitive_intrusion_rate)
+            : 'N/A';
 
         findingsList.innerHTML = `
             <li><strong>Primary Focus:</strong> The most frequent topic is <strong>${topTopic.topic}</strong> (${topTopic.count} items).</li>
@@ -81,8 +84,9 @@ async function renderReport() {
     }
 
     // 4. Intrusion Examples
+    // Guard: intrusion may be null (not computed)
     const intrusionBody = document.querySelector('#intrusion-table tbody');
-    if (intrusionBody && data.intrusion.examples) {
+    if (intrusionBody && data.intrusion && data.intrusion.examples) {
         intrusionBody.innerHTML = '';
         // Limit to 10
         data.intrusion.examples.slice(0, 10).forEach(ex => {
@@ -98,8 +102,16 @@ async function renderReport() {
         // Update stats text
         const intrusionStats = document.getElementById('intrusion-stats');
         if (intrusionStats) {
-            intrusionStats.innerText = `Intrusion Rate: ${fmtPct(data.intrusion.sensitive_intrusion_rate)} (${data.intrusion.examples.length} events)`;
+            const rate = data.intrusion.sensitive_intrusion_rate != null
+                ? fmtPct(data.intrusion.sensitive_intrusion_rate)
+                : 'N/A';
+            intrusionStats.innerText = `Intrusion Rate: ${rate} (${data.intrusion.examples.length} events)`;
         }
+    } else if (intrusionBody) {
+        // Not computed - show placeholder
+        intrusionBody.innerHTML = '<tr><td colspan="3" style="color:#888;">Not computed</td></tr>';
+        const intrusionStats = document.getElementById('intrusion-stats');
+        if (intrusionStats) intrusionStats.innerText = 'Intrusion Rate: N/A';
     }
 }
 
@@ -147,7 +159,10 @@ async function renderContradictions() {
 
     const list = document.getElementById('claims-list');
     if (list) {
-        if (data.self_portrayal.claims.length === 0) {
+        // Guard: self_portrayal may be null (not computed)
+        if (!data.self_portrayal || !data.self_portrayal.claims) {
+            list.innerHTML = '<li style="color:#888;">Not computed</li>';
+        } else if (data.self_portrayal.claims.length === 0) {
             list.innerHTML = '<li>No explicit self-portrayal claims detected in current sample.</li>';
         } else {
             list.innerHTML = '';

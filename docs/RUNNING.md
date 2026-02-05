@@ -142,6 +142,64 @@ python .\pipeline\step3_analyze_reason.py
 
 ---
 
+### Step 4: Generate Dashboard Report
+
+```powershell
+python .\tools\generate_report_json.py
+```
+
+**Reads:**
+- `fb_extract_out/sean_topics.csv`
+- `fb_extract_out/sean_timeline.json` (for date range)
+
+**Writes:**
+- `docs/data/report.json` — Dashboard data file
+
+**Behavior:**
+- Transforms pipeline outputs into the dashboard schema.
+- Deterministic ordering: topics by (count DESC, topic ASC).
+- Example IDs: first 8 items per topic in CSV order.
+- ID generation: SHA256 hash of `permalink|source_index|item_type`, first 8 chars.
+- `intrusion` and `self_portrayal` are `null` (not computed).
+
+---
+
+## Publishing to GitHub Pages
+
+After running all pipeline steps, publish the dashboard data:
+
+```powershell
+# Generate the dashboard report
+python .\tools\generate_report_json.py
+
+# Verify the output
+Get-Content .\docs\data\report.json | ConvertFrom-Json | Select-Object generated_at, dataset
+
+# Stage and commit (report.json is allowed in .gitignore)
+git add docs/data/report.json
+git commit -m "data(publish): refresh report.json"
+git push origin main
+```
+
+GitHub Pages rebuilds automatically from `main`. The dashboard will update within a few minutes.
+
+---
+
+## Full Pipeline (Single Run)
+
+Execute all steps in sequence:
+
+```powershell
+cd C:\dev\repos\analysis
+python .\pipeline\step1_normalize_posts.py
+python .\pipeline\step1b_adapt_comments.py
+python .\pipeline\step2_build_timeline.py
+python .\pipeline\step3_analyze_reason.py
+python .\tools\generate_report_json.py
+```
+
+---
+
 ## Verification
 
 ### View Statistics
@@ -162,6 +220,15 @@ Get-Content .\fb_extract_out\comments_normalized_sean.jsonl -Head 3
 (Get-Content .\fb_extract_out\sean_timeline.json | ConvertFrom-Json).Count
 ```
 
+### Verify Dashboard Report
+
+```powershell
+$r = Get-Content .\docs\data\report.json | ConvertFrom-Json
+$r.generated_at
+$r.dataset.total_items
+$r.topics.Count
+```
+
 ---
 
 ## Troubleshooting
@@ -178,5 +245,7 @@ Get-Content .\fb_extract_out\comments_normalized_sean.jsonl -Head 3
 ## Notes
 
 - This repository is code-only. Generated artifacts under `fb_extract_out/` are ignored by git.
+- Exception: `docs/data/report.json` is committed as the published dashboard snapshot.
 - Absolute paths in scripts are user-configurable; update them for your environment.
 - After relocating the repository, update any absolute paths in scripts as needed.
+
