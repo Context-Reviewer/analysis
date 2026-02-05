@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-05T23:32:07.322216+00:00",
+  "generated_at": "2026-02-05T23:39:22.646956+00:00",
   "dataset": {
     "total_items": 524,
     "date_min": "2026-02-01T17:12:38",
@@ -8,20 +8,20 @@
   "topics": [
     {
       "topic": "uncategorized",
-      "count": 272,
-      "percent_of_total": 0.5191,
-      "avg_sentiment": 0.0291,
-      "pct_below_neg_threshold": 0.0735,
-      "hostility_rate": 0.0735,
+      "count": 234,
+      "percent_of_total": 0.4466,
+      "avg_sentiment": 0.0303,
+      "pct_below_neg_threshold": 0.0726,
+      "hostility_rate": 0.0726,
       "example_ids": [
         "d61547f8",
-        "efe5a27a",
-        "7091cae9",
         "c67dd19a",
         "439a0dc6",
         "121c3a55",
-        "9bd20979",
-        "7e23b477"
+        "7e23b477",
+        "4b9ac07a",
+        "a0b0d2b0",
+        "21309983"
       ]
     },
     {
@@ -76,6 +76,24 @@
         "4ead3712",
         "8dc37bba",
         "d5c69a81"
+      ]
+    },
+    {
+      "topic": "race_ethnicity",
+      "count": 34,
+      "percent_of_total": 0.0649,
+      "avg_sentiment": 0.0511,
+      "pct_below_neg_threshold": 0.1471,
+      "hostility_rate": 0.1471,
+      "example_ids": [
+        "06ce666c",
+        "7c94ef27",
+        "9fae46a8",
+        "7091cae9",
+        "8accba2e",
+        "8dc37bba",
+        "a4a3b4d2",
+        "7c00e5e9"
       ]
     },
     {
@@ -151,6 +169,24 @@
       ]
     },
     {
+      "topic": "free_speech",
+      "count": 20,
+      "percent_of_total": 0.0382,
+      "avg_sentiment": -0.1364,
+      "pct_below_neg_threshold": 0.15,
+      "hostility_rate": 0.15,
+      "example_ids": [
+        "e9d880eb",
+        "385229db",
+        "196d7a41",
+        "c69888c6",
+        "f1aeca0e",
+        "39277e87",
+        "d6c24687",
+        "7559ead9"
+      ]
+    },
+    {
       "topic": "money_debt_work",
       "count": 18,
       "percent_of_total": 0.0344,
@@ -169,6 +205,24 @@
       ]
     },
     {
+      "topic": "geopolitics",
+      "count": 16,
+      "percent_of_total": 0.0305,
+      "avg_sentiment": -0.0817,
+      "pct_below_neg_threshold": 0.0625,
+      "hostility_rate": 0.0625,
+      "example_ids": [
+        "efe5a27a",
+        "9bd20979",
+        "2ce1298d",
+        "d8bc4395",
+        "d3de97bd",
+        "e2e7fb62",
+        "f0911ab4",
+        "d508f865"
+      ]
+    },
+    {
       "topic": "crime_news",
       "count": 12,
       "percent_of_total": 0.0229,
@@ -184,6 +238,22 @@
         "adaafd1d",
         "8accba2e",
         "cfed0907"
+      ]
+    },
+    {
+      "topic": "dei_woke",
+      "count": 6,
+      "percent_of_total": 0.0115,
+      "avg_sentiment": -0.1452,
+      "pct_below_neg_threshold": 0.1667,
+      "hostility_rate": 0.1667,
+      "example_ids": [
+        "7c94ef27",
+        "7091cae9",
+        "70d032f7",
+        "299dfbbd",
+        "8a3e9280",
+        "845bda68"
       ]
     },
     {
@@ -265,8 +335,14 @@
     "163f3918": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
     },
+    "196d7a41": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25539839442311684/"
+    },
     "1eb6ec57": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25486241244338171/"
+    },
+    "21309983": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25247166588245639/"
     },
     "21f7470d": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25601553179473643/"
@@ -274,11 +350,23 @@
     "28896de8": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
     },
+    "299dfbbd": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552437651051863/"
+    },
     "29c7284a": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/"
     },
+    "2ce1298d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25433932596235703/"
+    },
     "32a0ca9c": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559794893649472/"
+    },
+    "385229db": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
+    },
+    "39277e87": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
     },
     "3b4da8d8": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25431351346493828/"
@@ -291,6 +379,9 @@
     },
     "4786e121": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25553819844246977/"
+    },
+    "4b9ac07a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25479512031677759/"
     },
     "4ead3712": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538277512467877/"
@@ -316,8 +407,14 @@
     "7091cae9": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552437651051863/"
     },
+    "70d032f7": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552437651051863/"
+    },
     "718cd382": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "7559ead9": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
     },
     "76de90a4": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
@@ -346,6 +443,9 @@
     "8266a462": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25401274649501498/"
     },
+    "845bda68": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25654557967506497/"
+    },
     "87ae0031": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25430589789903317/"
     },
@@ -357,6 +457,9 @@
     },
     "89d9af92": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "8a3e9280": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552437651051863/"
     },
     "8accba2e": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552428531052775/"
@@ -388,6 +491,12 @@
     "9fd4a75e": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25602099276085700/"
     },
+    "a0b0d2b0": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25284483364513961/"
+    },
+    "a4a3b4d2": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25235511246077840/"
+    },
     "aab04814": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651997931095834/"
     },
@@ -409,6 +518,9 @@
     "c67dd19a": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538950212400607/"
     },
+    "c69888c6": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
+    },
     "cb4d80df": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25478299161799046/"
     },
@@ -424,17 +536,26 @@
     "d3de97bd": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25412724951689801/"
     },
+    "d508f865": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25399141616381468/"
+    },
     "d5c69a81": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25498117683150527/"
     },
     "d61547f8": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25643590165269944/"
     },
+    "d6c24687": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
+    },
     "d8bc4395": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25431253276503635/"
     },
     "df7da0f4": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "e2e7fb62": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25412694275026202/"
     },
     "e9d880eb": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25540011585627803/"
@@ -444,6 +565,9 @@
     },
     "f0911ab4": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25406609168968046/"
+    },
+    "f1aeca0e": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
     },
     "f4331857": {
       "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25539852485643713/"

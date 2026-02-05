@@ -104,7 +104,27 @@ TOPIC_RULES: Dict[str, List[str]] = {
         r"\bfinally hit\b", r"\$\d+k\b", r"\bfirst time in my life\b",
         r"\bi'm \d+ years old\b", r"\bmy first car\b", r"\bi've noticed\b"
     ],
+    "race_ethnicity": [
+        r"\bwhite\b", r"\bblack\b", r"\bafrican\b", r"\brace\b", r"\bracist\b",
+        r"\bmixed race\b", r"\bethnicity\b", r"\bn[\-\s]?word\b", r"\bperson of color\b",
+        r"\bpoc\b", r"\bwhitey?\b", r"\bblacky?\b"
+    ],
+    "geopolitics": [
+        r"\bisrael\b", r"\bpalestine\b", r"\bvenezuela\b", r"\bgreenland\b",
+        r"\bcanada\b", r"\bmiddle east\b", r"\bnetanyahu\b", r"\bhamas\b",
+        r"\biran\b", r"\bsaudi\b", r"\boman\b", r"\bhawaii\b", r"\bpcs\b"
+    ],
+    "dei_woke": [
+        r"\bdei\b", r"\bwoke\b", r"\bdiversity\b", r"\binclusion\b", r"\bequity\b",
+        r"\baffirmative action\b", r"\bhire\b"
+    ],
+    "free_speech": [
+        r"\bfreedom of speech\b", r"\b1st amendment\b", r"\bfirst amendment\b",
+        r"\bblock me\b", r"\bblock you\b", r"\bmute me\b", r"\bscroll on\b",
+        r"\bblocked\b"
+    ],
 }
+
 
 
 
