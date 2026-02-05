@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Details — Context Reviewer</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .topic-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .topic-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .topic-header h1 {
+            margin: 0;
+            font-family: monospace;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .metric-box {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .metric-box .label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        .metric-box .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .metric-box .value.neg { color: #c0392b; }
+        .metric-box .value.pos { color: #27ae60; }
+        .metric-box .value.neu { color: #7f8c8d; }
+        .example-ids {
+            background: #eee;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 4px;
+        }
+        .back-link {
+            margin-top: 2rem;
+            display: inline-block;
+        }
+        .error-message {
+            color: #c0392b;
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="report.html">Executive Summary</a> |
+        <select id="topic-nav-dropdown">
+            <option value="">Topics...</option>
+        </select>
+    </nav>
+
+    <div class="topic-container" id="topic-content">
+        <p>Loading...</p>
+    </div>
+
+    <script>
+        // Helper functions
+        function fmtPct(val) {
+            if (val === null || val === undefined) return 'N/A';
+            return (val * 100).toFixed(1) + '%';
+        }
+        function fmtFloat(val) {
+            if (val === null || val === undefined) return 'N/A';
+            return val.toFixed(3);
+        }
+        function getSentClass(val) {
+            if (val < -0.2) return 'neg';
+            if (val > 0.2) return 'pos';
+            return 'neu';
+        }
+
+        async function loadData() {
+            try {
+                const resp = await fetch('data/report.json');
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                return await resp.json();
+            } catch (e) {
+                console.error("Failed to load report data:", e);
+                return null;
+            }
+        }
+
+        async function renderTopicPage() {
+            const container = document.getElementById('topic-content');
+            const dropdown = document.getElementById('topic-nav-dropdown');
+            
+            // Get topic from query string
+            const params = new URLSearchParams(window.location.search);
+            const topicName = params.get('topic');
+
+            // Load data
+            const data = await loadData();
+            if (!data) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>Error Loading Data</h2>
+                        <p>Could not load report.json</p>
+                        <a href="report.html" class="back-link">← Back to Executive Summary</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Populate dropdown
+            data.topics.forEach(t => {
+                const option = document.createElement('option');
+                option.value = t.topic;
+                option.textContent = t.topic;
+                if (t.topic === topicName) option.selected = true;
+                dropdown.appendChild(option);
+            });
+            dropdown.addEventListener('change', function() {
+                if (this.value) {
+                    window.location.href = `topic.html?topic=${encodeURIComponent(this.value)}`;
+                }
+            });
+
+            // Check if topic param exists
+            if (!topicName) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>No Topic Selected</h2>
+                        <p>Please select a topic from the dropdown or return to the summary.</p>
+                        <a href="report.html" class="back-link">← Back to Executive Summary</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Find topic in data
+            const topicData = data.topics.find(t => t.topic === topicName);
+            if (!topicData) {
+                container.innerHTML = `
+                    <div class="error-message">
+                        <h2>Topic Not Found</h2>
+                        <p>No data found for topic: <code>${topicName}</code></p>
+                        <a href="report.html" class="back-link">← Back to Executive Summary</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Render topic details
+            const sentClass = getSentClass(topicData.avg_sentiment);
+            container.innerHTML = `
+                <div class="topic-header">
+                    <h1>${topicData.topic}</h1>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="label">Total Mentions</div>
+                        <div class="value">${topicData.count}</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Share of Corpus</div>
+                        <div class="value">${fmtPct(topicData.percent_of_total)}</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Average Sentiment</div>
+                        <div class="value ${sentClass}">${fmtFloat(topicData.avg_sentiment)}</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Hostility Rate</div>
+                        <div class="value">${fmtPct(topicData.hostility_rate)}</div>
+                    </div>
+                </div>
+
+                <h3>Example IDs (${topicData.example_ids ? topicData.example_ids.length : 0})</h3>
+                <div class="example-ids">
+                    ${topicData.example_ids ? topicData.example_ids.join(', ') : 'None'}
+                </div>
+
+                <a href="report.html" class="back-link">← Back to Executive Summary</a>
+            `;
+
+            // Update page title
+            document.title = `${topicData.topic} — Context Reviewer`;
+        }
+
+        // Run on page load
+        renderTopicPage();
+    </script>
+</body>
+</html>

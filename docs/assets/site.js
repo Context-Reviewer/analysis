@@ -72,8 +72,9 @@ async function renderReport() {
         topicBody.innerHTML = '';
         data.topics.forEach(t => {
             const row = document.createElement('tr');
+            const topicUrl = `topic.html?topic=${encodeURIComponent(t.topic)}`;
             row.innerHTML = `
-                <td><a href="topics/${getTopicLink(t.topic)}">${t.topic}</a></td>
+                <td><a href="${topicUrl}">${t.topic}</a></td>
                 <td>${t.count}</td>
                 <td>${fmtPct(t.percent_of_total)}</td>
                 <td class="${getSentClass(t.avg_sentiment)}">${fmtFloat(t.avg_sentiment)}</td>
@@ -113,9 +114,26 @@ async function renderReport() {
         const intrusionStats = document.getElementById('intrusion-stats');
         if (intrusionStats) intrusionStats.innerText = 'Intrusion Rate: N/A';
     }
+
+    // 5. Topic Dropdown (if present)
+    const topicDropdown = document.getElementById('topic-dropdown');
+    if (topicDropdown && data.topics.length > 0) {
+        topicDropdown.innerHTML = '<option value="">Select a topic...</option>';
+        data.topics.forEach(t => {
+            const option = document.createElement('option');
+            option.value = t.topic;
+            option.textContent = `${t.topic} (${t.count})`;
+            topicDropdown.appendChild(option);
+        });
+        topicDropdown.addEventListener('change', function () {
+            if (this.value) {
+                window.location.href = `topic.html?topic=${encodeURIComponent(this.value)}`;
+            }
+        });
+    }
 }
 
-// Render: Topic Page (topics/*.html)
+// Render: Topic Page (topic.html with query param)
 async function renderTopicPage(targetTopicKey) {
     const data = await loadData();
     if (!data) return;
