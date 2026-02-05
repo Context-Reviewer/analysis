@@ -77,13 +77,17 @@ def normalize_ws(s: str) -> str:
 
 def strip_weird_spaced_letters(s: str) -> str:
     """
-    mbasic often inserts 'd p n t r o e o s ...' garbage.
-    Heuristic: remove long runs of single-letter tokens separated by spaces.
+    mbasic often inserts 'd p n t r o e o s ...' garbage from UI elements.
+    Strategy: find first real word (3+ consecutive letters) and keep from there.
+    This removes the garbage prefix while preserving actual content.
     """
-    # If you have 12+ single-letter tokens in a row, it's almost certainly junk.
-    s = re.sub(r"(?:\b[A-Za-z]\b\s+){12,}", " ", s)
-    s = re.sub(r"\s{2,}", " ", s).strip()
-    return s
+    # Find first real word (3+ letters in a row)
+    m = re.search(r'[A-Za-z]{3,}', s)
+    if m:
+        s = s[m.start():]
+    # Also remove remaining short single-char token runs (6+ in a row)
+    s = re.sub(r'(?:\b[A-Za-z0-9]\b\s+){6,}', ' ', s)
+    return re.sub(r'\s{2,}', ' ', s).strip()
 
 
 def parse_relative_time(timestamp_raw: str, captured_at_iso: str) -> Tuple[Optional[str], Optional[str]]:

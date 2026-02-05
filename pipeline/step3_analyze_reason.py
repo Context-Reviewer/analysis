@@ -59,11 +59,12 @@ TOPIC_RULES: Dict[str, List[str]] = {
     "politics_culturewar": [
         r"\btrump\b", r"\bbiden\b", r"\bdemocrat\b", r"\brepublican\b",
         r"\bleft(ist|oids?)\b", r"\bright[-\s]?wing\b", r"\bconservative\b",
-        r"\bliberal\b", r"\bpolitic"
+        r"\bliberal\b", r"\bpolitic", r"\bmaga\b"
     ],
     "religion_morality": [
         r"\bbible\b", r"\bjesus\b", r"\bchrist\b", r"\bchurch\b",
-        r"\bgod\b", r"\bsin\b", r"\bmoral"
+        r"\bgod\b", r"\bsin\b", r"\bmoral", r"\bislam\b", r"\bmuslim\b",
+        r"\bjew\b", r"\bjudaism\b", r"\breligion\b"
     ],
     "relationships_gender": [
         r"\bwoman\b", r"\bwomen\b", r"\bman\b", r"\bmen\b", r"\bwife\b",
@@ -87,7 +88,24 @@ TOPIC_RULES: Dict[str, List[str]] = {
         r"\bfuck\b", r"\bshit\b", r"\bidiot\b", r"\bstupid\b", r"\bdumb\b",
         r"\bmoron\b", r"\bretard\b", r"\bparasite\b", r"\btrash\b"
     ],
+    # New topics
+    "military_veterans": [
+        r"\bmilitary\b", r"\barmy\b", r"\bnavy\b", r"\bmarines?\b",
+        r"\bair force\b", r"\bveteran\b", r"\brecruiter\b",
+        r"\bnational guard\b", r"\bactive duty\b", r"\benlisted\b",
+        r"\bdeployed\b", r"\bpurple heart\b"
+    ],
+    "crime_news": [
+        r"\barrested\b", r"\bcharged\b", r"\bsentenced\b", r"\bconvicted\b",
+        r"\baccused\b", r"\balleged(ly)?\b", r"\blaw\s*&?\s*crime\b",
+        r"\bprosecutors?\b", r"\bdeputies\b", r"\bsheriff\b", r"\bcustody\b"
+    ],
+    "personal_bragging": [
+        r"\bfinally hit\b", r"\$\d+k\b", r"\bfirst time in my life\b",
+        r"\bi'm \d+ years old\b", r"\bmy first car\b", r"\bi've noticed\b"
+    ],
 }
+
 
 
 def compile_rules(rules: Dict[str, List[str]]) -> Dict[str, List[re.Pattern]]:

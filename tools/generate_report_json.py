@@ -129,6 +129,7 @@ def build_report(topics_data: List[Dict[str, Any]], date_min: Optional[str], dat
     - generated_at: ISO timestamp
     - dataset: {total_items, date_min, date_max}
     - topics: [{topic, count, percent_of_total, avg_sentiment, hostility_rate, example_ids}]
+    - items: {id: {permalink}} — for linkable example IDs
     - intrusion: null (not computed)
     - self_portrayal: null (not computed)
     """
@@ -143,11 +144,17 @@ def build_report(topics_data: List[Dict[str, Any]], date_min: Optional[str], dat
         "example_ids": [],
     })
     
+    # Track all items by ID for linkable examples
+    all_items: Dict[str, Dict[str, str]] = {}
+    
     # Process each row (in CSV order for deterministic example_ids)
     for row in topics_data:
         item_id = generate_item_id(row["permalink"], row["i"], row["item_type"])
         sentiment = row["sentiment_compound"]
         is_hostile = sentiment < HOSTILE_THRESHOLD
+        
+        # Store item info for potential linking
+        all_items[item_id] = {"permalink": row["permalink"]}
         
         for topic in row["topics"]:
             stats = topic_stats[topic]
@@ -161,6 +168,8 @@ def build_report(topics_data: List[Dict[str, Any]], date_min: Optional[str], dat
     
     # Build topics array with deterministic ordering: (count DESC, topic ASC)
     topics_list: List[Dict[str, Any]] = []
+    used_item_ids: set = set()
+    
     for topic_name in sorted(topic_stats.keys(), key=lambda t: (-topic_stats[t]["count"], t)):
         stats = topic_stats[topic_name]
         count = stats["count"]
@@ -174,6 +183,15 @@ def build_report(topics_data: List[Dict[str, Any]], date_min: Optional[str], dat
             "hostility_rate": round4(stats["hostile_count"] / count) if count > 0 else 0.0,
             "example_ids": stats["example_ids"],
         })
+        # Track which items are actually used
+        used_item_ids.update(stats["example_ids"])
+    
+    # Only include items that are referenced in example_ids (space efficiency)
+    items_mapping: Dict[str, Dict[str, str]] = {
+        item_id: all_items[item_id]
+        for item_id in sorted(used_item_ids)
+        if item_id in all_items
+    }
     
     # Build final report
     report: Dict[str, Any] = {
@@ -184,11 +202,13 @@ def build_report(topics_data: List[Dict[str, Any]], date_min: Optional[str], dat
             "date_max": date_max,
         },
         "topics": topics_list,
+        "items": items_mapping,
         "intrusion": None,
         "self_portrayal": None,
     }
     
     return report
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────

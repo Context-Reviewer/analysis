@@ -1,36 +1,54 @@
 {
-  "generated_at": "2026-02-05T23:14:50.693333+00:00",
+  "generated_at": "2026-02-05T23:32:07.322216+00:00",
   "dataset": {
-    "total_items": 525,
+    "total_items": 524,
     "date_min": "2026-02-01T17:12:38",
     "date_max": "2026-02-01T18:29:02"
   },
   "topics": [
     {
       "topic": "uncategorized",
-      "count": 313,
-      "percent_of_total": 0.5962,
-      "avg_sentiment": 0.0674,
+      "count": 272,
+      "percent_of_total": 0.5191,
+      "avg_sentiment": 0.0291,
       "pct_below_neg_threshold": 0.0735,
       "hostility_rate": 0.0735,
       "example_ids": [
-        "8968c367",
-        "32a0ca9c",
         "d61547f8",
         "efe5a27a",
-        "df7da0f4",
         "7091cae9",
-        "5f6cda6e",
-        "c67dd19a"
+        "c67dd19a",
+        "439a0dc6",
+        "121c3a55",
+        "9bd20979",
+        "7e23b477"
+      ]
+    },
+    {
+      "topic": "religion_morality",
+      "count": 97,
+      "percent_of_total": 0.1851,
+      "avg_sentiment": -0.1024,
+      "pct_below_neg_threshold": 0.2268,
+      "hostility_rate": 0.2268,
+      "example_ids": [
+        "58386c9d",
+        "29c7284a",
+        "8dc37bba",
+        "d5c69a81",
+        "cb4d80df",
+        "87ae0031",
+        "820190bc",
+        "5fdb3323"
       ]
     },
     {
       "topic": "relationships_gender",
       "count": 70,
-      "percent_of_total": 0.1333,
-      "avg_sentiment": 0.1087,
-      "pct_below_neg_threshold": 0.1857,
-      "hostility_rate": 0.1857,
+      "percent_of_total": 0.1336,
+      "avg_sentiment": -0.0085,
+      "pct_below_neg_threshold": 0.2429,
+      "hostility_rate": 0.2429,
       "example_ids": [
         "58386c9d",
         "66bda86d",
@@ -43,30 +61,12 @@
       ]
     },
     {
-      "topic": "religion_morality",
-      "count": 67,
-      "percent_of_total": 0.1276,
-      "avg_sentiment": -0.0914,
-      "pct_below_neg_threshold": 0.2687,
-      "hostility_rate": 0.2687,
-      "example_ids": [
-        "58386c9d",
-        "29c7284a",
-        "8dc37bba",
-        "5fdb3323",
-        "29928b33",
-        "96f7ae73",
-        "42ef5c9a",
-        "28896de8"
-      ]
-    },
-    {
       "topic": "meta_social_media",
       "count": 44,
-      "percent_of_total": 0.0838,
-      "avg_sentiment": -0.0405,
-      "pct_below_neg_threshold": 0.1364,
-      "hostility_rate": 0.1364,
+      "percent_of_total": 0.084,
+      "avg_sentiment": -0.174,
+      "pct_below_neg_threshold": 0.1818,
+      "hostility_rate": 0.1818,
       "example_ids": [
         "7c94ef27",
         "f4331857",
@@ -81,10 +81,10 @@
     {
       "topic": "sex_offense_minors",
       "count": 32,
-      "percent_of_total": 0.061,
-      "avg_sentiment": 0.0179,
-      "pct_below_neg_threshold": 0.25,
-      "hostility_rate": 0.25,
+      "percent_of_total": 0.0611,
+      "avg_sentiment": -0.1337,
+      "pct_below_neg_threshold": 0.3125,
+      "hostility_rate": 0.3125,
       "example_ids": [
         "06ce666c",
         "58386c9d",
@@ -97,64 +97,100 @@
       ]
     },
     {
+      "topic": "military_veterans",
+      "count": 27,
+      "percent_of_total": 0.0515,
+      "avg_sentiment": -0.0336,
+      "pct_below_neg_threshold": 0.2222,
+      "hostility_rate": 0.2222,
+      "example_ids": [
+        "7c94ef27",
+        "e9d880eb",
+        "8968c367",
+        "32a0ca9c",
+        "7d6aede8",
+        "5f6cda6e",
+        "aab04814",
+        "7d5a290d"
+      ]
+    },
+    {
       "topic": "general_rage_mockery",
       "count": 26,
-      "percent_of_total": 0.0495,
-      "avg_sentiment": -0.3844,
-      "pct_below_neg_threshold": 0.4231,
-      "hostility_rate": 0.4231,
+      "percent_of_total": 0.0496,
+      "avg_sentiment": -0.5604,
+      "pct_below_neg_threshold": 0.4615,
+      "hostility_rate": 0.4615,
       "example_ids": [
         "4786e121",
         "3ed33c04",
         "be283b2a",
         "f0911ab4",
         "7c09b4cf",
-        "ee3d4f35",
-        "07e93212",
-        "2a0176be"
+        "7c00e5e9",
+        "1051427c",
+        "163f3918"
       ]
     },
     {
       "topic": "politics_culturewar",
-      "count": 22,
-      "percent_of_total": 0.0419,
-      "avg_sentiment": 0.0901,
-      "pct_below_neg_threshold": 0.1364,
-      "hostility_rate": 0.1364,
+      "count": 25,
+      "percent_of_total": 0.0477,
+      "avg_sentiment": -0.0992,
+      "pct_below_neg_threshold": 0.24,
+      "hostility_rate": 0.24,
       "example_ids": [
+        "4ead3712",
         "8c8fa02b",
         "045a5433",
         "1eb6ec57",
         "d3de97bd",
         "8266a462",
-        "b34b668c",
-        "845bd402",
-        "8adbf76e"
+        "992a1c65",
+        "c2336bef"
       ]
     },
     {
       "topic": "money_debt_work",
       "count": 18,
-      "percent_of_total": 0.0343,
-      "avg_sentiment": 0.1453,
-      "pct_below_neg_threshold": 0.0556,
-      "hostility_rate": 0.0556,
+      "percent_of_total": 0.0344,
+      "avg_sentiment": 0.1023,
+      "pct_below_neg_threshold": 0.1111,
+      "hostility_rate": 0.1111,
       "example_ids": [
         "d04f69d2",
-        "525b2d59",
-        "c9ed1b1e",
+        "c5ff7e31",
+        "9fd4a75e",
+        "d1072d6a",
         "4f10123d",
-        "e40a463a",
-        "27f15c63",
-        "74dd3d48",
-        "2f143373"
+        "94266734",
+        "718cd382",
+        "76de90a4"
+      ]
+    },
+    {
+      "topic": "crime_news",
+      "count": 12,
+      "percent_of_total": 0.0229,
+      "avg_sentiment": -0.6276,
+      "pct_below_neg_threshold": 0.6667,
+      "hostility_rate": 0.6667,
+      "example_ids": [
+        "66bda86d",
+        "4786e121",
+        "e9d880eb",
+        "32a0ca9c",
+        "f4331857",
+        "adaafd1d",
+        "8accba2e",
+        "cfed0907"
       ]
     },
     {
       "topic": "immigration_ice",
       "count": 6,
-      "percent_of_total": 0.0114,
-      "avg_sentiment": -0.235,
+      "percent_of_total": 0.0115,
+      "avg_sentiment": -0.6032,
       "pct_below_neg_threshold": 0.5,
       "hostility_rate": 0.5,
       "example_ids": [
@@ -162,38 +198,260 @@
         "e9d880eb",
         "8c8fa02b",
         "87d76e78",
-        "f91ec332",
-        "ade529d5"
+        "6addcc3e",
+        "10e15182"
       ]
     },
     {
       "topic": "violence_threats",
       "count": 4,
       "percent_of_total": 0.0076,
-      "avg_sentiment": -0.342,
-      "pct_below_neg_threshold": 0.25,
-      "hostility_rate": 0.25,
+      "avg_sentiment": -0.534,
+      "pct_below_neg_threshold": 0.5,
+      "hostility_rate": 0.5,
       "example_ids": [
         "d5c69a81",
         "3b4da8d8",
-        "d1072d6a",
-        "52c81a0e"
+        "89d9af92",
+        "0a5b6b51"
       ]
     },
     {
       "topic": "crime_drugs",
       "count": 3,
       "percent_of_total": 0.0057,
-      "avg_sentiment": 0.132,
+      "avg_sentiment": -0.1497,
       "pct_below_neg_threshold": 0.3333,
       "hostility_rate": 0.3333,
       "example_ids": [
         "d3de97bd",
-        "36557fa6",
-        "c21ad7ba"
+        "28896de8",
+        "9aaa7e38"
+      ]
+    },
+    {
+      "topic": "personal_bragging",
+      "count": 3,
+      "percent_of_total": 0.0057,
+      "avg_sentiment": -0.357,
+      "pct_below_neg_threshold": 0.3333,
+      "hostility_rate": 0.3333,
+      "example_ids": [
+        "df7da0f4",
+        "d8bc4395",
+        "b9d35e65"
       ]
     }
   ],
+  "items": {
+    "045a5433": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25505505532411742/"
+    },
+    "06ce666c": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
+    },
+    "0a5b6b51": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25654557967506497/"
+    },
+    "1051427c": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
+    },
+    "10e15182": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559838520311776/"
+    },
+    "121c3a55": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25551987854430176/"
+    },
+    "163f3918": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
+    },
+    "1eb6ec57": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25486241244338171/"
+    },
+    "21f7470d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25601553179473643/"
+    },
+    "28896de8": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
+    },
+    "29c7284a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/"
+    },
+    "32a0ca9c": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559794893649472/"
+    },
+    "3b4da8d8": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25431351346493828/"
+    },
+    "3ed33c04": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25553796034249358/"
+    },
+    "439a0dc6": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25554201460875482/"
+    },
+    "4786e121": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25553819844246977/"
+    },
+    "4ead3712": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538277512467877/"
+    },
+    "4f10123d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "58386c9d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/"
+    },
+    "5f6cda6e": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651772394451721/"
+    },
+    "5fdb3323": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25300963369532627/"
+    },
+    "66bda86d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538220752473553/"
+    },
+    "6addcc3e": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559838520311776/"
+    },
+    "7091cae9": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552437651051863/"
+    },
+    "718cd382": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "76de90a4": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "7c00e5e9": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/6855815051140739/"
+    },
+    "7c09b4cf": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25260960306866267/"
+    },
+    "7c94ef27": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559838520311776/"
+    },
+    "7d5a290d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522854484010180/"
+    },
+    "7d6aede8": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25554267534202208/"
+    },
+    "7e23b477": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25485245871104375/"
+    },
+    "820190bc": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25373946692234294/"
+    },
+    "8266a462": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25401274649501498/"
+    },
+    "87ae0031": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25430589789903317/"
+    },
+    "87d76e78": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25398592476436382/"
+    },
+    "8968c367": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25530700636558898/"
+    },
+    "89d9af92": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "8accba2e": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25552428531052775/"
+    },
+    "8c8fa02b": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522521587376803/"
+    },
+    "8dc37bba": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/"
+    },
+    "94266734": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "97ffe386": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25405962092366087/"
+    },
+    "992a1c65": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25151507074478258/"
+    },
+    "9aaa7e38": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/"
+    },
+    "9bd20979": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522831404012488/"
+    },
+    "9fae46a8": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25643709501924677/"
+    },
+    "9fd4a75e": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25602099276085700/"
+    },
+    "aab04814": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651997931095834/"
+    },
+    "adaafd1d": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25539839442311684/"
+    },
+    "b9d35e65": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25553796034249358/"
+    },
+    "be283b2a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25488550074107288/"
+    },
+    "c2336bef": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/"
+    },
+    "c5ff7e31": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25601553179473643/"
+    },
+    "c67dd19a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538950212400607/"
+    },
+    "cb4d80df": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25478299161799046/"
+    },
+    "cfed0907": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538646249097670/"
+    },
+    "d04f69d2": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25602099276085700/"
+    },
+    "d1072d6a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "d3de97bd": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25412724951689801/"
+    },
+    "d5c69a81": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25498117683150527/"
+    },
+    "d61547f8": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25643590165269944/"
+    },
+    "d8bc4395": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25431253276503635/"
+    },
+    "df7da0f4": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/"
+    },
+    "e9d880eb": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25540011585627803/"
+    },
+    "efe5a27a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25554510990844529/"
+    },
+    "f0911ab4": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25406609168968046/"
+    },
+    "f4331857": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25539852485643713/"
+    },
+    "f6d46c6a": {
+      "permalink": "https://www.facebook.com/groups/3970539883001618/posts/25403943312567965/"
+    }
+  },
   "intrusion": null,
   "self_portrayal": null
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,39 +12,55 @@
             margin: 2rem auto;
             padding: 1rem;
         }
+
         .topic-header {
             border-bottom: 2px solid #333;
             padding-bottom: 1rem;
             margin-bottom: 1.5rem;
         }
+
         .topic-header h1 {
             margin: 0;
             font-family: monospace;
         }
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
+
         .metric-box {
             background: #f5f5f5;
             padding: 1rem;
             border-radius: 4px;
             text-align: center;
         }
+
         .metric-box .label {
             font-size: 0.85rem;
             color: #666;
             margin-bottom: 0.25rem;
         }
+
         .metric-box .value {
             font-size: 1.5rem;
             font-weight: bold;
         }
-        .metric-box .value.neg { color: #c0392b; }
-        .metric-box .value.pos { color: #27ae60; }
-        .metric-box .value.neu { color: #7f8c8d; }
+
+        .metric-box .value.neg {
+            color: #c0392b;
+        }
+
+        .metric-box .value.pos {
+            color: #27ae60;
+        }
+
+        .metric-box .value.neu {
+            color: #7f8c8d;
+        }
+
         .example-ids {
             background: #eee;
             padding: 1rem;
@@ -53,10 +70,12 @@
             overflow-y: auto;
             border-radius: 4px;
         }
+
         .back-link {
             margin-top: 2rem;
             display: inline-block;
         }
+
         .error-message {
             color: #c0392b;
             padding: 2rem;
@@ -64,6 +83,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav>
         <a href="index.html">Home</a> |
@@ -93,6 +113,19 @@
             return 'neu';
         }
 
+        function renderExampleLinks(exampleIds, itemsMapping) {
+            if (!exampleIds || exampleIds.length === 0) return 'None';
+            const items = itemsMapping || {};
+            return exampleIds.map(id => {
+                const item = items[id];
+                if (item && item.permalink) {
+                    return `<a href="${item.permalink}" target="_blank" rel="noopener">${id}</a>`;
+                }
+                return id;
+            }).join(', ');
+        }
+
+
         async function loadData() {
             try {
                 const resp = await fetch('data/report.json');
@@ -107,7 +140,7 @@
         async function renderTopicPage() {
             const container = document.getElementById('topic-content');
             const dropdown = document.getElementById('topic-nav-dropdown');
-            
+
             // Get topic from query string
             const params = new URLSearchParams(window.location.search);
             const topicName = params.get('topic');
@@ -133,7 +166,7 @@
                 if (t.topic === topicName) option.selected = true;
                 dropdown.appendChild(option);
             });
-            dropdown.addEventListener('change', function() {
+            dropdown.addEventListener('change', function () {
                 if (this.value) {
                     window.location.href = `topic.html?topic=${encodeURIComponent(this.value)}`;
                 }
@@ -190,9 +223,9 @@
                     </div>
                 </div>
 
-                <h3>Example IDs (${topicData.example_ids ? topicData.example_ids.length : 0})</h3>
+                <h3>Example Posts (${topicData.example_ids ? topicData.example_ids.length : 0})</h3>
                 <div class="example-ids">
-                    ${topicData.example_ids ? topicData.example_ids.join(', ') : 'None'}
+                    ${renderExampleLinks(topicData.example_ids, data.items)}
                 </div>
 
                 <a href="report.html" class="back-link">← Back to Executive Summary</a>
@@ -206,4 +239,5 @@
         renderTopicPage();
     </script>
 </body>
+
 </html>
