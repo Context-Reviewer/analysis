@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-02-05T23:04:32.084726+00:00",
+  "dataset": {
+    "total_items": 451,
+    "date_min": null,
+    "date_max": null
+  },
+  "topics": [
+    {
+      "topic": "uncategorized",
+      "count": 282,
+      "percent_of_total": 0.6253,
+      "avg_sentiment": 0.0271,
+      "pct_below_neg_threshold": 0.078,
+      "hostility_rate": 0.078,
+      "example_ids": [
+        "b1945df2",
+        "62721980",
+        "7bc515bd",
+        "9d3fbec0",
+        "7906945c",
+        "3ab294b5",
+        "58dde3ef",
+        "9c1132ae"
+      ]
+    },
+    {
+      "topic": "religion_morality",
+      "count": 63,
+      "percent_of_total": 0.1397,
+      "avg_sentiment": -0.0956,
+      "pct_below_neg_threshold": 0.2698,
+      "hostility_rate": 0.2698,
+      "example_ids": [
+        "57f24aa2",
+        "13b28a8b",
+        "c17428ec",
+        "d134b82e",
+        "d20bbdd2",
+        "0830895c",
+        "a566ea3c",
+        "4d6cae4d"
+      ]
+    },
+    {
+      "topic": "relationships_gender",
+      "count": 51,
+      "percent_of_total": 0.1131,
+      "avg_sentiment": 0.0342,
+      "pct_below_neg_threshold": 0.1961,
+      "hostility_rate": 0.1961,
+      "example_ids": [
+        "57f24aa2",
+        "13b28a8b",
+        "d134b82e",
+        "4d6cae4d",
+        "64cd6764",
+        "c40994d5",
+        "85e38d98",
+        "3d11ce6d"
+      ]
+    },
+    {
+      "topic": "meta_social_media",
+      "count": 34,
+      "percent_of_total": 0.0754,
+      "avg_sentiment": -0.2044,
+      "pct_below_neg_threshold": 0.1765,
+      "hostility_rate": 0.1765,
+      "example_ids": [
+        "ce02e6c8",
+        "3687d5ed",
+        "75f09a4f",
+        "f23d3688",
+        "ffcfea49",
+        "4834c646",
+        "0fb83d47",
+        "6eb2bb61"
+      ]
+    },
+    {
+      "topic": "sex_offense_minors",
+      "count": 24,
+      "percent_of_total": 0.0532,
+      "avg_sentiment": -0.059,
+      "pct_below_neg_threshold": 0.25,
+      "hostility_rate": 0.25,
+      "example_ids": [
+        "13b28a8b",
+        "c17428ec",
+        "d134b82e",
+        "d20bbdd2",
+        "92d59fe2",
+        "4b97875d",
+        "fe14aa1e",
+        "a7df76ce"
+      ]
+    },
+    {
+      "topic": "general_rage_mockery",
+      "count": 20,
+      "percent_of_total": 0.0443,
+      "avg_sentiment": -0.6192,
+      "pct_below_neg_threshold": 0.55,
+      "hostility_rate": 0.55,
+      "example_ids": [
+        "a566ea3c",
+        "c0d0c3d5",
+        "85e38d98",
+        "5fe984c7",
+        "3d11ce6d",
+        "75f09a4f",
+        "d96d1f4b",
+        "a7df76ce"
+      ]
+    },
+    {
+      "topic": "money_debt_work",
+      "count": 17,
+      "percent_of_total": 0.0377,
+      "avg_sentiment": 0.1488,
+      "pct_below_neg_threshold": 0.0588,
+      "hostility_rate": 0.0588,
+      "example_ids": [
+        "a42e5141",
+        "c24b74d5",
+        "178b910c",
+        "50da348e",
+        "2f386676",
+        "72362571",
+        "2d03a103",
+        "f3949729"
+      ]
+    },
+    {
+      "topic": "politics_culturewar",
+      "count": 16,
+      "percent_of_total": 0.0355,
+      "avg_sentiment": -0.0542,
+      "pct_below_neg_threshold": 0.1875,
+      "hostility_rate": 0.1875,
+      "example_ids": [
+        "3d11ce6d",
+        "d6875f06",
+        "224fd54a",
+        "fe14aa1e",
+        "a7df76ce",
+        "49ce6b80",
+        "59e7f405",
+        "6fa269da"
+      ]
+    },
+    {
+      "topic": "crime_drugs",
+      "count": 2,
+      "percent_of_total": 0.0044,
+      "avg_sentiment": -0.2545,
+      "pct_below_neg_threshold": 0.5,
+      "hostility_rate": 0.5,
+      "example_ids": [
+        "d20bbdd2",
+        "fc308d4c"
+      ]
+    },
+    {
+      "topic": "immigration_ice",
+      "count": 2,
+      "percent_of_total": 0.0044,
+      "avg_sentiment": -0.407,
+      "pct_below_neg_threshold": 0.5,
+      "hostility_rate": 0.5,
+      "example_ids": [
+        "0726f2fb",
+        "84524d7d"
+      ]
+    },
+    {
+      "topic": "violence_threats",
+      "count": 2,
+      "percent_of_total": 0.0044,
+      "avg_sentiment": -0.5915,
+      "pct_below_neg_threshold": 0.5,
+      "hostility_rate": 0.5,
+      "example_ids": [
+        "9d252f57",
+        "9a459d40"
+      ]
+    }
+  ],
+  "intrusion": null,
+  "self_portrayal": null
+}
