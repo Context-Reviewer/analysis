@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -23,6 +22,21 @@ DEFAULT_GLOBS = [
     "docs/**",
     "README.md",
 ]
+
+# Docs files that are useful for development/governance but should not be part of the
+# default "publish-surface" pack snapshot.
+DEFAULT_DOCS_EXCLUDE_NAMES = {
+    "GOVERNANCE.md",
+    "RUNNING.md",
+    "NEXT_STEP.md",
+    "ORCHESTRATOR_SPEC.md",
+    "STEP5_SPEC.md",
+    "CLAUDE_SESSION_HANDOFF.md",
+}
+
+DEFAULT_DOCS_EXCLUDE_SUFFIXES = (
+    ".code-workspace",
+)
 
 
 @dataclass(frozen=True)
@@ -46,7 +60,6 @@ def _sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
 def _iter_globbed_files(repo_root: Path, patterns: List[str]) -> Iterable[Path]:
     seen: set[Path] = set()
     for pat in patterns:
-        # Use pathlib glob; "**" works when recursive=True via glob on full pattern
         for p in repo_root.glob(pat):
             if p.is_file():
                 rp = p.resolve()
@@ -59,10 +72,20 @@ def _to_relpath(repo_root: Path, abs_path: Path) -> str:
     return abs_path.resolve().relative_to(repo_root.resolve()).as_posix()
 
 
-def _copy_file(src: Path, dst: Path) -> None:
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    # copy2 preserves mtime; that’s fine inside the pack; determinism comes from hashing + sorted manifest
-    shutil.copy2(src, dst)
+def _is_excluded_docs_relpath(relpath_posix: str, force_all_docs: bool) -> bool:
+    if force_all_docs:
+        return False
+
+    if not relpath_posix.startswith("docs/"):
+        return False
+
+    name = relpath_posix.split("/")[-1]
+    if name in DEFAULT_DOCS_EXCLUDE_NAMES:
+        return True
+    for suf in DEFAULT_DOCS_EXCLUDE_SUFFIXES:
+        if name.endswith(suf):
+            return True
+    return False
 
 
 def parse_args() -> argparse.Namespace:
@@ -72,6 +95,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--run-id", required=True, help="Run identifier, e.g. 2026-02-06T1954Z")
     p.add_argument("--repo-root", default=str(Path.cwd()), help="Repository root (default: current working directory).")
     p.add_argument("--globs", nargs="*", default=DEFAULT_GLOBS, help="Glob patterns to include (relative to repo root).")
+    p.add_argument(
+        "--force-all-docs",
+        action="store_true",
+        help="Include all docs/** files in the pack, including governance/process files.",
+    )
     p.add_argument("--dry-run", action="store_true", help="Compute manifest but do not copy files.")
     return p.parse_args()
 
@@ -88,10 +116,16 @@ def main() -> int:
     if pack_dir.exists():
         raise SystemExit(f"[!] Pack directory already exists: {pack_dir}")
 
-    # Collect files deterministically
     abs_files = list(_iter_globbed_files(repo_root, list(args.globs)))
     rel_files: List[Tuple[str, Path]] = [(_to_relpath(repo_root, p), p) for p in abs_files]
     rel_files.sort(key=lambda t: t[0])
+
+    # Exclude governance/process docs by default
+    rel_files = [
+        (rel, p)
+        for (rel, p) in rel_files
+        if not _is_excluded_docs_relpath(rel, args.force_all_docs)
+    ]
 
     entries: List[FileEntry] = []
     total_bytes = 0
@@ -116,21 +150,19 @@ def main() -> int:
         "files": [e.__dict__ for e in entries],
     }
 
-    # Create dirs + write manifest + copy
     pack_dir.mkdir(parents=True, exist_ok=False)
-
-    # Write manifest first (even in dry run); it’s useful as an inventory
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     if not args.dry_run:
         for e in entries:
             src = repo_root / Path(e.relpath)
             dst = files_dir / Path(e.relpath)
-            _copy_file(src, dst)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
 
     print(f"[i] Pack created: {pack_dir}")
-    print(f"[i] Manifest:     {manifest_path}")
-    print(f"[i] Files:        {len(entries)} ({total_bytes} bytes){' [dry-run]' if args.dry_run else ''}")
+    print(f"[i] Files:        {len(entries)} ({total_bytes} bytes)")
+    print(f"[i] Force docs:   {args.force_all_docs}")
     return 0
 
 
