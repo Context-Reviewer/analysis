@@ -1,0 +1,109 @@
+{
+  "ref_version": "1.0",
+  "subject": "sean_roy",
+  "run_id": "2026-02-06T2030Z",
+  "docs_root": "docs",
+  "file_count": 20,
+  "files": [
+    {
+      "relpath": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relpath": "CLAUDE_SESSION_HANDOFF.md",
+      "bytes": 4767,
+      "sha256": "270e3ec0f3918a3a84ee25ed5b9a4136ba7ec463fb6b164a4b3b9ab1112ab5e6"
+    },
+    {
+      "relpath": "GOVERNANCE.md",
+      "bytes": 2796,
+      "sha256": "cf0d31ff1fc0a696724ea916a56656ce1b75c5e5cb6539ed0febc0b0ed1af4e9"
+    },
+    {
+      "relpath": "Jules.code-workspace",
+      "bytes": 108,
+      "sha256": "452c92386177bda0a1716e37b4314f3c8f161daf86abefeb0974833dd4f7575d"
+    },
+    {
+      "relpath": "NEXT_STEP.md",
+      "bytes": 1451,
+      "sha256": "7a229dcc63b70db99c1ef26e4b465d10d6ebb3dc0f1e5af4539ca99f6169fff5"
+    },
+    {
+      "relpath": "ORCHESTRATOR_SPEC.md",
+      "bytes": 3006,
+      "sha256": "7ccf24212b1de510d2a96d9a996fd5a121008232eb9580f93e88ef17cf561ae4"
+    },
+    {
+      "relpath": "RUNNING.md",
+      "bytes": 6867,
+      "sha256": "f5e656ae09a3364ca9fac7b80274f12981e4c77095ff90864f77a6c5ce6f3362"
+    },
+    {
+      "relpath": "STEP5_SPEC.md",
+      "bytes": 9106,
+      "sha256": "d124de4e074f12e6d242727eca5fae893c311e8a067caaefdb79416a829b37bf"
+    },
+    {
+      "relpath": "assets/site.js",
+      "bytes": 8537,
+      "sha256": "34d97bd3669f0d5f4014ff0cf68a8d1e31ef3b0e94109b5f5d393fc6e287c97c"
+    },
+    {
+      "relpath": "assets/style.css",
+      "bytes": 2631,
+      "sha256": "6806c2248992f7fb91425c58d16e139474eefcf1836942ad3f402d4c5a5c9c67"
+    },
+    {
+      "relpath": "contradictions.html",
+      "bytes": 1720,
+      "sha256": "edf068911c9a36406f14d1b4169e6cd5215d2b1dea1e715420d00a092d43141b"
+    },
+    {
+      "relpath": "data/README.txt",
+      "bytes": 208,
+      "sha256": "68ee1a6198f50e5d7062ac8b4b889637c713600890a5a4be9c5563a58b9cc1f8"
+    },
+    {
+      "relpath": "data/report.json",
+      "bytes": 26459,
+      "sha256": "64127fea39252079267e3ca04c3a2bfffdaec81ad4e3e8f2a61d87e089574b4d"
+    },
+    {
+      "relpath": "data/report.step5.json",
+      "bytes": 27874,
+      "sha256": "eded7bbdef0771af1858cb30533fcc9b9fce0dd0adfda52760952932f130fd21"
+    },
+    {
+      "relpath": "index.html",
+      "bytes": 2438,
+      "sha256": "1c714c02d2ade5961dd71b20bbe0a6b34db1363317981aaeea5c7c2e0c419769"
+    },
+    {
+      "relpath": "report.html",
+      "bytes": 3237,
+      "sha256": "74d6158790e316b71d7b170bf8ac75578d5a7fc762457fb2880c83c304c3bf42"
+    },
+    {
+      "relpath": "topic.html",
+      "bytes": 8054,
+      "sha256": "9e26daa5228207f27e58fa7bf74d7d27abc66b2df5fede2a13c80fe9ea362e13"
+    },
+    {
+      "relpath": "topics/israel.html",
+      "bytes": 1449,
+      "sha256": "f8d7d550fd96273a76f637e0a51865e4736f08202f2595049101ccc099a9d05d"
+    },
+    {
+      "relpath": "topics/race.html",
+      "bytes": 1438,
+      "sha256": "2dbf7d75ed23f37cf8f41140ba849207603ef53c8f8a48068a494de74400535e"
+    },
+    {
+      "relpath": "topics/religion.html",
+      "bytes": 1432,
+      "sha256": "e2c4cfbd3e66e51243de23bfd32d012ba6b856d86036ff99254e7de38799af53"
+    }
+  ]
+}
