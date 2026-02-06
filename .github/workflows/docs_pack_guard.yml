@@ -1,0 +1,58 @@
+name: Docs Pack Guard
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine base SHA
+        id: base
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "sha=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "sha=$(git rev-parse HEAD~1)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect docs changes
+        id: diff
+        shell: bash
+        run: |
+          BASE="${{ steps.base.outputs.sha }}"
+          HEAD="$(git rev-parse HEAD)"
+
+          DOCS_CHANGED="$(git diff --name-only "$BASE" "$HEAD" -- docs | wc -l | tr -d ' ')"
+          REF_CHANGED="$(git diff --name-only "$BASE" "$HEAD" -- docs/pack_ref.json | wc -l | tr -d ' ')"
+
+          echo "docs_changed=$DOCS_CHANGED" >> $GITHUB_OUTPUT
+          echo "ref_changed=$REF_CHANGED" >> $GITHUB_OUTPUT
+
+          echo "[i] docs_changed=$DOCS_CHANGED"
+          echo "[i] ref_changed=$REF_CHANGED"
+
+      - name: Enforce pack_ref update when docs change
+        if: steps.diff.outputs.docs_changed != '0'
+        shell: bash
+        run: |
+          if [ "${{ steps.diff.outputs.ref_changed }}" = "0" ]; then
+            echo "[FAIL] docs/ changed but docs/pack_ref.json did not."
+            exit 1
+          fi
+          echo "[OK] docs/ changed and pack_ref.json updated."
+
+      - name: Verify docs against pack_ref
+        if: steps.diff.outputs.docs_changed != '0'
+        shell: bash
+        run: |
+          python --version
+          python tools/pack/verify_docs_ref.py --strict
