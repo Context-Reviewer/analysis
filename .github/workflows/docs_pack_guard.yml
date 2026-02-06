@@ -13,6 +13,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Show checked-out SHA
+        shell: bash
+        run: |
+          echo "[i] github.sha=${{ github.sha }}"
+          echo "[i] HEAD=$(git rev-parse HEAD)"
+          git log -1 --oneline
 
       - name: Determine base SHA
         id: base
@@ -21,8 +29,16 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "sha=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
           else
-            echo "sha=$(git rev-parse HEAD~1)" >> $GITHUB_OUTPUT
+            # For push events, GitHub provides the "before" SHA for the push.
+            # This is more reliable than HEAD~1 (works with force-push, merges, etc.).
+            BEFORE="${{ github.event.before }}"
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              # Fallback for unusual cases (e.g., first commit on a new branch)
+              BEFORE="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
+            fi
+            echo "sha=$BEFORE" >> $GITHUB_OUTPUT
           fi
+          echo "[i] base_sha=${{ steps.base.outputs.sha }}"
 
       - name: Detect docs changes
         id: diff
