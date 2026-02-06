@@ -3,47 +3,12 @@
   "subject": "sean_roy",
   "run_id": "2026-02-06T2030Z",
   "docs_root": "docs",
-  "file_count": 20,
+  "file_count": 13,
   "files": [
     {
       "relpath": ".nojekyll",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "relpath": "CLAUDE_SESSION_HANDOFF.md",
-      "bytes": 4767,
-      "sha256": "270e3ec0f3918a3a84ee25ed5b9a4136ba7ec463fb6b164a4b3b9ab1112ab5e6"
-    },
-    {
-      "relpath": "GOVERNANCE.md",
-      "bytes": 2796,
-      "sha256": "cf0d31ff1fc0a696724ea916a56656ce1b75c5e5cb6539ed0febc0b0ed1af4e9"
-    },
-    {
-      "relpath": "Jules.code-workspace",
-      "bytes": 108,
-      "sha256": "452c92386177bda0a1716e37b4314f3c8f161daf86abefeb0974833dd4f7575d"
-    },
-    {
-      "relpath": "NEXT_STEP.md",
-      "bytes": 1451,
-      "sha256": "7a229dcc63b70db99c1ef26e4b465d10d6ebb3dc0f1e5af4539ca99f6169fff5"
-    },
-    {
-      "relpath": "ORCHESTRATOR_SPEC.md",
-      "bytes": 3006,
-      "sha256": "7ccf24212b1de510d2a96d9a996fd5a121008232eb9580f93e88ef17cf561ae4"
-    },
-    {
-      "relpath": "RUNNING.md",
-      "bytes": 6867,
-      "sha256": "f5e656ae09a3364ca9fac7b80274f12981e4c77095ff90864f77a6c5ce6f3362"
-    },
-    {
-      "relpath": "STEP5_SPEC.md",
-      "bytes": 9106,
-      "sha256": "d124de4e074f12e6d242727eca5fae893c311e8a067caaefdb79416a829b37bf"
     },
     {
       "relpath": "assets/site.js",
