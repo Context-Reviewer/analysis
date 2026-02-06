@@ -19,6 +19,10 @@ DEFAULT_EXCLUDE_SUFFIXES = (
     ".code-workspace",
 )
 
+# Canonical publish surface should be byte-stable across platforms.
+# We normalize UTF-8 text files to LF and ensure a trailing newline.
+TEXT_EXTENSIONS = {".html", ".css", ".js", ".json", ".txt", ".md"}
+
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Publish docs from a frozen pack into the repo docs/ directory.")
@@ -38,6 +42,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Copy all docs from pack, including governance/process files.",
     )
+    p.add_argument(
+        "--no-normalize",
+        action="store_true",
+        help="Disable line-ending normalization of published UTF-8 text files.",
+    )
     return p.parse_args()
 
 
@@ -53,18 +62,42 @@ def _should_exclude(path: Path, force_all: bool) -> bool:
     return False
 
 
-def _copy_tree(src: Path, dst: Path, *, force_all: bool) -> None:
-    # shutil.copytree requires dst not exist; we want merge semantics.
-    for p in src.rglob("*"):
+def _normalize_text_file(path: Path) -> None:
+    # Only normalize UTF-8 decodable text. Skip binaries.
+    try:
+        raw = path.read_bytes()
+        text = raw.decode("utf-8")
+    except Exception:
+        return
+
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    if not normalized.endswith("\n"):
+        normalized += "\n"
+
+    # Write with explicit LF newlines
+    path.write_text(normalized, encoding="utf-8", newline="\n")
+
+
+def _copy_tree(src: Path, dst: Path, *, force_all: bool, normalize: bool) -> None:
+    # Deterministic traversal order
+    paths = sorted(src.rglob("*"), key=lambda p: p.relative_to(src).as_posix())
+
+    for p in paths:
         if _should_exclude(p, force_all):
             continue
+
         rel = p.relative_to(src)
         out = dst / rel
+
         if p.is_dir():
             out.mkdir(parents=True, exist_ok=True)
-        else:
-            out.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(p, out)
+            continue
+
+        out.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(p, out)
+
+        if normalize and out.suffix.lower() in TEXT_EXTENSIONS:
+            _normalize_text_file(out)
 
 
 def main() -> int:
@@ -86,12 +119,19 @@ def main() -> int:
         shutil.rmtree(dst_docs)
 
     dst_docs.mkdir(parents=True, exist_ok=True)
-    _copy_tree(pack_docs, dst_docs, force_all=args.force_all)
+
+    _copy_tree(
+        pack_docs,
+        dst_docs,
+        force_all=args.force_all,
+        normalize=(not args.no_normalize),
+    )
 
     print(f"[i] Source: {pack_docs}")
     print(f"[i] Dest:   {dst_docs}")
     print(f"[i] Mode:   {args.mode}")
     print(f"[i] Force:  {args.force_all}")
+    print(f"[i] Normalize: {not args.no_normalize}")
     return 0
 
 
