@@ -36,9 +36,13 @@ def main() -> int:
         raise SystemExit(f"[!] docs root missing: {docs_root}")
 
     entries = []
-    for p in sorted([p for p in docs_root.rglob("*") if p.is_file()], key=lambda x: x.relative_to(docs_root).as_posix()):
+    files = sorted(
+        [p for p in docs_root.rglob("*") if p.is_file()],
+        key=lambda x: x.relative_to(docs_root).as_posix(),
+    )
+
+    for p in files:
         rel = p.relative_to(docs_root).as_posix()
-        # Include the ref itself? No: we generate it after enumeration.
         if rel == "pack_ref.json":
             continue
         entries.append(
@@ -58,8 +62,11 @@ def main() -> int:
         "files": entries,
     }
 
+    # IMPORTANT: write with LF newlines for cross-platform determinism
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(ref, indent=2) + "\n", encoding="utf-8")
+    text = json.dumps(ref, indent=2).replace("\r\n", "\n").replace("\r", "\n") + "\n"
+    out_path.write_text(text, encoding="utf-8", newline="\n")
+
     print(f"[i] Wrote: {out_path} ({len(entries)} files)")
     return 0
 
