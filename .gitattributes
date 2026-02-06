@@ -1,0 +1,12 @@
+# Enforce deterministic line endings for published site + refs
+docs/** text eol=lf
+tools/** text eol=lf
+.github/** text eol=lf
+
+# Treat common binaries correctly
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
