@@ -1,0 +1,16 @@
+{
+    "schema_version": "subject_config_v1",
+    "subject": {
+        "id": "sean_roy",
+        "display_name": "Sean Roy"
+    },
+    "inputs": {
+        "posts_jsonl": "fb_extract_out/posts_all.jsonl",
+        "comments_jsonl": null
+    },
+    "paths": {
+        "intermediate_dir": "fb_extract_out",
+        "report_json": "docs/data/report.json"
+    },
+    "notes": "Initial Sean Roy analysis configuration"
+}
