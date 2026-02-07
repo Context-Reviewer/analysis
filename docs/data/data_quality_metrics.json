@@ -1,0 +1,141 @@
+{
+  "completeness": {
+    "fields": {
+      "captured_at": {
+        "nonnull_count": 0,
+        "nonnull_rate": 0.0
+      },
+      "parent_author_type": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "parent_context": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "sentiment_compound": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "source_index": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "thread_permalink": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "thread_primary_topic": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      },
+      "timestamp_parsed": {
+        "nonnull_count": 0,
+        "nonnull_rate": 0.0
+      },
+      "topics": {
+        "nonnull_count": 451,
+        "nonnull_rate": 1.0
+      }
+    }
+  },
+  "counts": {
+    "item_type_counts": {
+      "comment": 451
+    },
+    "parent_author_type_counts": {
+      "other": 294,
+      "self": 157
+    },
+    "thread_primary_topic_nonnull_count": 451
+  },
+  "dataset": {
+    "dataset_fingerprint": "sha256:3d777de72157a992a95e37329813d0a9e0fab3701cdc25c0656c1f58334c3078",
+    "date_max": null,
+    "date_min": null,
+    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "record_count": 451,
+    "timestamp_nonnull_count": 0,
+    "timestamp_source": "timestamp_parsed|captured_at"
+  },
+  "definitions": {
+    "canonical_timestamp": "timestamp_parsed if present else captured_at if present else null",
+    "field_nonnull_rate": "nonnull_count / record_count",
+    "parent_context_equals_thread_permalink_rate": "for comments with both fields, share where parent_context == thread_permalink",
+    "sentiment_compound_range": "expected in [-1, 1]",
+    "source_index_unique_rate": "unique(source_index) / nonnull(source_index)"
+  },
+  "integrity": {
+    "parent_context_equals_thread_permalink": {
+      "eligible_count": 451,
+      "equal_count": 451,
+      "equal_rate": 1.0
+    },
+    "source_index": {
+      "nonnull_count": 451,
+      "unique_count": 451,
+      "unique_rate": 1.0
+    }
+  },
+  "schema_version": "data_quality_metrics-0.1",
+  "sentiment": {
+    "mean_compound": -0.0035,
+    "median_compound": 0.0,
+    "sentiment_compound_nonnull_count": 451,
+    "sentiment_compound_nonnull_rate": 1.0,
+    "sentiment_compound_out_of_range_count": 0
+  },
+  "topics": {
+    "topic_counts_top10": [
+      {
+        "count": 151,
+        "topic": "questions_curiosity"
+      },
+      {
+        "count": 87,
+        "topic": "uncategorized"
+      },
+      {
+        "count": 86,
+        "topic": "religion_morality"
+      },
+      {
+        "count": 78,
+        "topic": "agreement_reactions"
+      },
+      {
+        "count": 55,
+        "topic": "juvenile_banter"
+      },
+      {
+        "count": 51,
+        "topic": "relationships_gender"
+      },
+      {
+        "count": 34,
+        "topic": "meta_social_media"
+      },
+      {
+        "count": 28,
+        "topic": "race_ethnicity"
+      },
+      {
+        "count": 28,
+        "topic": "personal_life"
+      },
+      {
+        "count": 24,
+        "topic": "sex_offense_minors"
+      }
+    ],
+    "topics_nonempty_count": 451,
+    "topics_nonempty_rate": 1.0,
+    "topics_per_item": {
+      "max": 8,
+      "mean": 1.7627,
+      "median": 1.0,
+      "min": 1
+    },
+    "topics_unique_vocab_size": 27
+  }
+}
