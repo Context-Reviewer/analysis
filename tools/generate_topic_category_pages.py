@@ -179,7 +179,7 @@ def render_page(cat: str, items: list[dict]) -> str:
 
   <main class="container">
     <h1>{esc(title)}</h1>
-    <p class="subtitle">{esc(subtitle)}</p>
+    <p>{esc(subtitle)}</p>
 
     <section class="panel">
       {table_html}
