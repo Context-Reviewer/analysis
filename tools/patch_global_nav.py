@@ -2,68 +2,83 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
-NAV_TEMPLATE = """\
-    <nav>
-        <a href="index.html" class="brand">Context Reviewer</a>
-        <a href="index.html"{home_active}>Home</a>
-        <a href="report.html"{report_active}>Report</a>
-        <div class="dropdown">
-            <a href="#" class="active">Topics ▾</a>
-            <div class="dropdown-content">
-                <a href="topics/israel.html">Israel / Palestine</a>
-                <a href="topics/race.html">Race & Identity</a>
-                <a href="topics/religion.html">Religion</a>
-            </div>
-        </div>
-        <a href="contradictions.html"{contradictions_active}>Contradictions</a>
-        <a href="conclusion.html"{conclusion_active}>Conclusion</a>
-        <a href="signals.html"{signals_active}>Signals</a>
-    </nav>
-"""
+# Match exactly one nav block, capturing its indentation (leading whitespace at the <nav> line).
+NAV_BLOCK_RE = re.compile(r"(?ms)^(?P<indent>[ \t]*)<nav>\s*.*?\s*</nav>\s*$")
 
-# For pages where "Topics" is not the active section, remove class="active" from Topics anchor.
-NAV_TEMPLATE_TOPICS_INACTIVE = NAV_TEMPLATE.replace('href="#" class="active"', 'href="#"')
+
+def fail(msg: str) -> None:
+    raise SystemExit("[FAIL] " + msg)
+
+
+def _indent_block(block: str, indent: str) -> str:
+    # Prefix each non-empty line with the original indentation.
+    lines = block.splitlines()
+    out = []
+    for ln in lines:
+        out.append((indent + ln) if ln.strip() else ln)
+    return "\n".join(out)
 
 
 def build_nav(active: str, topics_active: bool = False) -> str:
+    """
+    Returns a nav block starting at column 0 (no leading indentation).
+    Caller re-indents to match file context.
+    """
     active_map: Dict[str, str] = {
-        "home": " class=\"active\"",
-        "report": " class=\"active\"",
-        "contradictions": " class=\"active\"",
-        "conclusion": " class=\"active\"",
-        "signals": " class=\"active\"",
+        "home": ' class="active"',
+        "report": ' class="active"',
+        "contradictions": ' class="active"',
+        "conclusion": ' class="active"',
+        "signals": ' class="active"',
     }
 
     def a(which: str) -> str:
         return active_map[which] if active == which else ""
 
-    tpl = NAV_TEMPLATE if topics_active else NAV_TEMPLATE_TOPICS_INACTIVE
-    return tpl.format(
-        home_active=a("home"),
-        report_active=a("report"),
-        contradictions_active=a("contradictions"),
-        conclusion_active=a("conclusion"),
-        signals_active=a("signals"),
-    )
+    topics_toggle = ' class="active"' if topics_active else ""
+
+    # Canonical nav: single brand anchor, consistent order, includes Signals.
+    return f"""<nav>
+<a href="index.html" class="brand">Context Reviewer</a>
+<a href="index.html"{a("home")}>Home</a>
+<a href="report.html"{a("report")}>Report</a>
+<div class="dropdown">
+    <a href="#"{topics_toggle}>Topics ▾</a>
+    <div class="dropdown-content">
+        <a href="topics/israel.html">Israel / Palestine</a>
+        <a href="topics/race.html">Race & Identity</a>
+        <a href="topics/religion.html">Religion</a>
+    </div>
+</div>
+<a href="contradictions.html"{a("contradictions")}>Contradictions</a>
+<a href="conclusion.html"{a("conclusion")}>Conclusion</a>
+<a href="signals.html"{a("signals")}>Signals</a>
+</nav>"""
 
 
-NAV_BLOCK_RE = re.compile(r"<nav>\s*.*?\s*</nav>", re.DOTALL)
+def patch_html(html: str, active: str, topics_active: bool = False) -> str:
+    # Find the nav block with indentation.
+    matches = list(NAV_BLOCK_RE.finditer(html))
+    if len(matches) != 1:
+        fail(f"expected exactly 1 <nav>...</nav> block, found {len(matches)}")
+
+    m = matches[0]
+    indent = m.group("indent")
+
+    nav = build_nav(active=active, topics_active=topics_active)
+    nav_indented = _indent_block(nav, indent)
+
+    # Replace exactly the matched block (no extra blank lines inserted).
+    patched = html[: m.start()] + nav_indented + html[m.end() :]
+    return patched
 
 
 def patch_file(path: Path, active: str, topics_active: bool = False) -> None:
     html = path.read_text(encoding="utf-8")
-
-    matches = list(NAV_BLOCK_RE.finditer(html))
-    if len(matches) != 1:
-        raise SystemExit(
-            f"[FAIL] {path}: expected exactly 1 <nav>...</nav> block, found {len(matches)}"
-        )
-
-    nav = build_nav(active=active, topics_active=topics_active)
-    patched = NAV_BLOCK_RE.sub(nav, html)
+    patched = patch_html(html, active=active, topics_active=topics_active)
 
     if patched == html:
         print(f"[OK] {path}: nav already canonical")
@@ -74,12 +89,11 @@ def patch_file(path: Path, active: str, topics_active: bool = False) -> None:
 
 
 def main() -> None:
-    # Minimal scope: only patch the static top-level pages.
-    targets: List[tuple[str, str]] = [
+    targets: List[Tuple[str, str]] = [
         ("docs/index.html", "home"),
         ("docs/report.html", "report"),
         ("docs/contradictions.html", "contradictions"),
-        # Optional (uncomment once you want full unification):
+        # If you want global nav normalized here too, uncomment:
         # ("docs/conclusion.html", "conclusion"),
         # ("docs/signals.html", "signals"),
     ]
@@ -87,7 +101,7 @@ def main() -> None:
     for file_path, active in targets:
         p = Path(file_path)
         if not p.exists():
-            raise SystemExit(f"[FAIL] missing file: {file_path}")
+            fail(f"missing file: {file_path}")
         patch_file(p, active=active, topics_active=False)
 
     print("[OK] patch_global_nav complete")

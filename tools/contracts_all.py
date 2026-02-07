@@ -26,3 +26,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+print("[RUN] tools/contracts_nav_idempotent.py")
+r = subprocess.run([sys.executable, "tools/contracts_nav_idempotent.py"])
+if r.returncode != 0:
+    raise SystemExit(r.returncode)
