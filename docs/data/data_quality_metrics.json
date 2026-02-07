@@ -2,60 +2,61 @@
   "completeness": {
     "fields": {
       "captured_at": {
-        "nonnull_count": 0,
-        "nonnull_rate": 0.0
+        "nonnull_count": 512,
+        "nonnull_rate": 1.0
       },
       "parent_author_type": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       },
       "parent_context": {
         "nonnull_count": 451,
-        "nonnull_rate": 1.0
+        "nonnull_rate": 0.8809
       },
       "sentiment_compound": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       },
       "source_index": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       },
       "thread_permalink": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       },
       "thread_primary_topic": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       },
       "timestamp_parsed": {
-        "nonnull_count": 0,
-        "nonnull_rate": 0.0
+        "nonnull_count": 512,
+        "nonnull_rate": 1.0
       },
       "topics": {
-        "nonnull_count": 451,
+        "nonnull_count": 512,
         "nonnull_rate": 1.0
       }
     }
   },
   "counts": {
     "item_type_counts": {
-      "comment": 451
+      "comment": 451,
+      "post": 61
     },
     "parent_author_type_counts": {
       "other": 294,
-      "self": 157
+      "self": 218
     },
-    "thread_primary_topic_nonnull_count": 451
+    "thread_primary_topic_nonnull_count": 512
   },
   "dataset": {
-    "dataset_fingerprint": "sha256:3d777de72157a992a95e37329813d0a9e0fab3701cdc25c0656c1f58334c3078",
-    "date_max": null,
-    "date_min": null,
+    "dataset_fingerprint": "sha256:c1bfd766ce62b382f8a852bb4db63f66da53aac5bb93bb9088d45a7470b1c9ce",
+    "date_max": "2026-02-07T01:20:51+00:00",
+    "date_min": "2026-02-06T16:28:35",
     "input_path": "fb_extract_out/sean_context_enriched.jsonl",
-    "record_count": 451,
-    "timestamp_nonnull_count": 0,
+    "record_count": 512,
+    "timestamp_nonnull_count": 512,
     "timestamp_source": "timestamp_parsed|captured_at"
   },
   "definitions": {
@@ -72,70 +73,70 @@
       "equal_rate": 1.0
     },
     "source_index": {
-      "nonnull_count": 451,
+      "nonnull_count": 512,
       "unique_count": 451,
-      "unique_rate": 1.0
+      "unique_rate": 0.8809
     }
   },
   "schema_version": "data_quality_metrics-0.1",
   "sentiment": {
-    "mean_compound": -0.0035,
+    "mean_compound": -0.0244,
     "median_compound": 0.0,
-    "sentiment_compound_nonnull_count": 451,
+    "sentiment_compound_nonnull_count": 512,
     "sentiment_compound_nonnull_rate": 1.0,
     "sentiment_compound_out_of_range_count": 0
   },
   "topics": {
     "topic_counts_top10": [
       {
-        "count": 151,
+        "count": 179,
         "topic": "questions_curiosity"
       },
       {
-        "count": 87,
-        "topic": "uncategorized"
-      },
-      {
-        "count": 86,
-        "topic": "religion_morality"
-      },
-      {
-        "count": 78,
+        "count": 96,
         "topic": "agreement_reactions"
       },
       {
-        "count": 55,
-        "topic": "juvenile_banter"
+        "count": 95,
+        "topic": "religion_morality"
       },
       {
-        "count": 51,
+        "count": 88,
+        "topic": "uncategorized"
+      },
+      {
+        "count": 65,
         "topic": "relationships_gender"
       },
       {
-        "count": 34,
+        "count": 56,
+        "topic": "juvenile_banter"
+      },
+      {
+        "count": 41,
         "topic": "meta_social_media"
       },
       {
-        "count": 28,
+        "count": 34,
         "topic": "race_ethnicity"
       },
       {
-        "count": 28,
+        "count": 33,
         "topic": "personal_life"
       },
       {
-        "count": 24,
+        "count": 30,
         "topic": "sex_offense_minors"
       }
     ],
-    "topics_nonempty_count": 451,
+    "topics_nonempty_count": 512,
     "topics_nonempty_rate": 1.0,
     "topics_per_item": {
       "max": 8,
-      "mean": 1.7627,
+      "mean": 1.8809,
       "median": 1.0,
       "min": 1
     },
-    "topics_unique_vocab_size": 27
+    "topics_unique_vocab_size": 28
   }
 }

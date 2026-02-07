@@ -15,7 +15,7 @@ from __future__ import annotations
 import csv
 import json
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -37,11 +37,23 @@ MISSING_TIMESTAMP_SENTINEL = "9999-12-31T23:59:59Z"
 def parse_iso(dt: Optional[str]) -> Optional[datetime]:
     if not dt or not isinstance(dt, str):
         return None
+
+    s = dt.strip()
+    if s.endswith("Z"):
+        s = s[:-1] + "+00:00"
+
     try:
-        return datetime.fromisoformat(dt)
+        d = datetime.fromisoformat(s)
     except Exception:
         return None
 
+    # Normalize: always offset-aware UTC
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=timezone.utc)
+    else:
+        d = d.astimezone(timezone.utc)
+
+    return d
 
 def load_jsonl(path: Path) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
@@ -90,16 +102,23 @@ def main() -> None:
         posts_rows = load_jsonl(SRC_POSTS)
         # Assign item_type and source_index if missing
         for idx, r in enumerate(posts_rows):
-            if "item_type" not in r:
+            # Treat None as missing (adapter may emit nulls)
+            if r.get("item_type") is None:
                 r["item_type"] = "post"
-            if "source_index" not in r:
+            if r.get("source_index") is None:
                 r["source_index"] = idx
     
     # --- Load comments ---
     comments_rows: List[Dict[str, Any]] = []
     if SRC_COMMENTS.exists():
         comments_rows = load_jsonl(SRC_COMMENTS)
-        # Comments already have item_type and source_index from adapter
+        # Backfill item_type and source_index deterministically in case adapter
+        # emitted nulls or omitted fields.
+        for idx, r in enumerate(comments_rows):
+            if r.get("item_type") is None:
+                r["item_type"] = "comment"
+            if r.get("source_index") is None:
+                r["source_index"] = idx
     
     # --- Merge ---
     all_rows = posts_rows + comments_rows
@@ -129,6 +148,9 @@ def main() -> None:
         enriched.append({
             "permalink": r.get("permalink") or "",
             "author": r.get("author") or "",
+            "item_type": r.get("item_type") or "",
+            "source_index": r.get("source_index"),
+            "parent_context": r.get("parent_context") or "",
             "timestamp_raw": r.get("timestamp_raw") or "",
             "timestamp_parsed": r.get("timestamp_parsed") or "",
             "timestamp_kind": r.get("timestamp_kind") or "",
@@ -225,3 +247,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+
+

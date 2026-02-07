@@ -276,6 +276,7 @@ def main() -> None:
 
         row = {
             "i": i,
+            "timeline_i": i,
             "item_type": p.get("item_type", "post"),
             "time": time_key,
             "timestamp_raw": raw_ts,
@@ -295,11 +296,11 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     with OUT_TOPICS_CSV.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["i", "item_type", "time", "timestamp_raw", "permalink", "topics", "body_len", 
+        w.writerow(["i", "timeline_i", "item_type", "time", "timestamp_raw", "permalink", "topics", "body_len", 
                     "sentiment_compound", "sentiment_pos", "sentiment_neg", "sentiment_neu", "preview"])
         for r in rows:
             w.writerow([
-                r["i"], r["item_type"], r["time"], r["timestamp_raw"], r["permalink"], r["topics"], r["body_len"],
+                r["i"], r["timeline_i"], r["item_type"], r["time"], r["timestamp_raw"], r["permalink"], r["topics"], r["body_len"],
                 round(r["sentiment_compound"], 3), round(r["sentiment_pos"], 3), 
                 round(r["sentiment_neg"], 3), round(r["sentiment_neu"], 3),
                 r["preview"]

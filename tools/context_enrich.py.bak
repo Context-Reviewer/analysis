@@ -9,7 +9,7 @@ Governance:
 - Do NOT trust sean_topics.csv item_type (it may be noisy). Determine type by join target.
 - Join rules are explicit and fail loud if ambiguous.
 - sean_topics.csv 'i' is strictly 1-based row numbering. 'source_index' in timeline is 0-based.
-- Join key: timeline_i (1-based index into sean_timeline.json at generation time).
+- Mapping: source_index = i - 1
 
 Inputs:
 - fb_extract_out/sean_timeline.json              (merged posts+comments; posts have permalink, comments have source_index)
@@ -85,8 +85,7 @@ def sort_key(rec: Dict[str, Any]) -> Tuple[str, str, int, str]:
     # Deterministic: timestamp_parsed, then captured_at, then sentinel
     t = rec.get("timestamp_parsed") or rec.get("captured_at") or "9999-12-31T23:59:59Z"
     thread = rec.get("thread_permalink") or rec.get("permalink") or ""
-    raw_si = rec.get("source_index")
-    si = int(raw_si) if raw_si is not None else -1
+    si = int(rec.get("source_index", -1))
     kind = rec.get("joined_item_type") or ""
     return (t, thread, si, kind)
 
@@ -101,11 +100,15 @@ def main() -> None:
         fail(f"Expected {TIMELINE_JSON} to be a JSON list, got: {type(timeline)}")
 
     comments_by_source_index: Dict[int, Dict[str, Any]] = {}
+    posts_by_permalink: Dict[str, Dict[str, Any]] = {}
+
     for item in timeline:
         if not isinstance(item, dict):
             continue
 
         si = item.get("source_index")
+        pl = item.get("permalink")
+
         # Comment index (unique)
         if item.get("item_type") == "comment" or (si is not None and item.get("item_type") != "post"):
             if si is None:
@@ -115,18 +118,22 @@ def main() -> None:
                 fail(f"Ambiguous timeline comment source_index={k}")
             comments_by_source_index[k] = item
             continue
+
+        # Post index (unique)
+        if pl:
+            k = str(pl)
+            if k in posts_by_permalink and posts_by_permalink[k] is not item:
+                fail(f"Ambiguous timeline post permalink={k}")
+            posts_by_permalink[k] = item
+
     # --- Load Sean-authored root posts (for thread ownership classification) ---
     sean_posts = load_jsonl(POSTS_SEAN_JSONL)
-    root_posts_by_permalink: Dict[str, Dict[str, Any]] = {}
     sean_post_permalinks = set()
     for r in sean_posts:
         pl = r.get("permalink")
         if pl:
-            k = str(pl)
-            if k in root_posts_by_permalink and root_posts_by_permalink[k] is not r:
-                fail(f"Ambiguous root post permalink in posts_normalized: permalink={k}")
-            root_posts_by_permalink[k] = r
-            sean_post_permalinks.add(k)
+            sean_post_permalinks.add(str(pl))
+
     # --- Load topics CSV ---
     if not TOPICS_CSV.exists():
         fail(f"Missing required file: {TOPICS_CSV}")
@@ -134,7 +141,7 @@ def main() -> None:
     topic_rows: List[Dict[str, Any]] = []
     with TOPICS_CSV.open("r", encoding="utf-8", newline="") as f:
         rdr = csv.DictReader(f)
-        required = {"i", "timeline_i", "permalink", "topics"}
+        required = {"i", "permalink", "topics"}
         missing_cols = required - set(rdr.fieldnames or [])
         if missing_cols:
             fail(f"{TOPICS_CSV} missing required columns: {sorted(missing_cols)}")
@@ -167,7 +174,7 @@ def main() -> None:
         thread_topics[pl] = sorted(set(existing).union(topics))
 
     enriched: List[Dict[str, Any]] = []
-    join_mode_counts = {"timeline_i": 0}
+    join_mode_counts = {"comment_i_to_source_index": 0, "post_permalink": 0}
     missing: List[str] = []
 
     for row in topic_rows:
@@ -178,29 +185,28 @@ def main() -> None:
             continue
 
         i_val = int(row["i"]) # Validated above
-        timeline_i = int(row["timeline_i"]) # Deterministic join key
-
         topics_list = parse_topics_field(row.get("topics") or "")
         thread_primary_topic = (thread_topics.get(pl) or [None])[0]
 
         # Join Logic:
-        # Deterministic join: topics.csv i is a 1-based index into the timeline.
-        if not (1 <= timeline_i <= len(timeline)):
-            fail(f"topics.csv i out of range: i={i_val} timeline_len={len(timeline)}")
+        # 1. Try comment join by source_index (i - 1)
+        si_key = i_val - 1
+        tl_item = comments_by_source_index.get(si_key)
+        joined_item_type = None
 
-        tl_item = timeline[timeline_i - 1]
-        tl_pl = (tl_item.get("permalink") or "").strip()
-        if tl_pl != pl:
-            fail(
-                f"topics.csv row i does not match timeline permalink: "
-                f"i={i_val} topics_permalink={pl} timeline_permalink={tl_pl}"
-            )
-
-        joined_item_type = (tl_item.get("item_type") or "").strip()
-        if joined_item_type not in ("post", "comment"):
-            fail(f"Timeline item missing/invalid item_type at timeline_i={timeline_i}: item_type={joined_item_type!r}")
-
-        join_mode_counts["timeline_i"] = join_mode_counts.get("timeline_i", 0) + 1
+        if tl_item:
+            joined_item_type = "comment"
+            join_mode_counts["comment_i_to_source_index"] += 1
+        else:
+            # 2. Try post join by permalink
+            tl_item = posts_by_permalink.get(pl)
+            if tl_item:
+                joined_item_type = "post"
+                join_mode_counts["post_permalink"] += 1
+        
+        if not tl_item:
+            missing.append(f"i={i_val} permalink={pl}")
+            continue
 
         # Use existing source_index from timeline if present
         source_index_out = tl_item.get("source_index")
@@ -263,15 +269,15 @@ def main() -> None:
 
     print(f"Loading timeline: {TIMELINE_JSON}")
     print(f"  Timeline comments indexed: {len(comments_by_source_index)}")
-    print(f"Loading root posts: {POSTS_SEAN_JSONL}")
-    print(f"  Root posts indexed:        {len(root_posts_by_permalink)}")
+    print(f"  Timeline posts indexed:    {len(posts_by_permalink)}")
     print(f"Loading topics: {TOPICS_CSV}")
     print(f"  Topics rows: {len(topic_rows)}")
     print(f"Writing {len(enriched)} enriched items to {OUT_JSONL}")
     print("")
     print("Context Enrichment Summary:")
     print(f"  Total enriched rows: {total}")
-    print(f"  Joined via timeline i:              {join_mode_counts['timeline_i']}")
+    print(f"  Joined via comment i->source_index: {join_mode_counts['comment_i_to_source_index']}")
+    print(f"  Joined via post permalink:          {join_mode_counts['post_permalink']}")
     print(f"  Comments: {joined_comments} | Posts: {joined_posts}")
     print(f"  Comment replies to Self (thread is Sean post):  {replies_to_self}")
     print(f"  Comment replies to Others (thread not Sean post): {replies_to_others}")
