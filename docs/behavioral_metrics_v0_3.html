@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Behavioral Metrics v0.3 (Raw)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; background: #fafafa; }
+    pre { background: #fff; padding: 1rem; border: 1px solid #ddd; overflow-x: auto; font-size: 0.9rem; }
+    .meta { margin-bottom: 1rem; color: #444; }
+  </style>
+</head>
+<body>
+  <h1>Behavioral Metrics v0.3 (Raw Artifact)</h1>
+  <div class="meta">
+    <div><strong>Source:</strong> docs/data/behavioral_metrics_v0_3.json</div>
+    <div><strong>Purpose:</strong> Deterministic, measurement-only metrics</div>
+  </div>
+  <pre id="output">Loading…</pre>
+
+  <script>
+    fetch('./data/behavioral_metrics_v0_3.json')
+      .then(r => r.json())
+      .then(j => {
+        document.getElementById('output').textContent = JSON.stringify(j, null, 2);
+      })
+      .catch(e => {
+        document.getElementById('output').textContent = 'Failed to load metrics: ' + e;
+      });
+  </script>
+</body>
+</html>
