@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "run_manifest-1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id","subject_label","generated_at","inputs","counts","fingerprints","artifacts"],
+  "properties": {
+    "run_id": { "type": "string", "minLength": 3 },
+    "subject_label": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "minLength": 10 },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posts_path","comments_path","posts_sha256","comments_sha256"],
+      "properties": {
+        "posts_path": { "type": "string" },
+        "comments_path": { "type": "string" },
+        "posts_sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+        "comments_sha256": { "type": "string", "minLength": 64, "maxLength": 64 }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posts","comments","timeline_rows"],
+      "properties": {
+        "posts": { "type": "integer", "minimum": 0 },
+        "comments": { "type": "integer", "minimum": 0 },
+        "timeline_rows": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "fingerprints": { "type": "object", "additionalProperties": true },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_dir","timeline_json","topics_csv","context_enriched_jsonl","signals_dir","docs_dir_snapshot"],
+      "properties": {
+        "run_dir": { "type": "string" },
+        "timeline_json": { "type": "string" },
+        "topics_csv": { "type": "string" },
+        "context_enriched_jsonl": { "type": "string" },
+        "signals_dir": { "type": "string" },
+        "docs_dir_snapshot": { "type": "string" }
+      }
+    }
+  }
+}

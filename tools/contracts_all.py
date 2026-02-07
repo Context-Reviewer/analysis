@@ -31,3 +31,8 @@ print("[RUN] tools/contracts_nav_idempotent.py")
 r = subprocess.run([sys.executable, "tools/contracts_nav_idempotent.py"])
 if r.returncode != 0:
     raise SystemExit(r.returncode)
+
+print("[RUN] tools/contracts_run_manifest.py")
+r = subprocess.run([sys.executable, "tools/contracts_run_manifest.py"])
+if r.returncode != 0:
+    raise SystemExit(r.returncode)
