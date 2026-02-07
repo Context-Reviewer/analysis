@@ -81,6 +81,16 @@ def main() -> None:
     if not comments_src.exists():
         fail(f"comments not found: {comments_src}")
 
+    # If the provided inputs are already the canonical files, do NOT back them up or remap.
+    # This avoids a self-copy edge case on Windows and preserves deterministic behavior.
+    canon_posts_abs = CANON_POSTS.resolve()
+    canon_comments_abs = CANON_COMMENTS.resolve()
+    posts_abs = posts_src.resolve()
+    comments_abs = comments_src.resolve()
+
+    posts_is_canon = (posts_abs == canon_posts_abs)
+    comments_is_canon = (comments_abs == canon_comments_abs)
+
     RUNS.mkdir(parents=True, exist_ok=True)
     run_dir = RUNS / run_id
     (run_dir / "artifacts").mkdir(parents=True, exist_ok=True)
@@ -89,14 +99,21 @@ def main() -> None:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     backup_dir = run_dir / "_canon_backup" / stamp
 
-    b_posts = backup_if_exists(CANON_POSTS, backup_dir)
-    b_comments = backup_if_exists(CANON_COMMENTS, backup_dir)
+    b_posts = None if posts_is_canon else backup_if_exists(CANON_POSTS, backup_dir)
+    b_comments = None if comments_is_canon else backup_if_exists(CANON_COMMENTS, backup_dir)
 
     try:
-        shutil.copy2(posts_src, CANON_POSTS)
-        shutil.copy2(comments_src, CANON_COMMENTS)
-        print(f"[OK] mapped posts -> {CANON_POSTS}")
-        print(f"[OK] mapped comments -> {CANON_COMMENTS}")
+        if not posts_is_canon:
+            shutil.copy2(posts_src, CANON_POSTS)
+            print(f"[OK] mapped posts -> {CANON_POSTS}")
+        else:
+            print(f"[OK] posts already canonical: {CANON_POSTS}")
+
+        if not comments_is_canon:
+            shutil.copy2(comments_src, CANON_COMMENTS)
+            print(f"[OK] mapped comments -> {CANON_COMMENTS}")
+        else:
+            print(f"[OK] comments already canonical: {CANON_COMMENTS}")
 
         run([sys.executable, "pipeline/step2_build_timeline.py"])
         run([sys.executable, "pipeline/step3_analyze_reason.py"])
