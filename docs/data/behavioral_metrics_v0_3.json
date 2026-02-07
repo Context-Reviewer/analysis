@@ -1,0 +1,202 @@
+{
+  "dataset": {
+    "dataset_fingerprint": "sha256:3d777de72157a992a95e37329813d0a9e0fab3701cdc25c0656c1f58334c3078",
+    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "record_count": 451
+  },
+  "definitions": {
+    "delta_mean_compound": "mean_compound_self - mean_compound_other (if both defined)",
+    "delta_negative_rate": "negative_rate_self - negative_rate_other (if both defined)",
+    "negative_comment": "sentiment_compound <= -0.05",
+    "negative_compound_threshold": -0.05,
+    "topic_presence": "topic appears in item.topics list"
+  },
+  "negativity_concentration": {
+    "negative_any_top10_count": 146,
+    "negative_any_top10_rate": 0.9068,
+    "negative_any_top5_count": 114,
+    "negative_any_top5_rate": 0.7081,
+    "negative_total": 161,
+    "top_topics_by_negative_count": [
+      {
+        "negative_count": 61,
+        "topic": "questions_curiosity"
+      },
+      {
+        "negative_count": 43,
+        "topic": "religion_morality"
+      },
+      {
+        "negative_count": 36,
+        "topic": "agreement_reactions"
+      },
+      {
+        "negative_count": 24,
+        "topic": "juvenile_banter"
+      },
+      {
+        "negative_count": 21,
+        "topic": "meta_social_media"
+      },
+      {
+        "negative_count": 19,
+        "topic": "general_rage_mockery"
+      },
+      {
+        "negative_count": 18,
+        "topic": "relationships_gender"
+      },
+      {
+        "negative_count": 18,
+        "topic": "uncategorized"
+      },
+      {
+        "negative_count": 14,
+        "topic": "crude_sexual"
+      },
+      {
+        "negative_count": 12,
+        "topic": "free_speech"
+      }
+    ]
+  },
+  "rankings": {
+    "topics_ranked_by_abs_delta_mean_compound": [
+      "sex_offense_minors",
+      "religion_morality",
+      "race_ethnicity",
+      "meta_social_media",
+      "personal_life",
+      "juvenile_banter",
+      "uncategorized",
+      "relationships_gender",
+      "questions_curiosity",
+      "agreement_reactions"
+    ],
+    "topics_ranked_by_abs_delta_negative_rate": [
+      "sex_offense_minors",
+      "religion_morality",
+      "personal_life",
+      "race_ethnicity",
+      "uncategorized",
+      "juvenile_banter",
+      "meta_social_media",
+      "relationships_gender",
+      "questions_curiosity",
+      "agreement_reactions"
+    ]
+  },
+  "schema_version": "behavioral_metrics-0.3",
+  "topic_self_other_deltas_top10": {
+    "agreement_reactions": {
+      "count_other": 50,
+      "count_self": 28,
+      "count_total": 78,
+      "delta_mean_compound": -0.0036,
+      "delta_negative_rate": 0.0043,
+      "mean_compound_other": -0.0036,
+      "mean_compound_self": -0.0072,
+      "negative_rate_other": 0.46,
+      "negative_rate_self": 0.4643
+    },
+    "juvenile_banter": {
+      "count_other": 33,
+      "count_self": 22,
+      "count_total": 55,
+      "delta_mean_compound": 0.2046,
+      "delta_negative_rate": -0.197,
+      "mean_compound_other": -0.0938,
+      "mean_compound_self": 0.1108,
+      "negative_rate_other": 0.5152,
+      "negative_rate_self": 0.3182
+    },
+    "meta_social_media": {
+      "count_other": 25,
+      "count_self": 9,
+      "count_total": 34,
+      "delta_mean_compound": 0.2304,
+      "delta_negative_rate": -0.0844,
+      "mean_compound_other": -0.2654,
+      "mean_compound_self": -0.035,
+      "negative_rate_other": 0.64,
+      "negative_rate_self": 0.5556
+    },
+    "personal_life": {
+      "count_other": 17,
+      "count_self": 11,
+      "count_total": 28,
+      "delta_mean_compound": 0.2133,
+      "delta_negative_rate": -0.3209,
+      "mean_compound_other": -0.0407,
+      "mean_compound_self": 0.1726,
+      "negative_rate_other": 0.4118,
+      "negative_rate_self": 0.0909
+    },
+    "questions_curiosity": {
+      "count_other": 102,
+      "count_self": 49,
+      "count_total": 151,
+      "delta_mean_compound": -0.0127,
+      "delta_negative_rate": -0.024,
+      "mean_compound_other": -0.0439,
+      "mean_compound_self": -0.0566,
+      "negative_rate_other": 0.4118,
+      "negative_rate_self": 0.3878
+    },
+    "race_ethnicity": {
+      "count_other": 7,
+      "count_self": 21,
+      "count_total": 28,
+      "delta_mean_compound": -0.3693,
+      "delta_negative_rate": 0.2857,
+      "mean_compound_other": 0.36,
+      "mean_compound_self": -0.0093,
+      "negative_rate_other": 0.0,
+      "negative_rate_self": 0.2857
+    },
+    "relationships_gender": {
+      "count_other": 24,
+      "count_self": 27,
+      "count_total": 51,
+      "delta_mean_compound": -0.1538,
+      "delta_negative_rate": 0.0371,
+      "mean_compound_other": 0.1156,
+      "mean_compound_self": -0.0382,
+      "negative_rate_other": 0.3333,
+      "negative_rate_self": 0.3704
+    },
+    "religion_morality": {
+      "count_other": 70,
+      "count_self": 16,
+      "count_total": 86,
+      "delta_mean_compound": -0.5082,
+      "delta_negative_rate": 0.3839,
+      "mean_compound_other": 0.0086,
+      "mean_compound_self": -0.4996,
+      "negative_rate_other": 0.4286,
+      "negative_rate_self": 0.8125
+    },
+    "sex_offense_minors": {
+      "count_other": 15,
+      "count_self": 9,
+      "count_total": 24,
+      "delta_mean_compound": -0.7459,
+      "delta_negative_rate": 0.5111,
+      "mean_compound_other": 0.2207,
+      "mean_compound_self": -0.5252,
+      "negative_rate_other": 0.2667,
+      "negative_rate_self": 0.7778
+    },
+    "uncategorized": {
+      "count_other": 67,
+      "count_self": 20,
+      "count_total": 87,
+      "delta_mean_compound": -0.1788,
+      "delta_negative_rate": 0.2507,
+      "mean_compound_other": 0.1093,
+      "mean_compound_self": -0.0695,
+      "negative_rate_other": 0.1493,
+      "negative_rate_self": 0.4
+    }
+  }
+}
