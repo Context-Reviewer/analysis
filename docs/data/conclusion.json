@@ -1,0 +1,138 @@
+{
+  "rows_total": 512,
+  "comments_total": 451,
+  "hostile_threshold": -0.6,
+  "hostile_rate_pct": 11.5,
+  "top_primary_topics": [
+    [
+      "agreement_reactions",
+      234
+    ],
+    [
+      "ableist_insults",
+      186
+    ],
+    [
+      "juvenile_banter",
+      20
+    ],
+    [
+      "crude_sexual",
+      6
+    ],
+    [
+      "geopolitics",
+      3
+    ],
+    [
+      "free_speech",
+      1
+    ],
+    [
+      "meta_social_media",
+      1
+    ]
+  ],
+  "reply_to_self_count": 157,
+  "reply_to_other_count": 294,
+  "data_quality": {
+    "missing_any_time": null,
+    "time_coverage_first": null,
+    "time_coverage_last": null
+  },
+  "examples": {
+    "hostile": [
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": -0.973,
+        "excerpt": "Alvin Adorno wait… “I do my best to not go out and crusade and fuck shit up.” Are you saying you restrain yourself from killing other christians, raping women and children and killing anyone that’s not a Christian? Ever heard of the sack of…"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "primary_topic": "ableist_insults",
+        "sentiment_compound": -0.97,
+        "excerpt": "Blake Greer\n so the cultural norm in the time period was to marry on average 12 bc that’s when that start having there period and could have children and that the only basis on her age so we but the Bible also speaks about the emotional and…"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "primary_topic": "ableist_insults",
+        "sentiment_compound": -0.965,
+        "excerpt": "Blake Greer\n I see what your trying to do there and there referring to the general war efforts not the men who took part in the spoils of war weather it be looting or rapeing or any or the other stuff that they did and those men were being…"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": -0.959,
+        "excerpt": "Brandon Miller\n because he existed before the covenant with Abraham, and even longer before the grace of Jesus. At that point you would be judged upon death and weighed against your sins. Cain committed murder in wrath and envy, which conde…"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "primary_topic": "ableist_insults",
+        "sentiment_compound": -0.956,
+        "excerpt": "MyBeautifulDolphin\n can you stop posting this type of shit man. This shit is disgusting regardless of who's doing. It's infuriating that rather then just condemning the shit ppl in the comments try defend it by saying the other side does it…"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": -0.942,
+        "excerpt": "Zachary Jordan\n Such a dumb thing to care about.\nI remember when Trump was campaigning and all the democrat worshippers I used to talk to were shit-posting on FB about how JD’s kids are mixed. It was hilariously ironic how hypocritical it w…"
+      }
+    ],
+    "top_primary_topic": "agreement_reactions",
+    "top_primary_topic_examples": [
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": 0.649,
+        "excerpt": "Robert Atchison well I’m mixed race so obviously I would care."
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": -0.557,
+        "excerpt": "Robert Atchison\n I am too and personally don’t give a shit about someone’s race\n\n\n\ned\n4"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": 0.273,
+        "excerpt": "Robert Atchison well that’s your opinion as you stated “personally”"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": 0.34,
+        "excerpt": "Robert Atchison\n okay… your post asked for peoples opinion. I’m giving it \n.\n\n\n\n4"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": 0.586,
+        "excerpt": "Robert Atchison okay? And I’ll move on. Fairly easy"
+      },
+      {
+        "timeline_i": null,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+        "primary_topic": "agreement_reactions",
+        "sentiment_compound": 0.0,
+        "excerpt": "Robert Atchison\n\nTenor"
+      }
+    ]
+  },
+  "fingerprints": {
+    "behavioral_metrics_fingerprint": null,
+    "behavioral_metrics_v0_3_fingerprint": null
+  }
+}

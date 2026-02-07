@@ -174,6 +174,7 @@ def render_page(cat: str, items: list[dict]) -> str:
         </div>
       </div>
       <a href="../contradictions.html">Contradictions</a>
+      <a href="../conclusion.html">Conclusion</a>
     </nav>
   </header>
 
