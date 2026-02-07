@@ -1,0 +1,671 @@
+{
+  "schema_version": "behavioral_metrics-0.1",
+  "dataset": {
+    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "record_count": 451,
+    "date_min": null,
+    "date_max": null,
+    "timestamp_source": "timestamp_parsed|captured_at",
+    "timestamp_nonnull_count": 0,
+    "dataset_fingerprint": "sha256:3d777de72157a992a95e37329813d0a9e0fab3701cdc25c0656c1f58334c3078"
+  },
+  "definitions": {
+    "negative_compound_threshold": -0.05,
+    "negative_rate": "share of items with sentiment_compound <= negative_compound_threshold",
+    "reply_to_self": "parent_author_type == 'self'",
+    "reply_to_other": "parent_author_type == 'other'",
+    "topic_presence": "topic appears in item.topics list"
+  },
+  "counts": {
+    "items_total": 451,
+    "comments_total": 451,
+    "posts_total": 0,
+    "reply_to_self": 157,
+    "reply_to_other": 294
+  },
+  "sentiment": {
+    "overall": {
+      "mean_compound": -0.0035,
+      "median_compound": 0.0,
+      "negative_rate": 0.357
+    },
+    "by_parent_author_type": {
+      "self": {
+        "count": 157,
+        "mean_compound": -0.0344,
+        "negative_rate": 0.3758
+      },
+      "other": {
+        "count": 294,
+        "mean_compound": 0.013,
+        "negative_rate": 0.3469
+      }
+    }
+  },
+  "topics": {
+    "topic_counts": {
+      "ableist_insults": 9,
+      "agreement_reactions": 78,
+      "crime_drugs": 2,
+      "crude_sexual": 18,
+      "dei_woke": 4,
+      "free_speech": 19,
+      "general_rage_mockery": 20,
+      "geopolitics": 3,
+      "history_politics": 16,
+      "immigration_ice": 2,
+      "investing_finance": 12,
+      "juvenile_banter": 55,
+      "media_shares": 7,
+      "meta_social_media": 34,
+      "military_veterans": 18,
+      "money_debt_work": 17,
+      "personal_bragging": 1,
+      "personal_life": 28,
+      "politics_culturewar": 18,
+      "questions_curiosity": 151,
+      "race_ethnicity": 28,
+      "relationships_gender": 51,
+      "religion_morality": 86,
+      "sex_offense_minors": 24,
+      "substance_use": 5,
+      "uncategorized": 87,
+      "violence_threats": 2
+    },
+    "topic_share": {
+      "ableist_insults": 0.02,
+      "agreement_reactions": 0.1729,
+      "crime_drugs": 0.0044,
+      "crude_sexual": 0.0399,
+      "dei_woke": 0.0089,
+      "free_speech": 0.0421,
+      "general_rage_mockery": 0.0443,
+      "geopolitics": 0.0067,
+      "history_politics": 0.0355,
+      "immigration_ice": 0.0044,
+      "investing_finance": 0.0266,
+      "juvenile_banter": 0.122,
+      "media_shares": 0.0155,
+      "meta_social_media": 0.0754,
+      "military_veterans": 0.0399,
+      "money_debt_work": 0.0377,
+      "personal_bragging": 0.0022,
+      "personal_life": 0.0621,
+      "politics_culturewar": 0.0399,
+      "questions_curiosity": 0.3348,
+      "race_ethnicity": 0.0621,
+      "relationships_gender": 0.1131,
+      "religion_morality": 0.1907,
+      "sex_offense_minors": 0.0532,
+      "substance_use": 0.0111,
+      "uncategorized": 0.1929,
+      "violence_threats": 0.0044
+    },
+    "by_topic": {
+      "ableist_insults": {
+        "count": 9,
+        "mean_compound": -0.1684,
+        "negative_rate": 0.5556,
+        "reply_to_self_count": 4,
+        "reply_to_other_count": 5
+      },
+      "agreement_reactions": {
+        "count": 78,
+        "mean_compound": -0.0049,
+        "negative_rate": 0.4615,
+        "reply_to_self_count": 28,
+        "reply_to_other_count": 50
+      },
+      "crime_drugs": {
+        "count": 2,
+        "mean_compound": -0.2545,
+        "negative_rate": 0.5,
+        "reply_to_self_count": 1,
+        "reply_to_other_count": 1
+      },
+      "crude_sexual": {
+        "count": 18,
+        "mean_compound": -0.4043,
+        "negative_rate": 0.7778,
+        "reply_to_self_count": 12,
+        "reply_to_other_count": 6
+      },
+      "dei_woke": {
+        "count": 4,
+        "mean_compound": -0.3852,
+        "negative_rate": 0.75,
+        "reply_to_self_count": 3,
+        "reply_to_other_count": 1
+      },
+      "free_speech": {
+        "count": 19,
+        "mean_compound": -0.0921,
+        "negative_rate": 0.6316,
+        "reply_to_self_count": 9,
+        "reply_to_other_count": 10
+      },
+      "general_rage_mockery": {
+        "count": 20,
+        "mean_compound": -0.6192,
+        "negative_rate": 0.95,
+        "reply_to_self_count": 11,
+        "reply_to_other_count": 9
+      },
+      "geopolitics": {
+        "count": 3,
+        "mean_compound": 0.2003,
+        "negative_rate": 0.3333,
+        "reply_to_self_count": 1,
+        "reply_to_other_count": 2
+      },
+      "history_politics": {
+        "count": 16,
+        "mean_compound": -0.1993,
+        "negative_rate": 0.625,
+        "reply_to_self_count": 5,
+        "reply_to_other_count": 11
+      },
+      "immigration_ice": {
+        "count": 2,
+        "mean_compound": -0.407,
+        "negative_rate": 1.0,
+        "reply_to_self_count": 2,
+        "reply_to_other_count": 0
+      },
+      "investing_finance": {
+        "count": 12,
+        "mean_compound": 0.2818,
+        "negative_rate": 0.0833,
+        "reply_to_self_count": 2,
+        "reply_to_other_count": 10
+      },
+      "juvenile_banter": {
+        "count": 55,
+        "mean_compound": -0.012,
+        "negative_rate": 0.4364,
+        "reply_to_self_count": 22,
+        "reply_to_other_count": 33
+      },
+      "media_shares": {
+        "count": 7,
+        "mean_compound": -0.0756,
+        "negative_rate": 0.2857,
+        "reply_to_self_count": 2,
+        "reply_to_other_count": 5
+      },
+      "meta_social_media": {
+        "count": 34,
+        "mean_compound": -0.2044,
+        "negative_rate": 0.6176,
+        "reply_to_self_count": 9,
+        "reply_to_other_count": 25
+      },
+      "military_veterans": {
+        "count": 18,
+        "mean_compound": -0.0559,
+        "negative_rate": 0.3333,
+        "reply_to_self_count": 7,
+        "reply_to_other_count": 11
+      },
+      "money_debt_work": {
+        "count": 17,
+        "mean_compound": 0.1488,
+        "negative_rate": 0.2353,
+        "reply_to_self_count": 2,
+        "reply_to_other_count": 15
+      },
+      "personal_bragging": {
+        "count": 1,
+        "mean_compound": -0.71,
+        "negative_rate": 1.0,
+        "reply_to_self_count": 1,
+        "reply_to_other_count": 0
+      },
+      "personal_life": {
+        "count": 28,
+        "mean_compound": 0.0431,
+        "negative_rate": 0.2857,
+        "reply_to_self_count": 11,
+        "reply_to_other_count": 17
+      },
+      "politics_culturewar": {
+        "count": 18,
+        "mean_compound": -0.0621,
+        "negative_rate": 0.3333,
+        "reply_to_self_count": 8,
+        "reply_to_other_count": 10
+      },
+      "questions_curiosity": {
+        "count": 151,
+        "mean_compound": -0.048,
+        "negative_rate": 0.404,
+        "reply_to_self_count": 49,
+        "reply_to_other_count": 102
+      },
+      "race_ethnicity": {
+        "count": 28,
+        "mean_compound": 0.083,
+        "negative_rate": 0.2143,
+        "reply_to_self_count": 21,
+        "reply_to_other_count": 7
+      },
+      "relationships_gender": {
+        "count": 51,
+        "mean_compound": 0.0342,
+        "negative_rate": 0.3529,
+        "reply_to_self_count": 27,
+        "reply_to_other_count": 24
+      },
+      "religion_morality": {
+        "count": 86,
+        "mean_compound": -0.0859,
+        "negative_rate": 0.5,
+        "reply_to_self_count": 16,
+        "reply_to_other_count": 70
+      },
+      "sex_offense_minors": {
+        "count": 24,
+        "mean_compound": -0.059,
+        "negative_rate": 0.4583,
+        "reply_to_self_count": 9,
+        "reply_to_other_count": 15
+      },
+      "substance_use": {
+        "count": 5,
+        "mean_compound": -0.1842,
+        "negative_rate": 0.4,
+        "reply_to_self_count": 3,
+        "reply_to_other_count": 2
+      },
+      "uncategorized": {
+        "count": 87,
+        "mean_compound": 0.0682,
+        "negative_rate": 0.2069,
+        "reply_to_self_count": 20,
+        "reply_to_other_count": 67
+      },
+      "violence_threats": {
+        "count": 2,
+        "mean_compound": -0.5915,
+        "negative_rate": 1.0,
+        "reply_to_self_count": 0,
+        "reply_to_other_count": 2
+      }
+    }
+  },
+  "exemplars": {
+    "most_negative_overall": [
+      {
+        "source_index": 381,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.973,
+        "topics": [
+          "general_rage_mockery",
+          "history_politics",
+          "relationships_gender"
+        ],
+        "thread_primary_topic": "agreement_reactions",
+        "timestamp": null
+      },
+      {
+        "source_index": 10,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_author_type": "self",
+        "sentiment_compound": -0.97,
+        "topics": [
+          "agreement_reactions",
+          "crime_drugs",
+          "history_politics",
+          "questions_curiosity",
+          "religion_morality",
+          "sex_offense_minors"
+        ],
+        "thread_primary_topic": "ableist_insults",
+        "timestamp": null
+      },
+      {
+        "source_index": 6,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_author_type": "self",
+        "sentiment_compound": -0.965,
+        "topics": [
+          "crude_sexual",
+          "history_politics",
+          "questions_curiosity",
+          "relationships_gender",
+          "religion_morality",
+          "sex_offense_minors"
+        ],
+        "thread_primary_topic": "ableist_insults",
+        "timestamp": null
+      },
+      {
+        "source_index": 330,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.959,
+        "topics": [
+          "questions_curiosity",
+          "religion_morality"
+        ],
+        "thread_primary_topic": "agreement_reactions",
+        "timestamp": null
+      },
+      {
+        "source_index": 30,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+        "parent_author_type": "self",
+        "sentiment_compound": -0.956,
+        "topics": [
+          "agreement_reactions",
+          "general_rage_mockery",
+          "questions_curiosity",
+          "relationships_gender"
+        ],
+        "thread_primary_topic": "ableist_insults",
+        "timestamp": null
+      }
+    ],
+    "most_negative_reply_to_other": [
+      {
+        "source_index": 381,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.973,
+        "topics": [
+          "general_rage_mockery",
+          "history_politics",
+          "relationships_gender"
+        ],
+        "thread_primary_topic": "agreement_reactions",
+        "timestamp": null
+      },
+      {
+        "source_index": 330,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.959,
+        "topics": [
+          "questions_curiosity",
+          "religion_morality"
+        ],
+        "thread_primary_topic": "agreement_reactions",
+        "timestamp": null
+      },
+      {
+        "source_index": 407,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.896,
+        "topics": [
+          "juvenile_banter",
+          "meta_social_media",
+          "money_debt_work",
+          "religion_morality"
+        ],
+        "thread_primary_topic": "agreement_reactions",
+        "timestamp": null
+      },
+      {
+        "source_index": 302,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25650341774594783/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25650341774594783/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.885,
+        "topics": [
+          "agreement_reactions",
+          "questions_curiosity",
+          "religion_morality",
+          "substance_use"
+        ],
+        "thread_primary_topic": "ableist_insults",
+        "timestamp": null
+      },
+      {
+        "source_index": 205,
+        "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+        "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+        "parent_author_type": "other",
+        "sentiment_compound": -0.856,
+        "topics": [
+          "free_speech",
+          "juvenile_banter"
+        ],
+        "thread_primary_topic": "ableist_insults",
+        "timestamp": null
+      }
+    ],
+    "most_negative_by_topic": {
+      "questions_curiosity": [
+        {
+          "source_index": 10,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.97,
+          "topics": [
+            "agreement_reactions",
+            "crime_drugs",
+            "history_politics",
+            "questions_curiosity",
+            "religion_morality",
+            "sex_offense_minors"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 6,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.965,
+          "topics": [
+            "crude_sexual",
+            "history_politics",
+            "questions_curiosity",
+            "relationships_gender",
+            "religion_morality",
+            "sex_offense_minors"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 330,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.959,
+          "topics": [
+            "questions_curiosity",
+            "religion_morality"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        },
+        {
+          "source_index": 30,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.956,
+          "topics": [
+            "agreement_reactions",
+            "general_rage_mockery",
+            "questions_curiosity",
+            "relationships_gender"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 45,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.942,
+          "topics": [
+            "general_rage_mockery",
+            "politics_culturewar",
+            "questions_curiosity",
+            "race_ethnicity",
+            "relationships_gender"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        }
+      ],
+      "uncategorized": [
+        {
+          "source_index": 367,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.827,
+          "topics": [
+            "uncategorized"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        },
+        {
+          "source_index": 46,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.743,
+          "topics": [
+            "uncategorized"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        },
+        {
+          "source_index": 348,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.62,
+          "topics": [
+            "uncategorized"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        },
+        {
+          "source_index": 194,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.586,
+          "topics": [
+            "uncategorized"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 68,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.542,
+          "topics": [
+            "uncategorized"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        }
+      ],
+      "religion_morality": [
+        {
+          "source_index": 10,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.97,
+          "topics": [
+            "agreement_reactions",
+            "crime_drugs",
+            "history_politics",
+            "questions_curiosity",
+            "religion_morality",
+            "sex_offense_minors"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 6,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.965,
+          "topics": [
+            "crude_sexual",
+            "history_politics",
+            "questions_curiosity",
+            "relationships_gender",
+            "religion_morality",
+            "sex_offense_minors"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 330,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.959,
+          "topics": [
+            "questions_curiosity",
+            "religion_morality"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        },
+        {
+          "source_index": 14,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+          "parent_author_type": "self",
+          "sentiment_compound": -0.925,
+          "topics": [
+            "agreement_reactions",
+            "general_rage_mockery",
+            "race_ethnicity",
+            "religion_morality"
+          ],
+          "thread_primary_topic": "ableist_insults",
+          "timestamp": null
+        },
+        {
+          "source_index": 407,
+          "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+          "parent_context": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+          "parent_author_type": "other",
+          "sentiment_compound": -0.896,
+          "topics": [
+            "juvenile_banter",
+            "meta_social_media",
+            "money_debt_work",
+            "religion_morality"
+          ],
+          "thread_primary_topic": "agreement_reactions",
+          "timestamp": null
+        }
+      ]
+    }
+  }
+}
