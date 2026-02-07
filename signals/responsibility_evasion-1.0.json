@@ -1,0 +1,191 @@
+{
+  "signal_id": "responsibility_evasion",
+  "version": "1.0.0",
+  "title": "Responsibility Evasion (Blame Externalization Patterns)",
+  "tier": "B",
+  "description": "Flags items containing language patterns that externalize responsibility or deny accountability (e.g., 'not my fault', 'everyone is lying', 'they made me'). This is a lexical frequency signal only; it does not infer intent, character, or truthfulness.",
+
+  "epistemics": {
+    "supports": [
+      "Identifying items where responsibility-evasion phrasing appears in the dataset.",
+      "Quantifying frequency and distribution of responsibility-evasion phrasing over time."
+    ],
+    "does_not_support": [
+      "Determining whether claims are true or false.",
+      "Inferring intent, psychological traits, or character.",
+      "Assessing correctness of blame assignments or moral judgment."
+    ],
+    "failure_modes": [
+      "Quoting others or reporting events may trigger matches without endorsement.",
+      "Humor/sarcasm can trigger matches without genuine blame externalization.",
+      "Some accountability avoidance is expressed implicitly and may be missed (false negatives)."
+    ],
+    "scope_statement": "All results are limited to observable content in the collected dataset and declared surfaces for this run."
+  },
+
+  "definition": {
+    "required_input_fields": [
+      "joined_item_type",
+      "source_index",
+      "thread_permalink",
+      "body",
+      "captured_at"
+    ],
+    "unit_of_analysis": "item",
+
+    "inclusion_rules": [
+      {
+        "rule_id": "deny_fault",
+        "description": "Direct denial of responsibility (e.g., not my fault / didn't do anything).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(not my fault|ain\\x27?t my fault|i didn\\x27?t do anything|didn\\x27?t do nothin|i did nothing)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(i\\x27?m not responsible|not responsible)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      },
+      {
+        "rule_id": "everyone_else_crazy_lying",
+        "description": "Frames others as lying/crazy/unfair as a blanket explanation.",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(everyone|everybody|all of you|they all)([^A-Za-z0-9_]|$).*([^A-Za-z0-9_])(lying|liars|crazy|insane|corrupt|rigged|out to get me)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(they\\x27?re all|they are all)([^A-Za-z0-9_]|$).*([^A-Za-z0-9_])(lying|crazy|against me)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      },
+      {
+        "rule_id": "forced_or_made_me",
+        "description": "Claims being forced or made to act as a rationale.",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(they made me|you made me|forced me|had to do it|had no choice|no choice)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      },
+      {
+        "rule_id": "conditional_apology",
+        "description": "Non-accountability apology forms ('sorry you felt that way').",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(sorry you feel|sorry you felt|sorry if you feel|sorry if you felt)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ],
+
+    "exclusion_rules": [
+      {
+        "rule_id": "explicit_self_blame",
+        "description": "Exclude items with explicit self-accountability language (conservative exclusion).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(my fault|i was wrong|i\\x27?m wrong|i messed up|that\\x27?s on me|i take responsibility)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "outputs": {
+    "score_policy": {
+      "score_type": "presence",
+      "range": { "min": 0, "max": 1 },
+      "tier_constraints": { "A": "numeric", "B": "band", "C": "presence" }
+    },
+
+    "allowed_language": {
+      "allowed_phrases": [
+        "within the collected dataset",
+        "observed instances",
+        "responsibility-evasion phrasing appears",
+        "pattern appears",
+        "examples are provided"
+      ],
+      "banned_phrases": [
+        "this proves they are",
+        "narcissist",
+        "gaslighting",
+        "manipulator",
+        "they always lie"
+      ]
+    },
+
+    "metrics": [
+      {
+        "metric_id": "responsibility_evasion_count",
+        "title": "Responsibility-evasion items",
+        "type": "count",
+        "description": "Number of items matching responsibility-evasion inclusion criteria after exclusions."
+      },
+      {
+        "metric_id": "responsibility_evasion_rate_per_100",
+        "title": "Rate per 100 items",
+        "type": "rate",
+        "description": "Responsibility-evasion count normalized per 100 items in the analyzed scope."
+      },
+      {
+        "metric_id": "responsibility_evasion_over_time",
+        "title": "Over-time distribution",
+        "type": "distribution",
+        "description": "Temporal distribution of responsibility-evasion items (e.g., monthly bins)."
+      }
+    ],
+
+    "example_selection": {
+      "max_examples": 30,
+      "ordering": "time_desc",
+      "must_include_fields": [
+        "source_index",
+        "timestamp_parsed",
+        "captured_at",
+        "joined_item_type",
+        "body",
+        "thread_permalink",
+        "thread_primary_topic",
+        "sentiment_compound",
+        "rule_hits"
+      ]
+    }
+  },
+
+  "ui": {
+    "report_sections": [
+      "tier_badge",
+      "scope_statement",
+      "supports",
+      "does_not_support",
+      "failure_modes",
+      "definition_summary",
+      "metrics_table",
+      "examples_table",
+      "repro_fingerprint"
+    ],
+    "display_order": 30
+  }
+}

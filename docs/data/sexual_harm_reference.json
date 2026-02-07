@@ -1,0 +1,269 @@
+{
+  "run_id": "dev-run",
+  "signal_id": "sexual_harm_reference",
+  "signal_version": "1.0.0",
+  "tier": "B",
+  "dataset_scope": {
+    "items_analyzed": 512,
+    "time_min": "2026-02-06T16:28:35",
+    "time_max": "2026-02-07T01:20:51+00:00",
+    "surfaces": [
+      "fb_extract_out/sean_context_enriched.jsonl"
+    ]
+  },
+  "metrics": {
+    "sexual_harm_reference_count": 17,
+    "sexual_harm_reference_rate_per_100": 3.3203,
+    "sexual_harm_reference_over_time": {
+      "2026-02": 17
+    }
+  },
+  "examples": [
+    {
+      "source_index": 43,
+      "timestamp_parsed": "2026-02-06T16:29:31",
+      "captured_at": "2026-02-06T17:02:31",
+      "joined_item_type": "post",
+      "body": "The Robbie Harvey : · Man Sentenced To Life For SA'ing 10-Year-Old Girl. A 23-year-old man from Lucedale, Mississippi, named Justin Andrew Busby, was sentenced to life in prison after being convicted of sexually abusing a 10-year-old girl during a family vacation in Destin, Florida. The victim did not immediately disclose the abuse but later reported it to her parents after the family returned to Mississippi, according to the State Attorney's Office. Busby was arrested in May 2023 following an investigation by the Lucedale Police Department. During questioning, he did not deny the allegations but attempted to minimize his actions. Busby, who was over 18 at the time of the offense and described as a trusted family member to the victim, was found guilty by a jury of sexual battery of a victim under 12 years old. Circuit Judge David Oberliesen imposed the life sentence. In addition to the Florida conviction, Busby faces charges in George County, Mississippi, including one count of sexual battery of a victim under 14 and two counts of lustful touching of a minor, according to WLBT and George County Assistant District Attorney George Huffman. These allegations stem from incidents reportedly occurring in Mississippi, and Huffman noted that an 8-year-old child has also accused Busby of sexual abuse. 3 comments",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538646249097670/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.982,
+      "rule_hits": [
+        "minor_terms_with_sex_context",
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 57,
+      "timestamp_parsed": "2026-02-06T16:29:24",
+      "captured_at": "2026-02-06T17:03:24",
+      "joined_item_type": "post",
+      "body": "Law&Crime : · MILITARY RECRUITER ARRESTED FOR INAPPROPRIATE CONTACT WITH TEEN GIRLS: Nicholas Phelps, 28, a military recruiter, has been arrested in Michigan for inappropriate contact with teenage students. The sheriff’s office became aware of allegations that he contacted several girls from the area, allegedly had sexual contact with them, and sent inappropriate messages to them. No other information has been released.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25559794893649472/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.846,
+      "rule_hits": [
+        "minor_terms_with_sex_context"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 41,
+      "timestamp_parsed": "2026-02-06T16:29:24",
+      "captured_at": "2026-02-06T17:02:24",
+      "joined_item_type": "post",
+      "body": "Fight For a Better Tomorrow: We Won’t Back Down : · BREAKING: ICE Officer admits to raping woman in custody for months in exchange for seeing her daughter￼ Prosecutors say he would bring the victim letters and pictures of her daughter, along with food and other gifts, which is against ICE rules.￼ David is said to have hired lookouts while he raped the woman in a janitorial closet. Initially, David denied the accusations before confessing during an interview in September.￼ He was released on a $10,000 bond and will be sentenced on April 10* where his charge carries a maximum of 15 years in prison and a fine of up to $250,000.￼ David Courvelle, 56, pled guilty to sexually assaulting a Nicaraguan woman over the course of several months at a Louisiana ICE detention facility.￼ This isn't an isolated case. It's just the only one caught so far.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538220752473553/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.973,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 35,
+      "timestamp_parsed": "2026-02-06T16:29:00",
+      "captured_at": "2026-02-06T17:02:00",
+      "joined_item_type": "post",
+      "body": "The white Christian man strikes again KWTX News 10 : 9 · A man accused of raping multiple children over several years claimed he did “nothing wrong because it was in the Bible.\" http://kwtx.com/.../man-used-bible-justify-raping.../",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.912,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 34,
+      "timestamp_parsed": "2026-02-06T16:28:56",
+      "captured_at": "2026-02-06T17:01:56",
+      "joined_item_type": "post",
+      "body": "Well… well… well… Gaye Magazine : · RJ May, 39, a former South Carolina Republican lawmaker who publicly warned that transgender people and drag performers posed a threat to children was sentenced Wednesday to 17.5 years in federal prison for distributing hundreds of images and videos depicting the sexual abuse of children. Read full article: https://gayemagazine.visitlink.me/Mv2E7g",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25505505532411742/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.932,
+      "rule_hits": [
+        "minor_terms_with_sex_context",
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 381,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Alvin Adorno wait… “I do my best to not go out and crusade and fuck shit up.” Are you saying you restrain yourself from killing other christians, raping women and children and killing anyone that’s not a Christian? Ever heard of the sack of Constantinople 1204 where the crusaders killed western and orthodox christians?\n\n\n\ned",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.973,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 323,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anonymous member 746\n many other people already answered your question I don't need to. Saying go with christ isn't an attempt to force you to do anything. Its a farewell phrase that you can choose to take how you wish.\nI'm also not a Christian, but I have actually read the Bible, and have an adult level of reading comprehension that prevents me from looking a turbo douche on the internet.\nI just find it funny that you regularly dedicate this much of your time attacking a religion you claim not to care about on a FB page that has absolutely nothing to do with religion. While being confidently wrong in every single post. Which is why you dirty delete so many of them.\nMakes it even funnier when you unironically subscribe to a faith that openly promotes pedophilia both in doctrine and individual practice.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25650341774594783/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": 0.24,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 257,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anton Crissen\n which again you continue to ignore, the Bible says to have sex in a marriage. A marriage is between 2 consenting adults which was described by paul and in Genesis as revelation from God to Moses. What you’re essentially doing is like saying stealing a lawn chair from someone’s yard isn’t theft because it wasn’t inside the house. You’re arbitrarily narrowing the definition to avoid the principle, even though the ownership and violation are obvious. I have repeatedly stated in each comment that the Bible laid a framework that children are not be harmed, sex is to be had in a marriage of 2 consenting adults, etc and you keep moving that goalpost and then saying im ignoring it. Idk if youre an atheist who is bad at making points or a Muslim who's prophet had sex with a 9 year old, but try to read this comment critically before you continue to try and say im dodging",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.766,
+      "rule_hits": [
+        "minor_terms_with_sex_context"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 255,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anton Crissen\n brother you need a reading comprehension course. The assumption is you thinking the Bible will cover everything when it is guidelines like do not hurt a child, do not commit sexual misconduct, etc. You know what the Bible also doesn't say? Doesn't mention tax fraud, or epstein, doesn't mention robbing banks or dope, why is that? Because the guidelines are there, and it is on us to apply them. When the Bible says explicitly to not hurt children or commit adultery that is not silence. And the Bible makes a lot of assumptions, like that consent matters, or that exploiting someone is wrong that is not a flaw.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.852,
+      "rule_hits": [
+        "minor_terms_with_sex_context"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 193,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Peter Jacob Walker some of us don’t want to live in a structured system until we die.\n: I save my money. I just don’t want a career job once they separate me. I want to FULLY retire (no working at all) at 40 years old\nAnother edit: anyone can work 70+ hours a week doing uber eats???\nLast edit: just because you *can* do something doesn’t mean you’re willing to do it. I am willing to do it and I did it. Might as well be proud of me instead of hating on some 21 year old. Pretty sad tbh\n\n\n\ned",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": 0.41,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 139,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Alexandra Pilver why would the spouse be unhappy? If a man can be independent before marriage, he can be independent during marriage. Who exactly would be unhappy because if a woman is defined as someone who only provides sex and chores that’s pretty sad tbh.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25560413986920896/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.67,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 138,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Nikki Stroud\n so basically what you’re asking is, is being a companion to someone hard.. wife shouldn’t be the word used here because people in dating relationships also carry the option when living together to clean, bear children, and have sex as well.\nShort answer, no. It is not hard to be in a relationship and even married to someone when it’s a 100/100 devoted relationship.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25560413986920896/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.75,
+      "rule_hits": [
+        "minor_terms_with_sex_context"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 137,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Nikki Stroud chores are optional, child birth is optional, sex is optional. 99% of the things women do in marriage are optional",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25560413986920896/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.0,
+      "rule_hits": [
+        "minor_terms_with_sex_context"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 10,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n so the cultural norm in the time period was to marry on average 12 bc that’s when that start having there period and could have children and that the only basis on her age so we but the Bible also speaks about the emotional and spiritual maturity and the readiness for commitment I think as a group christians that we can agree that it messed up that someone can marry so young however the reality you have to understand that that was the social norm in that time period without modern medicine the life expectancy was 30-40 on average and 50-60 if you were lucky thay lived faster bc thay had less time that is not the case anymore what we consider to be children has changed over 2000 years and we are supposed to protect children and god sead to obey the government for god is the one that put it there what I believe he means by this is don’t break the law it’s pritty simple don’t rape people especially kids and that’s not all this guy did he got them doing meth and befor he raped them he would drug them with Xanax so that couldn’t resist and rape them in there sleep then attempts to hide behind gods word to justify the horrific sins he committed to those girls those girls that will forever be changed physical and emotionally bc of what he did we as christians have failed to protect those kids us as people have failed to protect those kids and I don’t cair that you are trying to diminish gods image but I do cair that you are using there story there pain there suffering for your crusade may god have mercy on your soul bc if it were up to me I wouldn’t",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.97,
+      "rule_hits": [
+        "minor_terms_with_sex_context",
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 8,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n first point those are all books of the Old Testament second if thay weren’t it doesn’t matter if we’re talking about the old or the New Testament the only difference between the sinners in the old vs the new the possibility of redemption after Jesus died for us and that adds nothing to your argument if you wanna argue a point stick to that point find me proof of god or Jesus defending rape",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.812,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 6,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n I see what your trying to do there and there referring to the general war efforts not the men who took part in the spoils of war weather it be looting or rapeing or any or the other stuff that they did and those men were being tempted by the flesh what I mean by flesh is worldly wants money power sex etc which is a sin and that’s the Old Testament before redemption was possible all of those men are in hell I challenge you to find anywhere in the Bible that it says that rape is ok",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.965,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 1,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Justin Sanders do they claim the Bible says it’s okay like when the crusaders did everything “in the name of God” and raped women & children?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.296,
+      "rule_hits": [
+        "sexual_harm_terms"
+      ],
+      "score": 1
+    }
+  ],
+  "fingerprints": {
+    "input_fingerprint": "fb7525e60ee3d35e",
+    "spec_fingerprint": "2dfb9195e512ec22",
+    "generated_utc": "2026-02-07T17:16:33.140645+00:00"
+  }
+}

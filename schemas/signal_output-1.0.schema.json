@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "signal_output-1.0",
+  "title": "Signal Output Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "signal_id",
+    "signal_version",
+    "tier",
+    "dataset_scope",
+    "metrics",
+    "examples",
+    "fingerprints"
+  ],
+  "properties": {
+    "run_id": { "type": "string", "minLength": 4, "maxLength": 120 },
+    "signal_id": { "type": "string" },
+    "signal_version": { "type": "string" },
+    "tier": { "type": "string", "enum": ["A", "B", "C"] },
+
+    "dataset_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["items_analyzed", "time_min", "time_max", "surfaces"],
+      "properties": {
+        "items_analyzed": { "type": "integer", "minimum": 1 },
+        "time_min": { "type": "string", "minLength": 1 },
+        "time_max": { "type": "string", "minLength": 1 },
+        "surfaces": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 5, "maxLength": 400 }
+        }
+      }
+    },
+
+    "metrics": {
+      "type": "object",
+      "additionalProperties": { "type": ["number", "integer", "string", "object", "array"] }
+    },
+
+    "examples": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_index", "timestamp_parsed", "joined_item_type", "body", "thread_permalink", "rule_hits"],
+        "properties": {
+          "source_index": { "type": "integer", "minimum": 1 },
+          "timestamp_parsed": { "type": "string" },
+          "joined_item_type": { "type": "string" },
+          "body": { "type": "string" },
+          "thread_permalink": { "type": "string" },
+          "thread_primary_topic": { "type": "string" },
+          "sentiment_compound": { "type": ["number", "integer"] },
+          "rule_hits": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "score": { "type": ["number", "integer"] },
+          "captured_at": { "type": "string", "description": "Timestamp when the item was captured by the scraper (collection time)."
+          }
+        }
+      }
+    },
+
+    "fingerprints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_fingerprint", "spec_fingerprint", "generated_utc"],
+      "properties": {
+        "input_fingerprint": { "type": "string", "minLength": 8 },
+        "spec_fingerprint": { "type": "string", "minLength": 8 },
+        "generated_utc": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

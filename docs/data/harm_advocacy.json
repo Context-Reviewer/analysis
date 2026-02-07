@@ -1,0 +1,392 @@
+{
+  "run_id": "dev-run",
+  "signal_id": "harm_advocacy",
+  "signal_version": "1.0.0",
+  "tier": "B",
+  "dataset_scope": {
+    "items_analyzed": 512,
+    "time_min": "2026-02-06T16:28:35",
+    "time_max": "2026-02-07T01:20:51+00:00",
+    "surfaces": [
+      "fb_extract_out/sean_context_enriched.jsonl"
+    ]
+  },
+  "metrics": {
+    "harm_language_count": 26,
+    "harm_language_rate": 5.0781,
+    "harm_language_over_time": {
+      "2026-02": 26
+    }
+  },
+  "examples": [
+    {
+      "source_index": 28,
+      "timestamp_parsed": "2026-02-06T16:29:32",
+      "captured_at": "2026-02-06T17:01:32",
+      "joined_item_type": "post",
+      "body": "Question for the christians in here: Since force conversion, expulsion, collective punishment and killing are all against the core Christian belief… what’s the solution for the Muslims?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25485245871104375/",
+      "thread_primary_topic": "questions_curiosity",
+      "sentiment_compound": -0.743,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 43,
+      "timestamp_parsed": "2026-02-06T16:29:31",
+      "captured_at": "2026-02-06T17:02:31",
+      "joined_item_type": "post",
+      "body": "The Robbie Harvey : · Man Sentenced To Life For SA'ing 10-Year-Old Girl. A 23-year-old man from Lucedale, Mississippi, named Justin Andrew Busby, was sentenced to life in prison after being convicted of sexually abusing a 10-year-old girl during a family vacation in Destin, Florida. The victim did not immediately disclose the abuse but later reported it to her parents after the family returned to Mississippi, according to the State Attorney's Office. Busby was arrested in May 2023 following an investigation by the Lucedale Police Department. During questioning, he did not deny the allegations but attempted to minimize his actions. Busby, who was over 18 at the time of the offense and described as a trusted family member to the victim, was found guilty by a jury of sexual battery of a victim under 12 years old. Circuit Judge David Oberliesen imposed the life sentence. In addition to the Florida conviction, Busby faces charges in George County, Mississippi, including one count of sexual battery of a victim under 14 and two counts of lustful touching of a minor, according to WLBT and George County Assistant District Attorney George Huffman. These allegations stem from incidents reportedly occurring in Mississippi, and Huffman noted that an 8-year-old child has also accused Busby of sexual abuse. 3 comments",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538646249097670/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.982,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 41,
+      "timestamp_parsed": "2026-02-06T16:29:24",
+      "captured_at": "2026-02-06T17:02:24",
+      "joined_item_type": "post",
+      "body": "Fight For a Better Tomorrow: We Won’t Back Down : · BREAKING: ICE Officer admits to raping woman in custody for months in exchange for seeing her daughter￼ Prosecutors say he would bring the victim letters and pictures of her daughter, along with food and other gifts, which is against ICE rules.￼ David is said to have hired lookouts while he raped the woman in a janitorial closet. Initially, David denied the accusations before confessing during an interview in September.￼ He was released on a $10,000 bond and will be sentenced on April 10* where his charge carries a maximum of 15 years in prison and a fine of up to $250,000.￼ David Courvelle, 56, pled guilty to sexually assaulting a Nicaraguan woman over the course of several months at a Louisiana ICE detention facility.￼ This isn't an isolated case. It's just the only one caught so far.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538220752473553/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.973,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 24,
+      "timestamp_parsed": "2026-02-06T16:29:17",
+      "captured_at": "2026-02-06T17:01:17",
+      "joined_item_type": "post",
+      "body": ": a g c a · Epstein didn’t kill himself",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25431351346493828/",
+      "thread_primary_topic": "violence_threats",
+      "sentiment_compound": -0.691,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 35,
+      "timestamp_parsed": "2026-02-06T16:29:00",
+      "captured_at": "2026-02-06T17:02:00",
+      "joined_item_type": "post",
+      "body": "The white Christian man strikes again KWTX News 10 : 9 · A man accused of raping multiple children over several years claimed he did “nothing wrong because it was in the Bible.\" http://kwtx.com/.../man-used-bible-justify-raping.../",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.912,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 34,
+      "timestamp_parsed": "2026-02-06T16:28:56",
+      "captured_at": "2026-02-06T17:01:56",
+      "joined_item_type": "post",
+      "body": "Well… well… well… Gaye Magazine : · RJ May, 39, a former South Carolina Republican lawmaker who publicly warned that transgender people and drag performers posed a threat to children was sentenced Wednesday to 17.5 years in federal prison for distributing hundreds of images and videos depicting the sexual abuse of children. Read full article: https://gayemagazine.visitlink.me/Mv2E7g",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25505505532411742/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.932,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 5,
+      "timestamp_parsed": "2026-02-06T16:28:53",
+      "captured_at": "2026-02-06T16:59:53",
+      "joined_item_type": "post",
+      "body": "IlmFeed , · The HERO who bravely tackled the shooter in Bondi Beach and prevented him from killing more people has been identified as Ahmad Al Ahmad, a 43 year old Muslim man. He was shot twice and is undergoing surgery. May Allah grant him a swift and full recovery.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25239747178987580/",
+      "thread_primary_topic": "questions_curiosity",
+      "sentiment_compound": 0.767,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 4,
+      "timestamp_parsed": "2026-02-06T16:28:49",
+      "captured_at": "2026-02-06T16:59:49",
+      "joined_item_type": "post",
+      "body": "Since I haven’t seen it yet posted in this group because nobody cares unless it’s a person of color… attached it the photo of Kerri https://www.foxnews.com/.../macys-stabbing-suspect...",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25235511246077840/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.459,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 14,
+      "timestamp_parsed": "2026-02-06T16:28:39",
+      "captured_at": "2026-02-06T17:00:39",
+      "joined_item_type": "post",
+      "body": "Wait did that president of Venezuela ￼come to the USA legally or is he an illegal? Why hasn’t he been deported yet?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25398592476436382/",
+      "thread_primary_topic": "geopolitics",
+      "sentiment_compound": -0.551,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 449,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Stefan Bruegeman Reddit banned me",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25655507277411566/",
+      "thread_primary_topic": "juvenile_banter",
+      "sentiment_compound": -0.459,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 426,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Devin Kent throughout history… didn’t the crusaders LITERALLY kill western and orthodox christians BEFORE going for the Muslims? Does the sack of ￼ Constantinople 1204 sound familiar? “Forcing” religion is literally what Christian parents do today “you’re going to church regardless” is what mini Christian parents tell their children when they are younger. That’s what I define as being forced into a religion.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25654557967506497/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.843,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 396,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Robert Bellamy religion is a theology. Why would I care about what happens to me once I die if I’m dead…",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.178,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 381,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Alvin Adorno wait… “I do my best to not go out and crusade and fuck shit up.” Are you saying you restrain yourself from killing other christians, raping women and children and killing anyone that’s not a Christian? Ever heard of the sack of Constantinople 1204 where the crusaders killed western and orthodox christians?\n\n\n\ned",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.973,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 363,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Mathew Reid LMFAOOO. Should I make my next post of my opinion on trannies? That might get me banned on Facebook honestly",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.0,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 325,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anonymous member 157\n technically it really never was, it was a land and country that allowed freedom of religion which many Christians from Europe fled to die to persecution but also churned other religions which were deemed seditious and corrupt to have equal rights of religious practices. At one point the majority of Americans were Christians but even the goal posts of Christ have been moved and yet no one even notices.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25650341774594783/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.735,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 255,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anton Crissen\n brother you need a reading comprehension course. The assumption is you thinking the Bible will cover everything when it is guidelines like do not hurt a child, do not commit sexual misconduct, etc. You know what the Bible also doesn't say? Doesn't mention tax fraud, or epstein, doesn't mention robbing banks or dope, why is that? Because the guidelines are there, and it is on us to apply them. When the Bible says explicitly to not hurt children or commit adultery that is not silence. And the Bible makes a lot of assumptions, like that consent matters, or that exploiting someone is wrong that is not a flaw.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.852,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 254,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Anton Crissen\n1. When you marry… are you going to cause harm towards your wife by marrying her?\n2. A “man” not a “woman”.\n3. Keyword “assume”. Didn’t I mention that in my post?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.594,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 251,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Laws are laws\n people vote in these governors without asking them beforehand if they’d ban child marriage in the state. But that’s for the uneducated.\nFun fact: 97% of the state governors that allow child marriage in their state are Christian and 3% of them are Jewish. Seems fairly odd to me",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.593,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 218,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Matt Fisher well that handgun (that did hit) that was held probably (more or less) 5 feet away definitely was successful in killing a president",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25643709501924677/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": 0.494,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 193,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Peter Jacob Walker some of us don’t want to live in a structured system until we die.\n: I save my money. I just don’t want a career job once they separate me. I want to FULLY retire (no working at all) at 40 years old\nAnother edit: anyone can work 70+ hours a week doing uber eats???\nLast edit: just because you *can* do something doesn’t mean you’re willing to do it. I am willing to do it and I did it. Might as well be proud of me instead of hating on some 21 year old. Pretty sad tbh\n\n\n\ned",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25611809115114716/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": 0.41,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 116,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Justin Mosley\n so you're just butt hurt that you weren't adopted by a millionaire? You should go find your birth parents to teach you some appreciation for your REAL parents.\n\n\n\ned",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25553796034249358/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.026,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 19,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Gregory Miller i agree… non-consensual anything is harm",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.542,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 10,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n so the cultural norm in the time period was to marry on average 12 bc that’s when that start having there period and could have children and that the only basis on her age so we but the Bible also speaks about the emotional and spiritual maturity and the readiness for commitment I think as a group christians that we can agree that it messed up that someone can marry so young however the reality you have to understand that that was the social norm in that time period without modern medicine the life expectancy was 30-40 on average and 50-60 if you were lucky thay lived faster bc thay had less time that is not the case anymore what we consider to be children has changed over 2000 years and we are supposed to protect children and god sead to obey the government for god is the one that put it there what I believe he means by this is don’t break the law it’s pritty simple don’t rape people especially kids and that’s not all this guy did he got them doing meth and befor he raped them he would drug them with Xanax so that couldn’t resist and rape them in there sleep then attempts to hide behind gods word to justify the horrific sins he committed to those girls those girls that will forever be changed physical and emotionally bc of what he did we as christians have failed to protect those kids us as people have failed to protect those kids and I don’t cair that you are trying to diminish gods image but I do cair that you are using there story there pain there suffering for your crusade may god have mercy on your soul bc if it were up to me I wouldn’t",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.97,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 8,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n first point those are all books of the Old Testament second if thay weren’t it doesn’t matter if we’re talking about the old or the New Testament the only difference between the sinners in the old vs the new the possibility of redemption after Jesus died for us and that adds nothing to your argument if you wanna argue a point stick to that point find me proof of god or Jesus defending rape",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.812,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 6,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Blake Greer\n I see what your trying to do there and there referring to the general war efforts not the men who took part in the spoils of war weather it be looting or rapeing or any or the other stuff that they did and those men were being tempted by the flesh what I mean by flesh is worldly wants money power sex etc which is a sin and that’s the Old Testament before redemption was possible all of those men are in hell I challenge you to find anywhere in the Bible that it says that rape is ok",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.965,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 1,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Justin Sanders do they claim the Bible says it’s okay like when the crusaders did everything “in the name of God” and raped women & children?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/",
+      "thread_primary_topic": "ableist_insults",
+      "sentiment_compound": -0.296,
+      "rule_hits": [
+        "harm_language_present"
+      ],
+      "score": 1
+    }
+  ],
+  "fingerprints": {
+    "input_fingerprint": "fb7525e60ee3d35e",
+    "spec_fingerprint": "e4ee2545d771408b",
+    "generated_utc": "2026-02-07T17:02:01.800221+00:00"
+  }
+}

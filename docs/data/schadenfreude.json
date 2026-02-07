@@ -1,0 +1,25 @@
+{
+  "run_id": "dev-run",
+  "signal_id": "schadenfreude",
+  "signal_version": "1.0.0",
+  "tier": "A",
+  "dataset_scope": {
+    "items_analyzed": 512,
+    "time_min": "2026-02-06T16:28:35",
+    "time_max": "2026-02-06T16:29:35",
+    "surfaces": [
+      "fb_extract_out/sean_context_enriched.jsonl"
+    ]
+  },
+  "metrics": {
+    "harm_positive_count": 0,
+    "harm_positive_rate_per_100": 0.0,
+    "harm_positive_over_time": {}
+  },
+  "examples": [],
+  "fingerprints": {
+    "input_fingerprint": "fb7525e60ee3d35e",
+    "spec_fingerprint": "7889fdf7789254c6",
+    "generated_utc": "2026-02-07T16:43:44.565879+00:00"
+  }
+}

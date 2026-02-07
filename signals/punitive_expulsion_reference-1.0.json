@@ -1,0 +1,120 @@
+{
+  "signal_id": "punitive_expulsion_reference",
+  "version": "1.0.0",
+  "title": "Punitive / Expulsion Reference (Topic Presence)",
+  "tier": "B",
+  "description": "Flags items containing punitive punishment or expulsion/banishment language (as text). This signal measures topic presence in the dataset for review triage; it does not infer intent, endorsement, or likelihood.",
+
+  "epistemics": {
+    "supports": [
+      "Identifying items where punitive/expulsion terms appear in the dataset (as text).",
+      "Quantifying frequency and distribution over time."
+    ],
+    "does_not_support": [
+      "Inferring intent or endorsement (e.g., whether the author supports the action).",
+      "Threat assessment or prediction.",
+      "Determining factuality of quoted/reposted content."
+    ],
+    "failure_modes": [
+      "News reposts/quotes can trigger matches without endorsement.",
+      "Policy debate or condemnation can trigger matches (still relevant for triage).",
+      "Euphemisms or slang may be missed (false negatives)."
+    ],
+    "scope_statement": "All results are limited to observable content in the collected dataset and declared surfaces for this run."
+  },
+
+  "definition": {
+    "required_input_fields": [
+      "joined_item_type",
+      "source_index",
+      "thread_permalink",
+      "body",
+      "captured_at"
+    ],
+    "unit_of_analysis": "item",
+
+    "inclusion_rules": [
+      {
+        "rule_id": "punitive_punishment_terms",
+        "description": "Punitive punishment terms appear (jail/prison/execute/hang).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(jail|prison|life sentence|sentenced)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(execut(e|ed|ion)|hang(ed|ing)?)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      },
+      {
+        "rule_id": "expulsion_terms",
+        "description": "Expulsion/banishment terms appear (deport/ban/expel/purge).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(deport(ed|ation)?)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(ban(ned|ish)?|expel(led|sion)?|purge)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ],
+
+    "exclusion_rules": []
+  },
+
+  "outputs": {
+    "score_policy": {
+      "score_type": "presence",
+      "range": { "min": 0, "max": 1 },
+      "tier_constraints": { "A": "numeric", "B": "band", "C": "presence" }
+    },
+
+    "metrics": [
+      {
+        "metric_id": "punitive_expulsion_reference_count",
+        "title": "Items with punitive/expulsion references",
+        "type": "count",
+        "description": "Number of items matching inclusion rules."
+      },
+      {
+        "metric_id": "punitive_expulsion_reference_rate_per_100",
+        "title": "Rate per 100 items",
+        "type": "rate",
+        "description": "Count normalized per 100 items in the analyzed scope."
+      },
+      {
+        "metric_id": "punitive_expulsion_reference_over_time",
+        "title": "Over-time distribution",
+        "type": "distribution",
+        "description": "Temporal distribution (e.g., monthly bins)."
+      }
+    ],
+
+    "example_selection": {
+      "max_examples": 30,
+      "ordering": "time_desc",
+      "must_include_fields": [
+        "source_index",
+        "timestamp_parsed",
+        "captured_at",
+        "joined_item_type",
+        "body",
+        "thread_permalink",
+        "thread_primary_topic",
+        "sentiment_compound",
+        "rule_hits"
+      ]
+    }
+  },
+
+  "ui": {
+    "display_order": 50
+  }
+}

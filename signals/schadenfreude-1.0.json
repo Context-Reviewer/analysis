@@ -1,0 +1,160 @@
+{
+  "signal_id": "schadenfreude",
+  "version": "1.0.0",
+  "title": "Schadenfreude (Harm Enjoyment Signals)",
+  "tier": "A",
+  "description": "Detects items where positive affect language co-occurs with harm, punishment, or humiliation language in the same item. This is evidence display: it does not infer intent, motivation, or character.",
+
+  "epistemics": {
+    "supports": [
+      "Identifying repeated instances where positive affect co-occurs with harm-related language within the collected dataset.",
+      "Quantifying frequency and distribution of harm-positive language across time and threads."
+    ],
+    "does_not_support": [
+      "Inferring intent, motivation, or psychological traits.",
+      "Predicting real-world behavior or likelihood of action.",
+      "Claiming completeness beyond the collected dataset and declared surfaces."
+    ],
+    "failure_modes": [
+      "Sarcasm or ironic phrasing may be misclassified without additional context.",
+      "Quoted text may be misread as endorsement if attribution context is not present in the item.",
+      "Harm references without explicit harm terms may be missed (false negatives)."
+    ],
+    "scope_statement": "All results are limited to observable content in the collected dataset and declared surfaces for this run."
+  },
+
+  "definition": {
+    "required_input_fields": [
+      "joined_item_type",
+      "source_index",
+      "thread_permalink",
+      "body",
+      "captured_at"  
+    ],
+    "unit_of_analysis": "item",
+
+    "inclusion_rules": [
+      {
+        "rule_id": "harm_positive_affect_pairing",
+        "description": "Positive affect language co-occurs with harm/punishment/humiliation language within the same item body.",
+        "logic": "all",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+                "(^|[^A-Za-z0-9_])(ha+ha+|lol|lmao|rofl|good|great|nice|glad|deserved|based)([^A-Za-z0-9_]|$)",
+                "(^|[^A-Za-z0-9_])(love to see)([^A-Za-z0-9_]|$)",
+                "(^|[^A-Za-z0-9_])(gets what (he|she|they) deserve|serves (him|her|them) right)([^A-Za-z0-9_]|$)"
+            ]
+
+          },
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+                "(^|[^A-Za-z0-9_])(kill(ed|ing)?|hurt|harm|beat|assault|die|dead)([^A-Za-z0-9_]|$)",
+                "(^|[^A-Za-z0-9_])(jail|prison|execut(e|ed|ion)|hang(ed|ing)?|shot|stab(bed|bing)?)([^A-Za-z0-9_]|$)",
+                "(^|[^A-Za-z0-9_])(humiliat(e|ed|ion)|ruin(ed|ing)?|destroy(ed|ing)?|publicly shame(d)?)([^A-Za-z0-9_]|$)",
+                "(^|[^A-Za-z0-9_])(deport(ed|ation)?|ban(ned|ish)?|purge)([^A-Za-z0-9_]|$)"
+            ]
+
+          }
+        ]
+      }
+    ],
+
+    "exclusion_rules": [
+      {
+        "rule_id": "explicit_condemnation",
+        "description": "Exclude items where harm is referenced in an explicitly condemning frame (conservative exclusion).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "\\\\b(this is wrong|not ok|stop (doing|saying)|i don't condone|that's messed up|shouldn't)\\\\b"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "outputs": {
+    "score_policy": {
+      "score_type": "numeric",
+      "range": { "min": 0, "max": 3 },
+      "tier_constraints": { "A": "numeric", "B": "band", "C": "presence" }
+    },
+
+    "allowed_language": {
+      "allowed_phrases": [
+        "within the collected dataset",
+        "observed instances",
+        "co-occurs with",
+        "pattern appears",
+        "examples are provided"
+      ],
+      "banned_phrases": [
+        "this proves they are",
+        "they intend",
+        "they want",
+        "their character is",
+        "dangerous person"
+      ]
+    },
+
+    "metrics": [
+      {
+        "metric_id": "harm_positive_count",
+        "title": "Harm-positive items",
+        "type": "count",
+        "description": "Number of items that meet the inclusion criteria after exclusions."
+      },
+      {
+        "metric_id": "harm_positive_rate",
+        "title": "Rate per 100 items",
+        "type": "rate",
+        "description": "Harm-positive count normalized per 100 items in the analyzed scope."
+      },
+      {
+        "metric_id": "harm_positive_over_time",
+        "title": "Over-time distribution",
+        "type": "distribution",
+        "description": "Temporal distribution of harm-positive items (e.g., monthly bins)."
+      }
+    ],
+
+    "example_selection": {
+      "max_examples": 30,
+      "ordering": "score_desc_then_time",
+      "must_include_fields": [
+        "source_index",
+        "timestamp_parsed",
+        "joined_item_type",
+        "body",
+        "thread_permalink",
+        "thread_primary_topic",
+        "sentiment_compound",
+        "rule_hits"
+      ]
+    }
+  },
+
+  "ui": {
+    "report_sections": [
+      "tier_badge",
+      "scope_statement",
+      "supports",
+      "does_not_support",
+      "failure_modes",
+      "definition_summary",
+      "metrics_table",
+      "examples_table",
+      "repro_fingerprint"
+    ],
+    "display_order": 20
+  }
+}

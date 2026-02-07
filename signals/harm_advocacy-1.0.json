@@ -1,0 +1,150 @@
+{
+  "signal_id": "harm_advocacy",
+  "version": "1.0.0",
+  "title": "Harm Advocacy / Normalization (Harm-Directed Language)",
+  "tier": "B",
+  "description": "Flags items that contain harm-directed language (violence, punitive harm, or expulsion/banishment frames) in the item body. This signal measures presence and frequency of harm-language, not intent, not likelihood, and not endorsement.",
+
+  "epistemics": {
+    "supports": [
+      "Identifying items in the dataset where harm-directed language appears (as text).",
+      "Quantifying frequency and distribution of harm-language across time and threads."
+    ],
+    "does_not_support": [
+      "Inferring intent, motivation, or psychological traits.",
+      "Predicting real-world behavior, likelihood of action, or threat level.",
+      "Determining endorsement vs. reporting without explicit local evidence in the same item."
+    ],
+    "failure_modes": [
+      "News reposts or quoted material can trigger matches without endorsement.",
+      "Discussion of harm as a topic (e.g., condemnation, policy debate) can trigger matches.",
+      "Euphemisms or slang outside the lexicon may be missed (false negatives)."
+    ],
+    "scope_statement": "All results are limited to observable content in the collected dataset and declared surfaces for this run."
+  },
+
+  "definition": {
+    "required_input_fields": [
+      "joined_item_type",
+      "source_index",
+      "thread_permalink",
+      "body",
+      "captured_at"
+    ],
+    "unit_of_analysis": "item",
+
+    "inclusion_rules": [
+      {
+        "rule_id": "harm_language_present",
+        "description": "Harm-directed language appears in the item body.",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(kill(ed|ing)?|hurt|harm|beat|assault|die|dead)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(jail|prison|execut(e|ed|ion)|hang(ed|ing)?|shot|stab(bed|bing)?)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(rape(d)?|raping|molest(ed|ation)?|sexual(ly)? abuse|SA\\x27?ing|child porn)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(humiliat(e|ed|ion)|ruin(ed|ing)?|destroy(ed|ing)?|publicly shame(d)?)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(deport(ed|ation)?|ban(ned|ish)?|purge|expel(led|sion)?)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ],
+
+    "exclusion_rules": [
+      {
+        "rule_id": "explicit_condemnation",
+        "description": "Exclude items where harm is referenced in an explicitly condemning frame (conservative exclusion).",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(this is wrong|not ok|stop (doing|saying)|i don\\x27?t condone|that\\x27?s messed up|shouldn\\x27?t)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "outputs": {
+    "score_policy": {
+      "score_type": "presence",
+      "range": { "min": 0, "max": 1 },
+      "tier_constraints": { "A": "numeric", "B": "band", "C": "presence" }
+    },
+
+    "allowed_language": {
+      "allowed_phrases": [
+        "within the collected dataset",
+        "observed instances",
+        "contains harm-language",
+        "pattern appears",
+        "examples are provided"
+      ],
+      "banned_phrases": [
+        "this proves they will",
+        "they intend",
+        "dangerous person",
+        "threat assessment",
+        "calls for violence"
+      ]
+    },
+
+    "metrics": [
+      {
+        "metric_id": "harm_language_count",
+        "title": "Harm-language items",
+        "type": "count",
+        "description": "Number of items matching harm-language inclusion criteria after exclusions."
+      },
+      {
+        "metric_id": "harm_language_rate",
+        "title": "Rate per 100 items",
+        "type": "rate",
+        "description": "Harm-language count normalized per 100 items in the analyzed scope."
+      },
+      {
+        "metric_id": "harm_language_over_time",
+        "title": "Over-time distribution",
+        "type": "distribution",
+        "description": "Temporal distribution of harm-language items (e.g., monthly bins)."
+      }
+    ],
+
+    "example_selection": {
+      "max_examples": 30,
+      "ordering": "time_desc",
+      "must_include_fields": [
+        "source_index",
+        "timestamp_parsed",
+        "joined_item_type",
+        "body",
+        "thread_permalink",
+        "thread_primary_topic",
+        "sentiment_compound",
+        "rule_hits"
+      ]
+    }
+  },
+
+  "ui": {
+    "report_sections": [
+      "tier_badge",
+      "scope_statement",
+      "supports",
+      "does_not_support",
+      "failure_modes",
+      "definition_summary",
+      "metrics_table",
+      "examples_table",
+      "repro_fingerprint"
+    ],
+    "display_order": 10
+  }
+}

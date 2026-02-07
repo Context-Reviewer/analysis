@@ -1,0 +1,126 @@
+{
+  "run_id": "dev-run",
+  "signal_id": "punitive_expulsion_reference",
+  "signal_version": "1.0.0",
+  "tier": "B",
+  "dataset_scope": {
+    "items_analyzed": 512,
+    "time_min": "2026-02-06T16:28:35",
+    "time_max": "2026-02-07T01:20:51+00:00",
+    "surfaces": [
+      "fb_extract_out/sean_context_enriched.jsonl"
+    ]
+  },
+  "metrics": {
+    "punitive_expulsion_reference_count": 7,
+    "punitive_expulsion_reference_rate_per_100": 1.3672,
+    "punitive_expulsion_reference_over_time": {
+      "2026-02": 7
+    }
+  },
+  "examples": [
+    {
+      "source_index": 43,
+      "timestamp_parsed": "2026-02-06T16:29:31",
+      "captured_at": "2026-02-06T17:02:31",
+      "joined_item_type": "post",
+      "body": "The Robbie Harvey : · Man Sentenced To Life For SA'ing 10-Year-Old Girl. A 23-year-old man from Lucedale, Mississippi, named Justin Andrew Busby, was sentenced to life in prison after being convicted of sexually abusing a 10-year-old girl during a family vacation in Destin, Florida. The victim did not immediately disclose the abuse but later reported it to her parents after the family returned to Mississippi, according to the State Attorney's Office. Busby was arrested in May 2023 following an investigation by the Lucedale Police Department. During questioning, he did not deny the allegations but attempted to minimize his actions. Busby, who was over 18 at the time of the offense and described as a trusted family member to the victim, was found guilty by a jury of sexual battery of a victim under 12 years old. Circuit Judge David Oberliesen imposed the life sentence. In addition to the Florida conviction, Busby faces charges in George County, Mississippi, including one count of sexual battery of a victim under 14 and two counts of lustful touching of a minor, according to WLBT and George County Assistant District Attorney George Huffman. These allegations stem from incidents reportedly occurring in Mississippi, and Huffman noted that an 8-year-old child has also accused Busby of sexual abuse. 3 comments",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538646249097670/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.982,
+      "rule_hits": [
+        "punitive_punishment_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 41,
+      "timestamp_parsed": "2026-02-06T16:29:24",
+      "captured_at": "2026-02-06T17:02:24",
+      "joined_item_type": "post",
+      "body": "Fight For a Better Tomorrow: We Won’t Back Down : · BREAKING: ICE Officer admits to raping woman in custody for months in exchange for seeing her daughter￼ Prosecutors say he would bring the victim letters and pictures of her daughter, along with food and other gifts, which is against ICE rules.￼ David is said to have hired lookouts while he raped the woman in a janitorial closet. Initially, David denied the accusations before confessing during an interview in September.￼ He was released on a $10,000 bond and will be sentenced on April 10* where his charge carries a maximum of 15 years in prison and a fine of up to $250,000.￼ David Courvelle, 56, pled guilty to sexually assaulting a Nicaraguan woman over the course of several months at a Louisiana ICE detention facility.￼ This isn't an isolated case. It's just the only one caught so far.",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25538220752473553/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": -0.973,
+      "rule_hits": [
+        "punitive_punishment_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 34,
+      "timestamp_parsed": "2026-02-06T16:28:56",
+      "captured_at": "2026-02-06T17:01:56",
+      "joined_item_type": "post",
+      "body": "Well… well… well… Gaye Magazine : · RJ May, 39, a former South Carolina Republican lawmaker who publicly warned that transgender people and drag performers posed a threat to children was sentenced Wednesday to 17.5 years in federal prison for distributing hundreds of images and videos depicting the sexual abuse of children. Read full article: https://gayemagazine.visitlink.me/Mv2E7g",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25505505532411742/",
+      "thread_primary_topic": "crime_news",
+      "sentiment_compound": -0.932,
+      "rule_hits": [
+        "punitive_punishment_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 14,
+      "timestamp_parsed": "2026-02-06T16:28:39",
+      "captured_at": "2026-02-06T17:00:39",
+      "joined_item_type": "post",
+      "body": "Wait did that president of Venezuela ￼come to the USA legally or is he an illegal? Why hasn’t he been deported yet?",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25398592476436382/",
+      "thread_primary_topic": "geopolitics",
+      "sentiment_compound": -0.551,
+      "rule_hits": [
+        "expulsion_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 449,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Stefan Bruegeman Reddit banned me",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25655507277411566/",
+      "thread_primary_topic": "juvenile_banter",
+      "sentiment_compound": -0.459,
+      "rule_hits": [
+        "expulsion_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 363,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Mathew Reid LMFAOOO. Should I make my next post of my opinion on trannies? That might get me banned on Facebook honestly",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25651186137843680/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.0,
+      "rule_hits": [
+        "expulsion_terms"
+      ],
+      "score": 1
+    },
+    {
+      "source_index": 251,
+      "timestamp_parsed": "",
+      "captured_at": "2026-02-07T01:20:51+00:00",
+      "joined_item_type": "comment",
+      "body": "Laws are laws\n people vote in these governors without asking them beforehand if they’d ban child marriage in the state. But that’s for the uneducated.\nFun fact: 97% of the state governors that allow child marriage in their state are Christian and 3% of them are Jewish. Seems fairly odd to me",
+      "thread_permalink": "https://www.facebook.com/groups/3970539883001618/posts/25645892355039725/",
+      "thread_primary_topic": "agreement_reactions",
+      "sentiment_compound": 0.593,
+      "rule_hits": [
+        "expulsion_terms"
+      ],
+      "score": 1
+    }
+  ],
+  "fingerprints": {
+    "input_fingerprint": "fb7525e60ee3d35e",
+    "spec_fingerprint": "5eee1fa53f276532",
+    "generated_utc": "2026-02-07T17:17:44.458713+00:00"
+  }
+}

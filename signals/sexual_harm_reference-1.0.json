@@ -1,0 +1,130 @@
+{
+  "signal_id": "sexual_harm_reference",
+  "version": "1.0.0",
+  "title": "Sexual Harm / Minors Reference (Topic Presence)",
+  "tier": "B",
+  "description": "Flags items containing references to sexual harm and/or minors in sexual contexts (as text). This signal measures topic presence in the dataset and is intended for review triage. It does not infer intent, endorsement, or identity claims.",
+
+  "epistemics": {
+    "supports": [
+      "Identifying items in the dataset that reference sexual harm topics (as text).",
+      "Quantifying frequency and distribution of these references over time."
+    ],
+    "does_not_support": [
+      "Inferring intent, endorsement, or actions.",
+      "Determining factuality of quoted/reposted content.",
+      "Labeling a person or assigning motives."
+    ],
+    "failure_modes": [
+      "News reposts and quoted material can trigger matches without endorsement.",
+      "Discussion condemning harm can trigger matches (still relevant for triage).",
+      "Euphemisms and coded language may be missed (false negatives)."
+    ],
+    "scope_statement": "All results are limited to observable content in the collected dataset and declared surfaces for this run."
+  },
+
+  "definition": {
+    "required_input_fields": [
+      "joined_item_type",
+      "source_index",
+      "thread_permalink",
+      "body",
+      "captured_at"
+    ],
+    "unit_of_analysis": "item",
+
+    "inclusion_rules": [
+      {
+        "rule_id": "sexual_harm_terms",
+        "description": "References sexual harm / exploitation terms.",
+        "logic": "any",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(rape(d|s|ist|ing)?|raping)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(sexual(ly)? abuse|sex abuse|abused)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(molest(ed|er|ing)?|groom(ing|ed)?)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(pedophile|pedophilia|pedo)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(child porn|csam)([^A-Za-z0-9_]|$)",
+              "(^|[^A-Za-z0-9_])(sa\\x27?d|sa\\x27?ing|sa\\b)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      },
+      {
+        "rule_id": "minor_terms_with_sex_context",
+        "description": "Mentions minors together with a sexual context keyword.",
+        "logic": "all",
+        "conditions": [
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(minor(s)?|child(ren)?|kid(s)?|teen(ager)?s?|underage)([^A-Za-z0-9_]|$)"
+            ]
+          },
+          {
+            "field": "body",
+            "op": "regex_any",
+            "value": [
+              "(^|[^A-Za-z0-9_])(rape|sex|sexual|molest|groom|abuse|assault)([^A-Za-z0-9_]|$)"
+            ]
+          }
+        ]
+      }
+    ],
+
+    "exclusion_rules": []
+  },
+
+  "outputs": {
+    "score_policy": {
+      "score_type": "presence",
+      "range": { "min": 0, "max": 1 },
+      "tier_constraints": { "A": "numeric", "B": "band", "C": "presence" }
+    },
+
+    "metrics": [
+      {
+        "metric_id": "sexual_harm_reference_count",
+        "title": "Items with sexual-harm references",
+        "type": "count",
+        "description": "Number of items matching inclusion rules."
+      },
+      {
+        "metric_id": "sexual_harm_reference_rate_per_100",
+        "title": "Rate per 100 items",
+        "type": "rate",
+        "description": "Count normalized per 100 items in the analyzed scope."
+      },
+      {
+        "metric_id": "sexual_harm_reference_over_time",
+        "title": "Over-time distribution",
+        "type": "distribution",
+        "description": "Temporal distribution (e.g., monthly bins)."
+      }
+    ],
+
+    "example_selection": {
+      "max_examples": 30,
+      "ordering": "time_desc",
+      "must_include_fields": [
+        "source_index",
+        "timestamp_parsed",
+        "captured_at",
+        "joined_item_type",
+        "body",
+        "thread_permalink",
+        "thread_primary_topic",
+        "sentiment_compound",
+        "rule_hits"
+      ]
+    }
+  },
+
+  "ui": {
+    "display_order": 40
+  }
+}
