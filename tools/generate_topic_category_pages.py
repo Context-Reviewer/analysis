@@ -1,32 +1,41 @@
 from __future__ import annotations
 
-import json
 import html
+import json
 from pathlib import Path
-from collections import defaultdict
 
 ENRICHED = Path("fb_extract_out/sean_context_enriched.jsonl")
 OUT_DIR = Path("docs/topics")
 
-# Deterministic category mapping (explicit, auditable)
+# Explicit, auditable category mapping (deterministic)
 CATEGORY_TOPICS = {
     "israel": ["israel_palestine", "geopolitics"],
     "race": ["race_ethnicity", "dei_woke"],
     "religion": ["religion_morality"],
 }
 
+CATEGORY_TITLES = {
+    "israel": "Israel / Palestine",
+    "race": "Race & Identity",
+    "religion": "Religion",
+}
+
 MAX_ITEMS = 200
+HOSTILE_THRESHOLD = -0.6  # matches your report threshold
+
 
 def fail(msg: str) -> None:
     raise SystemExit(f"[FAIL] {msg}")
 
+
 def esc(s: str) -> str:
     return html.escape(s or "", quote=True)
 
-def load_jsonl(path: Path):
-    rows = []
+
+def load_jsonl(path: Path) -> list[dict]:
     if not path.exists():
         fail(f"Missing enriched file: {path}")
+    rows: list[dict] = []
     for line in path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
@@ -34,79 +43,120 @@ def load_jsonl(path: Path):
         rows.append(json.loads(line))
     return rows
 
-def item_topics(r: dict) -> list[str]:
-    # topics may be a list or a pipe-separated string depending on your pipeline
+
+def topics_set(r: dict) -> set[str]:
     t = r.get("topics")
     if isinstance(t, list):
-        return [str(x) for x in t if str(x).strip()]
+        return {str(x).strip() for x in t if str(x).strip()}
     if isinstance(t, str):
-        parts = [p.strip() for p in t.split("|")]
-        return [p for p in parts if p]
-    return []
+        return {p.strip() for p in t.split("|") if p.strip()}
+    return set()
+
 
 def primary_topic(r: dict) -> str:
     return (r.get("thread_primary_topic") or r.get("primary_topic") or "").strip()
 
-def main() -> None:
-    rows = load_jsonl(ENRICHED)
 
-    # Use comments only for these pages (matches your report semantics)
-    comments = [r for r in rows if r.get("joined_item_type") == "comment"]
+def sort_key(r: dict) -> tuple[int, int]:
+    # timeline_i may not exist; fall back to source_index
+    ti = r.get("timeline_i")
+    try:
+        ti_i = int(ti)
+    except Exception:
+        ti_i = 10**9
+    try:
+        si = int(r.get("source_index") or 0)
+    except Exception:
+        si = 0
+    return (ti_i, si)
 
-    # Build per-category selection
-    selected = {}
-    for cat, topics in CATEGORY_TOPICS.items():
-        topic_set = set(topics)
-        bucket = []
-        for r in comments:
-            pt = primary_topic(r)
-            ts = set(item_topics(r))
-            if pt in topic_set or (ts & topic_set):
-                bucket.append(r)
 
-        # deterministic order: timeline_i
-        bucket.sort(key=lambda x: int(x.get("timeline_i") or 10**9))
-        selected[cat] = bucket
+def fmt_sent(x) -> str:
+    if x is None:
+        return ""
+    try:
+        return f"{float(x):.3f}"
+    except Exception:
+        return ""
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    for cat, bucket in selected.items():
-        out = OUT_DIR / f"{cat}.html"
-        title = {
-            "israel": "Israel / Palestine",
-            "race": "Race & Identity",
-            "religion": "Religion",
-        }.get(cat, cat)
+def compute_summary(items: list[dict]) -> tuple[str, str]:
+    # Returns (avg_sentiment_str, hostile_rate_str)
+    sentiments: list[float] = []
+    hostile = 0
+    for r in items:
+        sc = r.get("sentiment_compound")
+        try:
+            v = float(sc)
+        except Exception:
+            continue
+        sentiments.append(v)
+        if v < HOSTILE_THRESHOLD:
+            hostile += 1
 
-        lines = []
-        lines.append(f"<h1>{esc(title)}</h1>")
-        lines.append(f"<p><b>Matched comments:</b> {len(bucket)}</p>")
-        lines.append('<p><a href="../report.html">Back to Executive Summary</a></p>')
-        lines.append("<hr/>")
-        lines.append("<ol>")
+    if sentiments:
+        avg = sum(sentiments) / len(sentiments)
+        hostile_rate = (hostile / len(sentiments)) * 100.0
+        return (f"{avg:.3f}", f"{hostile_rate:.1f}%")
+    return ("", "")
 
-        for r in bucket[:MAX_ITEMS]:
-            ti = r.get("timeline_i")
-            thread = r.get("thread_permalink") or r.get("permalink") or ""
-            txt = (r.get("body") or "").strip()
-            preview = txt[:280] + ("…" if len(txt) > 280 else "")
-            pt = primary_topic(r)
-            lines.append(
-                "<li>"
-                f"<div><b>timeline_i:</b> {esc(str(ti))} | <b>primary:</b> {esc(pt)}</div>"
-                + (f'<div><a href="{esc(thread)}">thread link</a></div>' if thread else "")
-                + f"<div style='white-space:pre-wrap'>{esc(preview)}</div>"
-                "</li>"
-            )
-        lines.append("</ol>")
 
-        doc = f"""<!doctype html>
+def render_page(cat: str, items: list[dict]) -> str:
+    title = CATEGORY_TITLES.get(cat, cat)
+
+    avg_s, hostile_rate = compute_summary(items)
+
+    subtitle_parts = [f"{len(items)} comments"]
+    if avg_s:
+        subtitle_parts.append(f"Avg sentiment: {avg_s}")
+    if hostile_rate:
+        subtitle_parts.append(f"Hostile (<{HOSTILE_THRESHOLD}): {hostile_rate}")
+    subtitle = " · ".join(subtitle_parts)
+
+    # Table rows (deterministic order)
+    rows_html: list[str] = []
+    for r in items[:MAX_ITEMS]:
+        ti = r.get("timeline_i")
+        pt = primary_topic(r)
+        sc = fmt_sent(r.get("sentiment_compound"))
+        thread = r.get("thread_permalink") or r.get("permalink") or ""
+        body = (r.get("body") or "").strip()
+        preview = body[:280] + ("…" if len(body) > 280 else "")
+
+        link_html = f'<a href="{esc(thread)}">link</a>' if thread else ""
+
+        rows_html.append(
+            "<tr>"
+            f"<td>{esc(str(ti) if ti is not None else '')}</td>"
+            f"<td>{esc(pt)}</td>"
+            f"<td>{esc(sc)}</td>"
+            f"<td>{link_html}</td>"
+            f"<td>{esc(preview)}</td>"
+            "</tr>"
+        )
+
+    table_html = (
+        "<table>"
+        "<thead><tr>"
+        "<th>timeline_i</th>"
+        "<th>primary topic</th>"
+        "<th>sentiment</th>"
+        "<th>thread</th>"
+        "<th>excerpt</th>"
+        "</tr></thead>"
+        "<tbody>"
+        + "".join(rows_html)
+        + "</tbody></table>"
+    )
+
+    # IMPORTANT: use the site's real stylesheet: ../assets/style.css
+    return f"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>{esc(title)}</title>
-  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="stylesheet" href="../assets/style.css"/>
   <script src="../assets/site.js" defer></script>
 </head>
 <body>
@@ -128,7 +178,12 @@ def main() -> None:
   </header>
 
   <main class="container">
-    {''.join(lines)}
+    <h1>{esc(title)}</h1>
+    <p class="subtitle">{esc(subtitle)}</p>
+
+    <section class="panel">
+      {table_html}
+    </section>
   </main>
 
   <footer class="footer">
@@ -137,11 +192,38 @@ def main() -> None:
 </body>
 </html>
 """
-        out.write_text(doc, encoding="utf-8")
 
-    print("[OK] Wrote category topic pages:")
-    for cat, bucket in selected.items():
-        print(f"  {cat}.html: {len(bucket)} comments")
+
+def main() -> None:
+    rows = load_jsonl(ENRICHED)
+
+    # Comments only (consistent with report)
+    comments = [r for r in rows if r.get("joined_item_type") == "comment"]
+
+    # Build per-category buckets
+    selected: dict[str, list[dict]] = {}
+    for cat, wanted in CATEGORY_TOPICS.items():
+        wanted_set = set(wanted)
+        bucket: list[dict] = []
+        for r in comments:
+            pt = primary_topic(r)
+            ts = topics_set(r)
+            if pt in wanted_set or (ts & wanted_set):
+                bucket.append(r)
+
+        bucket.sort(key=sort_key)
+        selected[cat] = bucket
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    for cat, items in selected.items():
+        out = OUT_DIR / f"{cat}.html"
+        out.write_text(render_page(cat, items), encoding="utf-8")
+
+    print("[OK] Wrote styled category topic pages:")
+    for cat, items in selected.items():
+        print(f"  {cat}.html: {len(items)} comments")
+
 
 if __name__ == "__main__":
     main()
