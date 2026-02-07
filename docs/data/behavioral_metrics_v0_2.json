@@ -1,0 +1,163 @@
+{
+  "dataset": {
+    "dataset_fingerprint": "sha256:3d777de72157a992a95e37329813d0a9e0fab3701cdc25c0656c1f58334c3078",
+    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "record_count": 451
+  },
+  "definitions": {
+    "co_occurrence": "unordered topic pairs within the same comment",
+    "divergent_comment": "contains topics from >=2 distinct topic groups",
+    "topic_group": "prefix before '_' (e.g. politics_x \u2192 politics)"
+  },
+  "divergence": {
+    "by_parent_author_type": {
+      "other": 0.3878,
+      "self": 0.4713
+    },
+    "by_thread_primary_topic": {
+      "ableist_insults": 0.3548,
+      "agreement_reactions": 0.4915,
+      "crude_sexual": 0.5,
+      "free_speech": 0.0,
+      "juvenile_banter": 0.1739,
+      "meta_social_media": 0.0
+    },
+    "overall_rate": 0.4169
+  },
+  "schema_version": "behavioral_metrics-0.2",
+  "topic_co_occurrence_top25": [
+    {
+      "count": 48,
+      "topic_a": "questions_curiosity",
+      "topic_b": "religion_morality"
+    },
+    {
+      "count": 34,
+      "topic_a": "agreement_reactions",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 33,
+      "topic_a": "questions_curiosity",
+      "topic_b": "relationships_gender"
+    },
+    {
+      "count": 19,
+      "topic_a": "agreement_reactions",
+      "topic_b": "religion_morality"
+    },
+    {
+      "count": 18,
+      "topic_a": "relationships_gender",
+      "topic_b": "religion_morality"
+    },
+    {
+      "count": 18,
+      "topic_a": "meta_social_media",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 16,
+      "topic_a": "questions_curiosity",
+      "topic_b": "sex_offense_minors"
+    },
+    {
+      "count": 16,
+      "topic_a": "relationships_gender",
+      "topic_b": "sex_offense_minors"
+    },
+    {
+      "count": 14,
+      "topic_a": "religion_morality",
+      "topic_b": "sex_offense_minors"
+    },
+    {
+      "count": 14,
+      "topic_a": "agreement_reactions",
+      "topic_b": "relationships_gender"
+    },
+    {
+      "count": 14,
+      "topic_a": "personal_life",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 12,
+      "topic_a": "agreement_reactions",
+      "topic_b": "meta_social_media"
+    },
+    {
+      "count": 11,
+      "topic_a": "juvenile_banter",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 10,
+      "topic_a": "race_ethnicity",
+      "topic_b": "relationships_gender"
+    },
+    {
+      "count": 9,
+      "topic_a": "general_rage_mockery",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 9,
+      "topic_a": "politics_culturewar",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 9,
+      "topic_a": "agreement_reactions",
+      "topic_b": "juvenile_banter"
+    },
+    {
+      "count": 8,
+      "topic_a": "history_politics",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 8,
+      "topic_a": "meta_social_media",
+      "topic_b": "religion_morality"
+    },
+    {
+      "count": 8,
+      "topic_a": "juvenile_banter",
+      "topic_b": "meta_social_media"
+    },
+    {
+      "count": 8,
+      "topic_a": "personal_life",
+      "topic_b": "religion_morality"
+    },
+    {
+      "count": 7,
+      "topic_a": "crude_sexual",
+      "topic_b": "questions_curiosity"
+    },
+    {
+      "count": 7,
+      "topic_a": "agreement_reactions",
+      "topic_b": "general_rage_mockery"
+    },
+    {
+      "count": 7,
+      "topic_a": "questions_curiosity",
+      "topic_b": "race_ethnicity"
+    },
+    {
+      "count": 6,
+      "topic_a": "history_politics",
+      "topic_b": "religion_morality"
+    }
+  ],
+  "topic_density": {
+    "max": 8,
+    "mean": 1.7627,
+    "median": 1.0,
+    "min": 1,
+    "multi_topic_rate": 0.4169,
+    "single_topic_rate": 0.5831
+  }
+}
