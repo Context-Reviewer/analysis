@@ -21,46 +21,38 @@
   </style>
 </head>
 <body>
-
-    <nav>
-        <a href="index.html" class="brand">Context Reviewer</a>
+  <header class="topnav">
+    <div class="container">
+      <nav>
         <a href="index.html">Home</a>
         <a href="report.html">Report</a>
-        <div class="dropdown">
-            <a href="#">Topics ▾</a>
-            <div class="dropdown-content">
-                <a href="topics/israel.html">Israel / Palestine</a>
-                <a href="topics/race.html">Race & Identity</a>
-                <a href="topics/religion.html">Religion</a>
-            </div>
-        </div>
         <a href="contradictions.html">Contradictions</a>
         <a href="conclusion.html">Conclusion</a>
-        <a href="signals.html" class="active">Signals</a>
-    </nav>
+        <a class="active" href="signals.html">Signals</a>
+      </nav>
+    </div>
+  </header>
 
-
-    <div class="container">
-        <h1>Signals</h1>
-
-        <div class="intro-box">
-            <p class="subtle">
+  <main class="container">
+    <section class="panel">
+      <h1>Signals</h1>
+      <p class="subtle">
         Deterministic, dataset-bounded signal outputs. These are evidence-first indicators computed from collected text.
         No intent inference. No labeling. Examples link to published JSON.
       </p>
-        </div>
 
-        <div class="box">
-            <div id="status" class="subtle mono">Loading signals_index.json…</div>
-            <div id="signals"></div>
-        </div>
+      <div id="status" class="subtle mono">Loading signals_index.json…</div>
+      <div id="signals"></div>
+    </section>
 
-        <div class="box">
-            <h3>Reproducibility</h3>
-            <p><strong>Index source:</strong> <span class="mono"><a href="data/signals_index.json">docs/data/signals_index.json</a></span></p>
-            <p>Rates are normalized per 100 analyzed items as reported by each signal output.</p>
-        </div>
-    </div>
+    <section class="panel">
+      <h2>Reproducibility</h2>
+      <div class="kvs small">
+        <div class="subtle">Index source</div><div class="mono"><a href="data/signals_index.json">docs/data/signals_index.json</a></div>
+        <div class="subtle">Notes</div><div>Rates are normalized per 100 analyzed items as reported by each signal output.</div>
+      </div>
+    </section>
+  </main>
 
 <script>
 function pickMetric(metrics, suffixes) {

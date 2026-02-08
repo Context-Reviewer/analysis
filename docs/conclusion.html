@@ -8,38 +8,37 @@
   <script src="assets/site.js" defer></script>
 </head>
 <body>
-
-            <nav>
-        <a href="index.html" class="brand">Context Reviewer</a>
-        <a href="index.html">Home</a>
-        <a href="report.html">Report</a>
-        <div class="dropdown">
-            <a href="#">Topics ▾</a>
-            <div class="dropdown-content">
-                <a href="topics/israel.html">Israel / Palestine</a>
-                <a href="topics/race.html">Race & Identity</a>
-                <a href="topics/religion.html">Religion</a>
-            </div>
+  <header class="topnav">
+    <div class="brand">Context Reviewer</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="report.html">Report</a>
+      <div class="dropdown">
+        <a href="#">Topics ▾</a>
+        <div class="dropdown-content">
+          <a href="topics/israel.html">Israel / Palestine</a>
+          <a href="topics/race.html">Race & Identity</a>
+          <a href="topics/religion.html">Religion</a>
         </div>
-        <a href="contradictions.html">Contradictions</a>
-        <a href="conclusion.html" class="active">Conclusion</a>
-        <a href="signals.html">Signals</a>
+      </div>
+      <a href="contradictions.html">Contradictions</a>
+      <a href="conclusion.html" class="active">Conclusion</a>
     </nav>
+  </header>
 
+  <main class="container">
+    <h1>Conclusion</h1>
 
-    <div class="container">
-<h1>Conclusion</h1>
-
-    <div class="box">
+    <section class="panel">
       <h2>Scope and caveats</h2>
       <p>
         This page summarizes observable patterns in the dataset only.
         It does not diagnose personality, infer intent, or make clinical or psychological claims.
         All statements should be traceable to measurable counts or example excerpts.
       </p>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Dataset summary</h2>
       <table>
         <tbody>
@@ -53,9 +52,9 @@
           <tr><th>Time coverage last</th><td></td></tr>
         </tbody>
       </table>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Top primary topics (comments)</h2>
       <table>
         <thead><tr><th>topic</th><th>count</th></tr></thead>
@@ -63,9 +62,9 @@
           <tr><td>agreement_reactions</td><td>234</td></tr><tr><td>ableist_insults</td><td>186</td></tr><tr><td>juvenile_banter</td><td>20</td></tr><tr><td>crude_sexual</td><td>6</td></tr><tr><td>geopolitics</td><td>3</td></tr><tr><td>free_speech</td><td>1</td></tr><tr><td>meta_social_media</td><td>1</td></tr>
         </tbody>
       </table>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Examples: hostile excerpts (sentiment &lt; -0.6)</h2>
       <table><thead><tr><th>timeline_i</th><th>topic</th><th>sentiment</th><th>thread</th><th>excerpt</th></tr></thead><tbody><tr><td></td><td>agreement_reactions</td><td>-0.973</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25651502777812016/">link</a></td><td>Alvin Adorno wait… “I do my best to not go out and crusade and fuck shit up.” Are you saying you restrain yourself from killing other christians, raping women and children and killing anyone that’s not a Christian? Ever heard of the sack of…</td></tr><tr><td></td><td>ableist_insults</td><td>-0.97</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/">link</a></td><td>Blake Greer
  so the cultural norm in the time period was to marry on average 12 bc that’s when that start having there period and could have children and that the only basis on her age so we but the Bible also speaks about the emotional and…</td></tr><tr><td></td><td>ableist_insults</td><td>-0.965</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25522193364076292/">link</a></td><td>Blake Greer
@@ -74,9 +73,9 @@
  can you stop posting this type of shit man. This shit is disgusting regardless of who&#x27;s doing. It&#x27;s infuriating that rather then just condemning the shit ppl in the comments try defend it by saying the other side does it…</td></tr><tr><td></td><td>agreement_reactions</td><td>-0.942</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/">link</a></td><td>Zachary Jordan
  Such a dumb thing to care about.
 I remember when Trump was campaigning and all the democrat worshippers I used to talk to were shit-posting on FB about how JD’s kids are mixed. It was hilariously ironic how hypocritical it w…</td></tr></tbody></table>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Examples: most common primary topic — agreement_reactions</h2>
       <table><thead><tr><th>timeline_i</th><th>topic</th><th>sentiment</th><th>thread</th><th>excerpt</th></tr></thead><tbody><tr><td></td><td>agreement_reactions</td><td>0.649</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/">link</a></td><td>Robert Atchison well I’m mixed race so obviously I would care.</td></tr><tr><td></td><td>agreement_reactions</td><td>-0.557</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/">link</a></td><td>Robert Atchison
  I am too and personally don’t give a shit about someone’s race
@@ -93,9 +92,9 @@ ed
 4</td></tr><tr><td></td><td>agreement_reactions</td><td>0.586</td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/">link</a></td><td>Robert Atchison okay? And I’ll move on. Fairly easy</td></tr><tr><td></td><td>agreement_reactions</td><td></td><td><a href="https://www.facebook.com/groups/3970539883001618/posts/25549618181333810/">link</a></td><td>Robert Atchison
 
 Tenor</td></tr></tbody></table>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Observed communication patterns (dataset-bounded)</h2>
       <ul>
         <li>
@@ -124,9 +123,9 @@ Tenor</td></tr></tbody></table>
       <p>
         Notes are descriptive only: no claims about stable traits, intent, or psychology.
       </p>
-    </div>
+    </section>
 
-    <div class="box">
+    <section class="panel">
       <h2>Reproducibility</h2>
       <table>
         <tbody>
@@ -137,13 +136,11 @@ Tenor</td></tr></tbody></table>
       <p>
         All outputs are derived artifacts. No manual edits to outputs.
       </p>
-    </div>
-    </div>
+    </section>
+  </main>
 
-<footer class="footer">
+  <footer class="footer">
     Generated report; patterns only; no inference of intent.
   </footer>
-
-<script src="assets/site.js" defer></script>
 </body>
 </html>
