@@ -1,7 +1,7 @@
 {
   "dataset": {
     "dataset_fingerprint": "sha256:2f6d0936148299ddea08c66c40c877798dae3215b3e30571df6310b0757be27a",
-    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "input_path": "fb_extract_out/sean_context_enriched.v2.jsonl",
     "record_count": 512
   },
   "definitions": {
@@ -200,3 +200,4 @@
     }
   }
 }
+

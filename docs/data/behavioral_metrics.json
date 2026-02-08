@@ -1,7 +1,7 @@
 {
   "schema_version": "behavioral_metrics-0.1",
   "dataset": {
-    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "input_path": "fb_extract_out/sean_context_enriched.v2.jsonl",
     "record_count": 512,
     "date_min": "2026-02-06T16:28:35",
     "date_max": "2026-02-07T01:20:51+00:00",
@@ -705,3 +705,4 @@
     }
   }
 }
+

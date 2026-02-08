@@ -81,7 +81,7 @@ def _emit_run_manifest(run_id: str, subject_label: str, posts_src: Path, comment
     # Phase 1 canonical output names
     timeline_json = FB_OUT / "sean_timeline.json"
     topics_csv = FB_OUT / "sean_topics.csv"
-    enriched_jsonl = FB_OUT / "sean_context_enriched.jsonl"
+    enriched_jsonl = FB_OUT / "sean_context_enriched.v2.jsonl"
     signals_dir = FB_OUT / "signals"
     docs_dir = Path("docs")
     stats_path = FB_OUT / "sean_stats.json"
@@ -211,7 +211,7 @@ def main() -> None:
         if not specs_dir.exists():
             fail("missing signals/ directory")
 
-        signal_input = FB_OUT / "sean_context_enriched.jsonl"
+        signal_input = FB_OUT / "sean_context_enriched.v2.jsonl"
         if not signal_input.exists():
             fail(f"missing expected signal input: {signal_input}")
 
@@ -248,7 +248,7 @@ def main() -> None:
         (run_dir / "artifacts").mkdir(parents=True, exist_ok=True)
         shutil.copy2(FB_OUT / "sean_timeline.json", run_dir / "artifacts" / "sean_timeline.json")
         shutil.copy2(FB_OUT / "sean_topics.csv", run_dir / "artifacts" / "sean_topics.csv")
-        shutil.copy2(FB_OUT / "sean_context_enriched.jsonl", run_dir / "artifacts" / "sean_context_enriched.jsonl")
+        shutil.copy2(FB_OUT / "sean_context_enriched.v2.jsonl", run_dir / "artifacts" / "sean_context_enriched.v2.jsonl")
 
         copy_tree(FB_OUT / "signals", run_dir / "artifacts" / "signals")
         copy_tree(Path("docs"), run_dir / "published_docs" / "docs")
@@ -285,3 +285,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

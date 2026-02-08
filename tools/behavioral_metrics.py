@@ -10,7 +10,7 @@ Governance:
 - Fixed rounding (4 decimals).
 - Fail-loud on missing data or structure violations.
 
-Input: fb_extract_out/sean_context_enriched.jsonl
+Input: fb_extract_out/sean_context_enriched.v2.jsonl
 Output: docs/data/behavioral_metrics.json
 """
 
@@ -20,7 +20,7 @@ import statistics
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-IN_FILE = Path("fb_extract_out/sean_context_enriched.jsonl")
+IN_FILE = Path("fb_extract_out/sean_context_enriched.v2.jsonl")
 OUT_FILE = Path("docs/data/behavioral_metrics.json")
 
 NEGATIVE_THRESHOLD = -0.05
@@ -275,3 +275,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

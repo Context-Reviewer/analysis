@@ -1,7 +1,7 @@
 {
   "dataset": {
     "dataset_fingerprint": "sha256:c1bfd766ce62b382f8a852bb4db63f66da53aac5bb93bb9088d45a7470b1c9ce",
-    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "input_path": "fb_extract_out/sean_context_enriched.v2.jsonl",
     "record_count": 512
   },
   "definitions": {
@@ -165,3 +165,4 @@
     "single_topic_rate": 0.5391
   }
 }
+

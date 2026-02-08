@@ -54,7 +54,7 @@
     "dataset_fingerprint": "sha256:2f6d0936148299ddea08c66c40c877798dae3215b3e30571df6310b0757be27a",
     "date_max": "2026-02-06T16:29:35",
     "date_min": "2026-02-06T16:28:35",
-    "input_path": "fb_extract_out/sean_context_enriched.jsonl",
+    "input_path": "fb_extract_out/sean_context_enriched.v2.jsonl",
     "record_count": 512,
     "timestamp_nonnull_count": 61,
     "timestamp_source": "timestamp_parsed|captured_at"
@@ -140,3 +140,4 @@
     "topics_unique_vocab_size": 28
   }
 }
+

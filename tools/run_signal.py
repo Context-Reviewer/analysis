@@ -301,7 +301,7 @@ def run_signal(signal: dict, items: List[dict]) -> dict:
             "items_analyzed": total,
             "time_min": time_min,
             "time_max": time_max,
-            "surfaces": ["fb_extract_out/sean_context_enriched.jsonl"]
+            "surfaces": ["fb_extract_out/sean_context_enriched.v2.jsonl"]
         },
         "metrics": metrics_out,
         "examples": examples,
@@ -332,3 +332,5 @@ if __name__ == "__main__":
         raise SystemExit(2)
 
     main(Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]))
+
+

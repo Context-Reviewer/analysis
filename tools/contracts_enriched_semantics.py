@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-ENRICHED = Path("fb_extract_out/sean_context_enriched.jsonl")
+ENRICHED = Path("fb_extract_out/sean_context_enriched.v2.jsonl")
 
 def fail(msg: str) -> None:
     raise SystemExit(f"[FAIL] {msg}")
@@ -33,3 +33,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

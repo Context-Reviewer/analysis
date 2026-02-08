@@ -4,7 +4,7 @@ import html
 import json
 from pathlib import Path
 
-ENRICHED = Path("fb_extract_out/sean_context_enriched.jsonl")
+ENRICHED = Path("fb_extract_out/sean_context_enriched.v2.jsonl")
 OUT_DIR = Path("docs/topics")
 
 # Explicit, auditable category mapping (deterministic)
@@ -228,3 +228,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

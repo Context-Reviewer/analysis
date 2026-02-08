@@ -17,7 +17,7 @@ Inputs:
 - fb_extract_out/posts_normalized_sean.jsonl      (Sean-authored root posts; used to classify thread ownership)
 
 Output:
-- fb_extract_out/sean_context_enriched.jsonl
+- fb_extract_out/sean_context_enriched.v2.jsonl
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ TIMELINE_JSON = OUT_DIR / "sean_timeline.json"
 TOPICS_CSV = OUT_DIR / "sean_topics.csv"
 POSTS_SEAN_JSONL = OUT_DIR / "posts_normalized_sean.jsonl"
 
-OUT_JSONL = OUT_DIR / "sean_context_enriched.jsonl"
+OUT_JSONL = OUT_DIR / "sean_context_enriched.v2.jsonl"
 
 
 def fail(msg: str, code: int = 2) -> None:
@@ -281,3 +281,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+

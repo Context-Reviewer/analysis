@@ -11,3 +11,20 @@ __pycache__/
 # Editor/workspace files
 *.code-workspace
 
+# --- local scratch/debug artifacts (do not commit) ---
+tools/_*.py
+tools/*.bak*
+tools/backfill_comment_timestamps.py
+tools/extract_comment_time_*.py
+tools/extract_comment_times_*.py
+tools/extract_comment_id_times_from_netlog.py
+tools/capture_queue_*.py
+tools/capture_fb_graphql.py
+tools/debug_*.py
+tools/dedupe_*.py
+tools/analyze_timestamp_join_coverage.py
+tools/build_missing_capture_targets.py
+tools/run_capture_queue_using_capture_fb_graphql.py
+
+# --- local outputs ---
+fb_extract_out/

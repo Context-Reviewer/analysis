@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 
-IN_PATH = Path("fb_extract_out/sean_context_enriched.jsonl")
+IN_PATH = Path("fb_extract_out/sean_context_enriched.v2.jsonl")
 OUT_PATH = Path("docs/data/behavioral_metrics_v0_3.json")
 SCHEMA_VERSION = "behavioral_metrics-0.3"
 ROUND_N = 4
@@ -219,3 +219,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
