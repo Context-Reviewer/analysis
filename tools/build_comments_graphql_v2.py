@@ -92,7 +92,7 @@ for capdir in sorted(capture_dirs):
     if url:
         urls_covered.add(str(url))
 
-    for jf in sorted(capdir.glob("*.json")):
+    for jf in sorted((capdir / "gql").glob("*.json")):
         if jf.name == "run.json":
             continue
 
@@ -163,4 +163,5 @@ summary = {
 
 OUT_SUMMARY.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 print("[v2] build complete:", len(rows), "rows")
+
 
