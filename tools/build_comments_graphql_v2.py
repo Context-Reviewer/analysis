@@ -1,303 +1,161 @@
-#!/usr/bin/env python3
-"""
-Build an authoritative comment dataset from GraphQL netlog capture dirs.
-
-Reads:
-  fb_extract_out/netlog_queue_urls/**/run.json
-  fb_extract_out/netlog_queue_urls/**/*.json  (payloads)
-
-Writes:
-  fb_extract_out/comments_graphql_v2.jsonl              (all comment objects)
-  fb_extract_out/comments_graphql_v2_sean_roy.jsonl     (filtered author name match)
-  fb_extract_out/comments_graphql_v2_summary.json       (stats)
-  fb_extract_out/comments_graphql_v2_dupe_report.jsonl  (only if collisions)
-
-Notes:
-- This is SOURCE-OF-TRUTH for timestamps & IDs.
-- Deterministic ordering (post_id, legacy_fbid/gql_id, timestamp).
-"""
-
-from __future__ import annotations
-
-import argparse
 import json
-import re
+import pathlib
 from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, Optional
 
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+NETLOG_ROOT = ROOT / "fb_extract_out" / "netlog_queue_urls"
+OUT_DIR = ROOT / "fb_extract_out"
 
-POST_ID_RE = re.compile(r"/(posts|permalink)/(\d{10,})", re.IGNORECASE)
+OUT_JSONL = OUT_DIR / "comments_graphql_v2.jsonl"
+OUT_SUMMARY = OUT_DIR / "comments_graphql_v2_summary.json"
 
-
-def iso_utc_from_epoch_seconds(sec: int) -> str:
-    dt = datetime.fromtimestamp(int(sec), tz=timezone.utc)
-    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def parse_json(p: Path) -> Optional[Any]:
-    try:
-        return json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
-        return None
-
-
-def walk(obj: Any) -> Iterable[Any]:
-    stack = [obj]
-    while stack:
-        cur = stack.pop()
-        yield cur
-        if isinstance(cur, dict):
-            for v in cur.values():
-                if isinstance(v, (dict, list)):
-                    stack.append(v)
-        elif isinstance(cur, list):
-            for v in cur:
-                if isinstance(v, (dict, list)):
-                    stack.append(v)
-
-
-def extract_post_id(url: str) -> Optional[str]:
-    m = POST_ID_RE.search(url or "")
-    return m.group(2) if m else None
-
-
-def get_comment_body(obj: dict) -> Optional[str]:
-    # prefer body.text
-    b = obj.get("body")
-    if isinstance(b, dict):
-        t = b.get("text")
-        if isinstance(t, str) and t.strip():
-            return t
-    # fallback: message.text
-    m = obj.get("message")
-    if isinstance(m, dict):
-        t = m.get("text")
-        if isinstance(t, str) and t.strip():
-            return t
-    # fallback: text
-    t2 = obj.get("text")
-    if isinstance(t2, str) and t2.strip():
-        return t2
+def load_json_any_encoding(p: pathlib.Path) -> Optional[Dict[str, Any]]:
+    b = p.read_bytes()
+    for enc in ("utf-8", "utf-8-sig", "latin-1"):
+        try:
+            s = b.decode(enc)
+            return json.loads(s)
+        except Exception:
+            continue
     return None
 
+def walk(obj: Any) -> Iterable[Dict[str, Any]]:
+    if isinstance(obj, dict):
+        yield obj
+        for v in obj.values():
+            yield from walk(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            yield from walk(v)
 
-def get_author(obj: dict) -> Tuple[Optional[str], Optional[str]]:
-    a = obj.get("author")
+def get_body_text(node: Dict[str, Any]) -> Optional[str]:
+    body = node.get("body")
+    if isinstance(body, dict):
+        t = body.get("text")
+        if isinstance(t, str) and t.strip():
+            return t
+    if isinstance(body, str) and body.strip():
+        return body
+    return None
+
+def get_author_name(node: Dict[str, Any]) -> Optional[str]:
+    a = node.get("author")
     if isinstance(a, dict):
-        name = a.get("name")
-        aid = a.get("id")
-        if isinstance(name, str) and name.strip():
-            return name.strip(), (str(aid) if aid is not None else None)
-    return None, None
+        n = a.get("name")
+        if isinstance(n, str) and n.strip():
+            return n
+    return None
 
+def iso_from_created_time(ts: Any) -> Optional[str]:
+    if isinstance(ts, int) and ts > 0:
+        return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+    if isinstance(ts, str):
+        # Sometimes already ISO
+        try:
+            datetime.fromisoformat(ts.replace("Z", "+00:00"))
+            return ts
+        except Exception:
+            return None
+    return None
 
-def stable_key(post_id: str, legacy_fbid: Optional[str], gql_id: Optional[str], created_time: Optional[int], author: str, body: str) -> Tuple:
-    # deterministic sort and dedupe preference:
-    # legacy_fbid first, else gql_id
-    return (
-        post_id or "",
-        str(legacy_fbid or ""),
-        str(gql_id or ""),
-        int(created_time or 0),
-        author.lower(),
-        body[:64].lower(),
-    )
+rows = []
+seen_legacy = set()
 
+capture_dirs = [p for p in NETLOG_ROOT.iterdir() if p.is_dir()]
+payload_files_seen = 0
+comment_nodes_seen = 0
+comment_nodes_with_time = 0
+comment_nodes_with_body = 0
+posts_covered = set()
+urls_covered = set()
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--root", default="fb_extract_out/netlog_queue_urls")
-    ap.add_argument("--out", default="fb_extract_out/comments_graphql_v2.jsonl")
-    ap.add_argument("--out-sean", default="fb_extract_out/comments_graphql_v2_sean_roy.jsonl")
-    ap.add_argument("--summary", default="fb_extract_out/comments_graphql_v2_summary.json")
-    ap.add_argument("--dupes", default="fb_extract_out/comments_graphql_v2_dupe_report.jsonl")
-    ap.add_argument("--sean-name", default="Sean Roy")
-    args = ap.parse_args()
+for capdir in sorted(capture_dirs):
+    run_json = capdir / "run.json"
+    post_id = None
+    url = None
 
-    root = Path(args.root)
-    if not root.exists():
-        print(f"[ERR] missing root dir: {root}")
-        return 2
+    if run_json.exists():
+        try:
+            run_data = json.loads(run_json.read_text(encoding="utf-8"))
+            post_id = run_data.get("post_id")
+            url = run_data.get("url")
+        except Exception:
+            pass
 
-    cap_dirs = sorted([p for p in root.glob("**/*") if p.is_dir() and (p / "run.json").exists()])
+    if post_id:
+        posts_covered.add(str(post_id))
+    if url:
+        urls_covered.add(str(url))
 
-    rows: List[dict] = []
-    seen: Dict[Tuple[str, str], dict] = {}  # (post_id, legacy_fbid) -> row
-    seen_gql: Dict[Tuple[str, str], dict] = {}  # (post_id, gql_id) -> row
-    dupes_out: List[dict] = []
-
-    stats = {
-        "capture_dirs": len(cap_dirs),
-        "runjson_loaded": 0,
-        "runjson_failed": 0,
-        "payload_files_seen": 0,
-        "payload_json_loaded": 0,
-        "payload_json_failed": 0,
-        "comment_nodes_seen": 0,
-        "comment_nodes_with_time": 0,
-        "comment_nodes_with_body": 0,
-        "comment_rows_emitted": 0,
-        "unique_by_legacy": 0,
-        "unique_by_gql": 0,
-        "posts_covered": 0,
-        "sean_rows": 0,
-    }
-
-    post_ids_seen = set()
-
-    for d in cap_dirs:
-        runp = d / "run.json"
-        runj = parse_json(runp)
-        if not isinstance(runj, dict):
-            stats["runjson_failed"] += 1
+    for jf in sorted(capdir.glob("*.json")):
+        if jf.name == "run.json":
             continue
-        stats["runjson_loaded"] += 1
 
-        url = runj.get("url")
-        if not isinstance(url, str):
+        payload = load_json_any_encoding(jf)
+        if payload is None:
             continue
-        post_id = extract_post_id(url)
-        if not post_id:
-            continue
-        post_ids_seen.add(post_id)
 
-        payload_files = sorted([p for p in d.glob("*.json") if p.name not in ("run.json", "metrics.json")])
-        stats["payload_files_seen"] += len(payload_files)
+        payload_files_seen += 1
 
-        for jp in payload_files:
-            data = parse_json(jp)
-            if data is None:
-                stats["payload_json_failed"] += 1
+        for d in walk(payload):
+            # Comment-like node detection
+            if "legacy_fbid" not in d:
                 continue
-            stats["payload_json_loaded"] += 1
 
-            for obj in walk(data):
-                if not isinstance(obj, dict):
-                    continue
-                if obj.get("__typename") != "Comment":
-                    continue
+            legacy = d.get("legacy_fbid")
+            if not isinstance(legacy, str) or not legacy.strip():
+                continue
 
-                stats["comment_nodes_seen"] += 1
+            comment_nodes_seen += 1
 
-                ct = obj.get("created_time")
-                try:
-                    ct_int = int(ct) if ct is not None else None
-                except Exception:
-                    ct_int = None
+            created_time = d.get("created_time")
+            created_time_iso = iso_from_created_time(created_time)
+            if created_time_iso:
+                comment_nodes_with_time += 1
 
-                if ct_int is not None:
-                    stats["comment_nodes_with_time"] += 1
+            body_text = get_body_text(d)
+            if body_text:
+                comment_nodes_with_body += 1
 
-                author_name, author_id = get_author(obj)
-                body = get_comment_body(obj)
+            # Canonical emit rule: require time + body
+            if not (created_time_iso and body_text):
+                continue
 
-                if not body:
-                    continue
-                stats["comment_nodes_with_body"] += 1
+            # Dedup by legacy_fbid (authoritative)
+            if legacy in seen_legacy:
+                continue
+            seen_legacy.add(legacy)
 
-                legacy_fbid = obj.get("legacy_fbid")
-                gql_id = obj.get("id")
-                legacy_fbid_s = str(legacy_fbid) if legacy_fbid is not None else None
-                gql_id_s = str(gql_id) if gql_id is not None else None
+            rows.append({
+                "legacy_fbid": legacy,
+                "post_id": str(post_id) if post_id else None,
+                "author": get_author_name(d),
+                "body": {"text": body_text},
+                "created_time": created_time,
+                "created_time_iso": created_time_iso,
+                "source": "graphql_v2",
+            })
 
-                row = {
-                    "item_type": "comment_v2",
-                    "post_id": post_id,
-                    "legacy_fbid": legacy_fbid_s,
-                    "gql_id": gql_id_s,
-                    "created_time": ct_int,
-                    "timestamp_parsed": (iso_utc_from_epoch_seconds(ct_int) if ct_int is not None else None),
-                    "author_name": author_name,
-                    "author_id": author_id,
-                    "body_text": body,
-                    "capture_dir": str(d).replace("\\", "/"),
-                    "source_file": jp.name,
-                }
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-                # Deduplicate deterministically:
-                # Prefer legacy_fbid key, else gql_id. If collision with differing timestamps/body, record dupes.
-                if legacy_fbid_s:
-                    k = (post_id, legacy_fbid_s)
-                    if k in seen:
-                        prev = seen[k]
-                        if (prev.get("timestamp_parsed") != row.get("timestamp_parsed")) or (prev.get("body_text") != row.get("body_text")):
-                            dupes_out.append({"key": {"post_id": post_id, "legacy_fbid": legacy_fbid_s}, "a": prev, "b": row})
-                        # keep first (stable: first seen via sorted dirs/files)
-                        continue
-                    seen[k] = row
-                    stats["unique_by_legacy"] += 1
-                elif gql_id_s:
-                    k = (post_id, gql_id_s)
-                    if k in seen_gql:
-                        prev = seen_gql[k]
-                        if (prev.get("timestamp_parsed") != row.get("timestamp_parsed")) or (prev.get("body_text") != row.get("body_text")):
-                            dupes_out.append({"key": {"post_id": post_id, "gql_id": gql_id_s}, "a": prev, "b": row})
-                        continue
-                    seen_gql[k] = row
-                    stats["unique_by_gql"] += 1
-                else:
-                    # no IDs at all: keep it, but it’s rare; allow duplicates by body
-                    pass
+with OUT_JSONL.open("w", encoding="utf-8") as f:
+    for r in rows:
+        f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
-                rows.append(row)
+summary = {
+    "capture_dirs": len(capture_dirs),
+    "payload_files_seen": payload_files_seen,
+    "comment_nodes_seen": comment_nodes_seen,
+    "comment_nodes_with_time": comment_nodes_with_time,
+    "comment_nodes_with_body": comment_nodes_with_body,
+    "comment_rows_emitted": len(rows),
+    "unique_by_legacy": len(rows),
+    "unique_by_gql": 0,
+    "posts_covered": len(posts_covered),
+    "post_ids": sorted(posts_covered),
+    "urls_covered": sorted(urls_covered),
+}
 
-    stats["posts_covered"] = len(post_ids_seen)
-    stats["comment_rows_emitted"] = len(rows)
-
-    # stable sort for determinism
-    def sort_key(r: dict) -> Tuple:
-        return stable_key(
-            r.get("post_id") or "",
-            r.get("legacy_fbid"),
-            r.get("gql_id"),
-            r.get("created_time"),
-            r.get("author_name") or "",
-            r.get("body_text") or "",
-        )
-
-    rows.sort(key=sort_key)
-
-    outp = Path(args.out)
-    outp.parent.mkdir(parents=True, exist_ok=True)
-    with outp.open("w", encoding="utf-8") as f:
-        for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    # Sean-only
-    sean = (args.sean_name or "").strip().lower()
-    out_sean = Path(args.out_sean)
-    with out_sean.open("w", encoding="utf-8") as f:
-        for r in rows:
-            if isinstance(r.get("author_name"), str) and r["author_name"].strip().lower() == sean:
-                stats["sean_rows"] += 1
-                f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    # dupes report
-    dupes_path = Path(args.dupes)
-    if dupes_out:
-        with dupes_path.open("w", encoding="utf-8") as f:
-            for d in dupes_out:
-                f.write(json.dumps(d, ensure_ascii=False) + "\n")
-    else:
-        # remove stale dupes file if exists
-        if dupes_path.exists():
-            dupes_path.unlink()
-
-    # summary json
-    sump = Path(args.summary)
-    sump.write_text(json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    print(f"[OK] wrote: {outp}")
-    print(f"[OK] wrote: {out_sean}")
-    print(f"[OK] wrote: {sump}")
-    if dupes_out:
-        print(f"[WARN] dupes written: {dupes_path} count={len(dupes_out)}")
-    print("[V2 SUMMARY]")
-    for k in sorted(stats.keys()):
-        print(f"  {k}: {stats[k]}")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+OUT_SUMMARY.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+print("[v2] build complete:", len(rows), "rows")
