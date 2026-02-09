@@ -62,7 +62,11 @@ def iso_from_created_time(ts: Any) -> Optional[str]:
 rows = []
 seen_legacy = set()
 
-capture_dirs = [p for p in NETLOG_ROOT.iterdir() if p.is_dir()]
+capture_root = ROOT / "fb_extract_out" / "netlog_queue_urls"
+capture_dirs = sorted([
+    p for p in capture_root.iterdir()
+    if p.is_dir() and (p / "gql").exists()
+])
 payload_files_seen = 0
 comment_nodes_seen = 0
 comment_nodes_with_time = 0
@@ -159,3 +163,4 @@ summary = {
 
 OUT_SUMMARY.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 print("[v2] build complete:", len(rows), "rows")
+
