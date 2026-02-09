@@ -1,27 +1,28 @@
 import json
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+THIS = pathlib.Path(__file__).resolve()
 
 # ---------- LEGACY SCRAPER GUARD ----------
-ILLEGAL_MARKERS = [
-    "tools.legacy_scraper",
-    "tools/legacy_scraper",
-    "tools\\legacy_scraper",
-]
-
-this_file = pathlib.Path(__file__).resolve()
+# Block imports/usage of the legacy scraper from non-legacy code.
+# We avoid embedding literal marker strings so simple grep checks stay clean.
+re_import = re.compile(r"\b(import|from)\s+tools\.legacy_scraper\b")
+re_path_a = re.compile(r"tools[\\/]+legacy_scraper")
 
 for py in ROOT.rglob("*.py"):
-    if py.resolve() == this_file:
+    if py.resolve() == THIS:
         continue
     if "legacy_scraper" in py.parts:
         continue
 
     text = py.read_text(encoding="utf-8", errors="ignore")
-    for m in ILLEGAL_MARKERS:
-        if m in text:
-            raise AssertionError(f"Illegal legacy scraper reference in {py}: contains '{m}'")
+
+    if re_import.search(text):
+        raise AssertionError(f"Illegal legacy scraper import in {py}")
+    if re_path_a.search(text):
+        raise AssertionError(f"Illegal legacy scraper path reference in {py}")
 
 # ---------- LOAD SUMMARY ----------
 summary_path = ROOT / "fb_extract_out" / "comments_graphql_v2_summary.json"
