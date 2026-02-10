@@ -1,0 +1,1 @@
+Input ordering policy: A (input order only). Timestamps are retained as provenance but not used for ordering.

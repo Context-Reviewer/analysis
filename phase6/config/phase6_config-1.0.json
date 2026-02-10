@@ -1,0 +1,6 @@
+{
+  "schema": "phase6_config-1.0",
+  "input_path": "fb_extract_out/phase5_target_only.jsonl",
+  "output_root": "phase6/out",
+  "write_markdown": true
+}

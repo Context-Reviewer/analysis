@@ -1,0 +1,427 @@
+#!/usr/bin/env python3
+"""
+Phase 6 Skeleton Runner (Deterministic, Offline)
+
+- Reads comments_normalized.jsonl (immutable input)
+- Validates invariants (hard fail on drift)
+- Emits deterministic Phase 6 artifacts:
+  - phase6_manifest.json (+ optional .md)
+  - phase6_normalized.jsonl
+  - phase6_timeline.json (+ optional .md)
+  - phase6_topics.json (+ optional .md)  [skeleton: unassigned]
+  - phase6_tone.json (+ optional .md)    [skeleton: unknown]
+  - phase6_patterns.json (+ optional .md)[skeleton: empty]
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Tuple
+
+
+# ----------------------------
+# Deterministic helpers
+# ----------------------------
+
+_WHITESPACE_RE = re.compile(r"\s+")
+_POSTS_ID_RE = re.compile(r"/posts/(\d+)")
+
+
+def sha256_bytes(b: bytes) -> str:
+    return hashlib.sha256(b).hexdigest()
+
+
+def sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def normalize_text(s: str) -> str:
+    # Lowercase + whitespace normalization only (no punctuation removal)
+    s2 = s.lower()
+    s2 = _WHITESPACE_RE.sub(" ", s2).strip()
+    return s2
+
+
+def extract_thread_id(permalink: str) -> str:
+    m = _POSTS_ID_RE.search(permalink or "")
+    if m:
+        return m.group(1)
+    # Fallback: stable hash of permalink
+    return sha256_bytes(permalink.encode("utf-8"))[:16]
+
+
+def make_record_id(permalink: str, source_index: int, body: str) -> str:
+    # Deterministic ID: stable across runs and resilient to line reordering.
+    # Uses normalized body to avoid trivial whitespace changes producing different IDs.
+    key = f"{permalink}|{source_index}|{normalize_text(body)}".encode("utf-8")
+    return sha256_bytes(key)[:16]
+
+
+def hard_fail(msg: str) -> None:
+    raise SystemExit(f"[phase6] FATAL: {msg}")
+
+
+# ----------------------------
+# Validation
+# ----------------------------
+
+def expect_type(obj: Any, t: type, field: str) -> None:
+    if not isinstance(obj, t):
+        hard_fail(f"Field '{field}' must be {t.__name__}, got {type(obj).__name__}")
+
+
+def expect_non_empty_str(obj: Any, field: str) -> None:
+    expect_type(obj, str, field)
+    if obj.strip() == "":
+        hard_fail(f"Field '{field}' must be a non-empty string")
+
+
+def expect_int(obj: Any, field: str) -> None:
+    if isinstance(obj, bool):
+        hard_fail(f"Field '{field}' must be int, got bool")
+    expect_type(obj, int, field)
+
+
+def validate_input_record(rec: Dict[str, Any], line_no: int) -> None:
+    # Required
+    for f in ["schema_version", "item_type", "body", "author", "permalink"]:
+        if f not in rec:
+            hard_fail(f"Missing required field '{f}' at line {line_no}")
+    expect_non_empty_str(rec["schema_version"], "schema_version")
+    expect_non_empty_str(rec["item_type"], "item_type")
+    expect_non_empty_str(rec["body"], "body")
+    expect_non_empty_str(rec["author"], "author")
+    expect_non_empty_str(rec["permalink"], "permalink")
+
+    if "source_index" not in rec:
+        hard_fail(f"Missing required field 'source_index' at line {line_no}")
+    expect_int(rec["source_index"], "source_index")
+
+    # Optional fields (if present, accept None or str)
+    for opt in ["timestamp_parsed", "timestamp_raw", "captured_at", "parent_context"]:
+        if opt in rec and rec[opt] is not None and not isinstance(rec[opt], str):
+            hard_fail(f"Field '{opt}' must be string or null at line {line_no}")
+
+
+# ----------------------------
+# Writers
+# ----------------------------
+
+def write_json(path: Path, obj: Any) -> None:
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def write_jsonl(path: Path, items: Iterable[Dict[str, Any]]) -> None:
+    with path.open("w", encoding="utf-8") as f:
+        for it in items:
+            f.write(json.dumps(it, ensure_ascii=False) + "\n")
+
+
+def md_kv(title: str, kv: List[Tuple[str, str]]) -> str:
+    lines = [f"# {title}", ""]
+    for k, v in kv:
+        lines.append(f"- **{k}**: {v}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ----------------------------
+# Main
+# ----------------------------
+
+def load_config(path: Path) -> Dict[str, Any]:
+    if not path.exists():
+        hard_fail(f"Config not found: {path}")
+    try:
+        cfg = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        hard_fail(f"Config JSON parse error: {e}")
+    if cfg.get("schema") != "phase6_config-1.0":
+        hard_fail("Config schema must be 'phase6_config-1.0'")
+    for k in ["input_path", "output_root"]:
+        if k not in cfg:
+            hard_fail(f"Config missing '{k}'")
+        expect_non_empty_str(cfg[k], k)
+    if "write_markdown" in cfg and not isinstance(cfg["write_markdown"], bool):
+        hard_fail("Config 'write_markdown' must be boolean if present")
+    return cfg
+
+
+def read_exact_bytes(path: Path) -> bytes:
+    try:
+        return path.read_bytes()
+    except Exception as e:
+        hard_fail(f"Failed to read input bytes: {e}")
+
+
+def run(cfg_path: Path) -> None:
+    cfg = load_config(cfg_path)
+
+    input_path = Path(cfg["input_path"])
+    output_root = Path(cfg["output_root"])
+    write_md = bool(cfg.get("write_markdown", True))
+
+    if not input_path.exists():
+        hard_fail(f"Input not found: {input_path}")
+
+    input_bytes = read_exact_bytes(input_path)
+    input_sha256 = sha256_bytes(input_bytes)
+    run_id = f"phase6_{input_sha256[:8]}"
+
+    out_dir = output_root / run_id
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Parse JSONL strictly (line-by-line, no blank records)
+    records_in: List[Dict[str, Any]] = []
+    for i, raw in enumerate(input_bytes.splitlines(), start=1):
+        line = raw.decode("utf-8", errors="strict").strip()
+        if line == "":
+            hard_fail(f"Blank line not allowed at line {i}")
+        try:
+            rec = json.loads(line)
+        except Exception as e:
+            hard_fail(f"JSON parse error at line {i}: {e}")
+        if not isinstance(rec, dict):
+            hard_fail(f"Each line must be a JSON object at line {i}")
+        validate_input_record(rec, i)
+        records_in.append(rec)
+
+    if not records_in:
+        hard_fail("Input corpus is empty")
+
+    # Build normalized records (1:1 mapping), preserve input order
+    normalized_items: List[Dict[str, Any]] = []
+    seen_ids = set()
+
+    for ordinal, rec in enumerate(records_in):
+        body = rec["body"]
+        permalink = rec["permalink"]
+        source_index = rec["source_index"]
+        rid = make_record_id(permalink, source_index, body)
+        if rid in seen_ids:
+            hard_fail(f"Duplicate computed id '{rid}' (collision) at input_ordinal={ordinal}")
+        seen_ids.add(rid)
+
+        item_type = rec["item_type"]
+        is_reply = (item_type == "reply")
+
+        normalized = {
+            "schema": "phase6_normalized_record-1.0",
+            "id": rid,
+            "input_ordinal": ordinal,
+            "thread_id": extract_thread_id(permalink),
+            "is_reply": is_reply,
+            "author": rec["author"],
+            "text": body,
+            "derived": {
+                "text_normalized": normalize_text(body),
+                "char_count": len(body),
+                "token_count_est": 0 if normalize_text(body) == "" else len(normalize_text(body).split(" ")),
+                "has_question_mark": "?" in body,
+                "has_exclamation_mark": "!" in body,
+            },
+            "provenance": {
+                "source_phase": rec.get("schema_version", "unknown"),
+                "source_path": str(input_path).replace("\\", "/"),
+                "source_line": ordinal + 1,
+                "permalink": permalink,
+                "parent_context": rec.get("parent_context"),
+                "timestamp_parsed": rec.get("timestamp_parsed"),
+                "timestamp_raw": rec.get("timestamp_raw"),
+                "captured_at": rec.get("captured_at"),
+                "source_index": source_index,
+            },
+        }
+        normalized_items.append(normalized)
+
+    # Timeline (ordinal only)
+    n = len(normalized_items)
+    def bucket_for(ord_: int) -> str:
+        if n <= 1:
+            return "mid"
+        p = ord_ / (n - 1)
+        if p < 0.33:
+            return "early"
+        if p < 0.66:
+            return "mid"
+        return "late"
+
+    timeline = {
+        "schema": "phase6_timeline-1.0",
+        "items": [
+            {
+                "id": it["id"],
+                "input_ordinal": it["input_ordinal"],
+                "thread_id": it["thread_id"],
+                "is_reply": it["is_reply"],
+                "position_bucket": bucket_for(it["input_ordinal"]),
+            }
+            for it in normalized_items
+        ],
+        "buckets": {
+            "early": {"start_inclusive": 0.0, "end_exclusive": 0.33},
+            "mid": {"start_inclusive": 0.33, "end_exclusive": 0.66},
+            "late": {"start_inclusive": 0.66, "end_inclusive": 1.0},
+        },
+    }
+
+    # Topics (skeleton)
+    topics = {
+        "schema": "phase6_topics-1.0",
+        "topic_set_version": "topics-0.0-skeleton",
+        "items": [
+            {
+                "id": it["id"],
+                "input_ordinal": it["input_ordinal"],
+                "primary_topic": "unassigned",
+                "secondary_tags": [],
+                "confidence": "n/a",
+                "rules_fired": [],
+            }
+            for it in normalized_items
+        ],
+        "summary": {
+            "by_topic": {"unassigned": n},
+            "uncategorized": n,
+        },
+    }
+
+    # Tone (skeleton)
+    tone = {
+        "schema": "phase6_tone-1.0",
+        "tone_model_version": "tone-0.0-skeleton",
+        "items": [
+            {
+                "id": it["id"],
+                "input_ordinal": it["input_ordinal"],
+                "polarity": "unknown",
+                "intensity": "unknown",
+                "posture": "unknown",
+                "rules_fired": [],
+            }
+            for it in normalized_items
+        ],
+        "summary": {
+            "polarity_counts": {"unknown": n},
+            "intensity_counts": {"unknown": n},
+        },
+    }
+
+    # Patterns (skeleton)
+    patterns = {
+        "schema": "phase6_patterns-1.0",
+        "items": [],
+        "summary": {"patterns_found": 0},
+    }
+
+    # Write outputs
+    p_norm = out_dir / "phase6_normalized.jsonl"
+    p_timeline = out_dir / "phase6_timeline.json"
+    p_topics = out_dir / "phase6_topics.json"
+    p_tone = out_dir / "phase6_tone.json"
+    p_patterns = out_dir / "phase6_patterns.json"
+    p_manifest = out_dir / "phase6_manifest.json"
+
+    write_jsonl(p_norm, normalized_items)
+    write_json(p_timeline, timeline)
+    write_json(p_topics, topics)
+    write_json(p_tone, tone)
+    write_json(p_patterns, patterns)
+
+    # Manifest hashes are computed from the files we just wrote
+    manifest = {
+        "schema": "phase6_manifest-1.0",
+        "run": {
+            "run_id": run_id,
+            "tool": {"name": "Context-Reviewer/analysis phase6", "version": "0.6.0-skeleton"},
+        },
+        "input": {
+            "path": str(input_path).replace("\\", "/"),
+            "sha256": input_sha256,
+            "records": n,
+        },
+        "output": {
+            "dir": str(out_dir).replace("\\", "/"),
+            "files": [
+                {"name": "phase6_normalized.jsonl", "sha256": sha256_file(p_norm)},
+                {"name": "phase6_timeline.json", "sha256": sha256_file(p_timeline)},
+                {"name": "phase6_topics.json", "sha256": sha256_file(p_topics)},
+                {"name": "phase6_tone.json", "sha256": sha256_file(p_tone)},
+                {"name": "phase6_patterns.json", "sha256": sha256_file(p_patterns)},
+            ],
+        },
+        "counts": {
+            "normalized_records": n,
+            "topics_classified": 0,
+            "tone_scored": 0,
+            "patterns_found": 0,
+        },
+        "config": {
+            "path": str(cfg_path).replace("\\", "/"),
+            "sha256": sha256_file(cfg_path),
+        },
+        "notes": [
+            "Phase 6 skeleton run: timeline is ordinal-only; topics/tone/patterns are schema-valid placeholders.",
+        ],
+    }
+    write_json(p_manifest, manifest)
+
+    if write_md:
+        (out_dir / "phase6_manifest.md").write_text(
+            md_kv("Phase 6 Manifest", [
+                ("run_id", run_id),
+                ("input_sha256", input_sha256),
+                ("records", str(n)),
+                ("output_dir", str(out_dir).replace("\\", "/")),
+            ]),
+            encoding="utf-8",
+        )
+        (out_dir / "phase6_timeline.md").write_text(
+            md_kv("Phase 6 Timeline (Ordinal)", [
+                ("buckets", "early/mid/late by percentile of input_ordinal"),
+            ]),
+            encoding="utf-8",
+        )
+        (out_dir / "phase6_topics.md").write_text(
+            md_kv("Phase 6 Topics (Skeleton)", [
+                ("topic_set_version", "topics-0.0-skeleton"),
+                ("classified", "0 (all unassigned)"),
+            ]),
+            encoding="utf-8",
+        )
+        (out_dir / "phase6_tone.md").write_text(
+            md_kv("Phase 6 Tone (Skeleton)", [
+                ("tone_model_version", "tone-0.0-skeleton"),
+                ("scored", "0 (all unknown)"),
+            ]),
+            encoding="utf-8",
+        )
+        (out_dir / "phase6_patterns.md").write_text(
+            md_kv("Phase 6 Patterns (Skeleton)", [
+                ("patterns_found", "0"),
+            ]),
+            encoding="utf-8",
+        )
+
+    print(f"[phase6] OK run_id={run_id}")
+    print(f"[phase6] out_dir={out_dir}")
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", required=True, help="Path to phase6_config-1.0.json")
+    args = ap.parse_args()
+    run(Path(args.config))
+
+
+if __name__ == "__main__":
+    main()
