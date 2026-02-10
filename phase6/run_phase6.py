@@ -8,6 +8,8 @@ Inputs:
 Outputs (under phase6/out/<run_id>/):
 - phase6_normalized.jsonl
 - phase6_topics.json
+- phase6_tone.json
+- phase6_summary.json
 - phase6_manifest.json
 
 Determinism:
@@ -78,6 +80,9 @@ def load_config(path: Path) -> Dict[str, Any]:
     return cfg
 
 
+# -------------------------
+# Topics (topics-1.0)
+# -------------------------
 def load_topics_spec(path: Path) -> Dict[str, Any]:
     spec = json.loads(path.read_text(encoding="utf-8"))
     if spec.get("schema") != "topics-1.0":
@@ -155,7 +160,7 @@ def apply_topics(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[st
         else:
             primary = sorted(
                 score_by_topic.items(),
-                key=lambda kv: (-kv[1], prec_rank.get(kv[0], 10**9))
+                key=lambda kv: (-kv[1], prec_rank.get(kv[0], 10**9)),
             )[0][0]
             total = score_by_topic[primary]
             conf = topic_confidence(total, bands)
@@ -164,15 +169,17 @@ def apply_topics(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[st
 
         by_topic[primary] = by_topic.get(primary, 0) + 1
 
-        items.append({
-            "id": r["id"],
-            "input_ordinal": r["input_ordinal"],
-            "primary_topic": primary,
-            "secondary_tags": tags,
-            "confidence": conf,
-            "rules_fired": fired,
-            "score_total": total
-        })
+        items.append(
+            {
+                "id": r["id"],
+                "input_ordinal": r["input_ordinal"],
+                "primary_topic": primary,
+                "secondary_tags": tags,
+                "confidence": conf,
+                "rules_fired": fired,
+                "score_total": total,
+            }
+        )
 
     items.sort(key=lambda x: x["input_ordinal"])
 
@@ -182,10 +189,14 @@ def apply_topics(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[st
         "items": items,
         "summary": {
             "by_topic": dict(sorted(by_topic.items(), key=lambda kv: (-kv[1], kv[0]))),
-            "uncategorized": by_topic.get("uncategorized", 0)
-        }
+            "uncategorized": by_topic.get("uncategorized", 0),
+        },
     }
 
+
+# -------------------------
+# Tone (tone-1.0)
+# -------------------------
 def load_tone_spec(path: Path) -> Dict[str, Any]:
     spec = json.loads(path.read_text(encoding="utf-8"))
     if spec.get("schema") != "tone-1.0":
@@ -194,7 +205,6 @@ def load_tone_spec(path: Path) -> Dict[str, Any]:
 
 
 def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str, Any]:
-    # spec sections
     pol_rules = spec.get("polarity_rules", [])
     int_rules = spec.get("intensity_rules", [])
     pos_rules = spec.get("posture_rules", [])
@@ -210,21 +220,31 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
 
     def decide_polarity(score: int) -> str:
         m = decision.get("polarity_from_score", {})
-        if score <= m.get("negative", {}).get("max", -10**9):
+        neg_max = m.get("negative", {}).get("max")
+        neu_min = m.get("neutral", {}).get("min")
+        neu_max = m.get("neutral", {}).get("max")
+        pos_min = m.get("positive", {}).get("min")
+
+        if isinstance(neg_max, int) and score <= neg_max:
             return "negative"
-        if score >= m.get("positive", {}).get("min", 10**9):
+        if isinstance(pos_min, int) and score >= pos_min:
             return "positive"
-        if m.get("neutral", {}).get("min", 0) <= score <= m.get("neutral", {}).get("max", 0):
+        if isinstance(neu_min, int) and isinstance(neu_max, int) and neu_min <= score <= neu_max:
             return "neutral"
         return "unknown"
 
     def decide_intensity(score: int) -> str:
         m = decision.get("intensity_from_score", {})
-        if score <= m.get("low", {}).get("max", -10**9):
+        low_max = m.get("low", {}).get("max")
+        med_min = m.get("medium", {}).get("min")
+        med_max = m.get("medium", {}).get("max")
+        hi_min = m.get("high", {}).get("min")
+
+        if isinstance(low_max, int) and score <= low_max:
             return "low"
-        if score >= m.get("high", {}).get("min", 10**9):
+        if isinstance(hi_min, int) and score >= hi_min:
             return "high"
-        if m.get("medium", {}).get("min", 1) <= score <= m.get("medium", {}).get("max", 2):
+        if isinstance(med_min, int) and isinstance(med_max, int) and med_min <= score <= med_max:
             return "medium"
         return "unknown"
 
@@ -241,7 +261,6 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
         post_hits: List[str] = []
         fired: List[str] = []
 
-        # polarity
         for rule in pol_rules:
             if not isinstance(rule, dict):
                 continue
@@ -253,7 +272,6 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                     fired.append(rid)
                 pol_score += int(rule.get("polarity_delta", 0))
 
-        # intensity
         for rule in int_rules:
             if not isinstance(rule, dict):
                 continue
@@ -265,7 +283,6 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                     fired.append(rid)
                 int_score += int(rule.get("intensity_delta", 0))
 
-        # posture
         for rule in pos_rules:
             if not isinstance(rule, dict):
                 continue
@@ -279,29 +296,36 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                 if isinstance(p, str) and p:
                     post_hits.append(p)
 
-        polarity = decide_polarity(pol_score) if fired else "unknown"
-        intensity = decide_intensity(int_score) if fired else "unknown"
-        posture = sorted(set(post_hits))
+        if fired:
+            polarity = decide_polarity(pol_score)
+            intensity = decide_intensity(int_score)
+        else:
+            polarity = "unknown"
+            intensity = "unknown"
 
-        # update summaries
+        posture = sorted(set(post_hits))
+        fired_sorted = sorted(set(fired))
+
         summary_pol[polarity] = summary_pol.get(polarity, 0) + 1
         summary_int[intensity] = summary_int.get(intensity, 0) + 1
         for p in posture:
             summary_post[p] = summary_post.get(p, 0) + 1
 
-        items.append({
-            "id": r["id"],
-            "input_ordinal": r["input_ordinal"],
-            "polarity": polarity,
-            "intensity": intensity,
-            "posture": posture,
-            "rules_fired": sorted(set(fired)),
-            "score_total": {
-                "polarity": pol_score,
-                "intensity": int_score,
-                "posture": {p: 1 for p in posture}
+        items.append(
+            {
+                "id": r["id"],
+                "input_ordinal": r["input_ordinal"],
+                "polarity": polarity,
+                "intensity": intensity,
+                "posture": posture,
+                "rules_fired": fired_sorted,
+                "score_total": {
+                    "polarity": pol_score,
+                    "intensity": int_score,
+                    "posture": {p: 1 for p in posture},
+                },
             }
-        })
+        )
 
     items.sort(key=lambda x: x["input_ordinal"])
 
@@ -312,9 +336,98 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
         "summary": {
             "polarity_counts": dict(sorted(summary_pol.items(), key=lambda kv: (-kv[1], kv[0]))),
             "intensity_counts": dict(sorted(summary_int.items(), key=lambda kv: (-kv[1], kv[0]))),
-            "posture_counts": dict(sorted(summary_post.items(), key=lambda kv: (-kv[1], kv[0])))
-        }
+            "posture_counts": dict(sorted(summary_post.items(), key=lambda kv: (-kv[1], kv[0]))),
+        },
     }
+
+
+# -------------------------
+# QA Summary (summary-1.0)
+# -------------------------
+def build_summary(
+    records: List[Dict[str, Any]],
+    topics_out: Dict[str, Any],
+    tone_out: Dict[str, Any],
+    examples_per_bucket: int = 5,
+) -> Dict[str, Any]:
+    # Build id -> minimal fields for examples
+    by_id = {
+        r["id"]: {
+            "id": r["id"],
+            "input_ordinal": r["input_ordinal"],
+            "thread_id": r.get("thread_id"),
+            "is_reply": r.get("is_reply"),
+            "text": r.get("text", ""),
+        }
+        for r in records
+    }
+
+    # topic examples
+    topic_examples: Dict[str, List[Dict[str, Any]]] = {}
+    for it in topics_out.get("items", []):
+        if not isinstance(it, dict):
+            continue
+        tid = it.get("id")
+        topic = it.get("primary_topic", "uncategorized")
+        if not isinstance(tid, str) or tid not in by_id:
+            continue
+        ex = dict(by_id[tid])
+        ex.update(
+            {
+                "primary_topic": topic,
+                "secondary_tags": it.get("secondary_tags", []),
+                "topic_rules_fired": it.get("rules_fired", []),
+            }
+        )
+        topic_examples.setdefault(topic, []).append(ex)
+
+    for t in topic_examples:
+        topic_examples[t].sort(key=lambda x: x["input_ordinal"])
+        topic_examples[t] = topic_examples[t][:examples_per_bucket]
+
+    # tone examples (by polarity + intensity)
+    pol_examples: Dict[str, List[Dict[str, Any]]] = {}
+    int_examples: Dict[str, List[Dict[str, Any]]] = {}
+    for it in tone_out.get("items", []):
+        if not isinstance(it, dict):
+            continue
+        tid = it.get("id")
+        if not isinstance(tid, str) or tid not in by_id:
+            continue
+        pol = it.get("polarity", "unknown")
+        inten = it.get("intensity", "unknown")
+        ex = dict(by_id[tid])
+        ex.update(
+            {
+                "polarity": pol,
+                "intensity": inten,
+                "posture": it.get("posture", []),
+                "tone_rules_fired": it.get("rules_fired", []),
+            }
+        )
+        pol_examples.setdefault(pol, []).append(ex)
+        int_examples.setdefault(inten, []).append(ex)
+
+    for k in pol_examples:
+        pol_examples[k].sort(key=lambda x: x["input_ordinal"])
+        pol_examples[k] = pol_examples[k][:examples_per_bucket]
+
+    for k in int_examples:
+        int_examples[k].sort(key=lambda x: x["input_ordinal"])
+        int_examples[k] = int_examples[k][:examples_per_bucket]
+
+    return {
+        "schema": "phase6_summary-1.0",
+        "records": len(records),
+        "topics": topics_out.get("summary", {}),
+        "tone": tone_out.get("summary", {}),
+        "examples": {
+            "by_topic": topic_examples,
+            "by_polarity": pol_examples,
+            "by_intensity": int_examples,
+        },
+    }
+
 
 def main() -> None:
     ap = argparse.ArgumentParser()
@@ -362,29 +475,33 @@ def main() -> None:
         seen.add(rid)
 
         text = rec["text"]
-        records.append({
-            "schema": "phase6_normalized_record-1.0",
-            "id": rid,
-            "input_ordinal": line_no - 1,
-            "thread_id": rec["thread_id"],
-            "is_reply": bool(rec.get("is_reply", False)),
-            "author": rec["author"],
-            "text": text,
-            "derived": {
-                "text_normalized": norm_text(text),
-                "char_count": len(text),
-                "token_count_est": tok_est(text),
-                "has_question_mark": "?" in text,
-                "has_exclamation_mark": "!" in text,
-            },
-            "provenance": rec.get("provenance", {}),
-        })
+        records.append(
+            {
+                "schema": "phase6_normalized_record-1.0",
+                "id": rid,
+                "input_ordinal": line_no - 1,
+                "thread_id": rec["thread_id"],
+                "is_reply": bool(rec.get("is_reply", False)),
+                "author": rec["author"],
+                "text": text,
+                "derived": {
+                    "text_normalized": norm_text(text),
+                    "char_count": len(text),
+                    "token_count_est": tok_est(text),
+                    "has_question_mark": "?" in text,
+                    "has_exclamation_mark": "!" in text,
+                },
+                "provenance": rec.get("provenance", {}),
+            }
+        )
 
     records.sort(key=lambda x: x["input_ordinal"])
 
+    # Write normalized
     f_norm = out_dir / "phase6_normalized.jsonl"
     f_norm.write_text("\n".join(dumps(x) for x in records) + "\n", encoding="utf-8")
 
+    # Topics
     topics_spec_path = (root / "phase6/topics/topics-1.0.json").resolve()
     if not topics_spec_path.exists():
         fatal(f"Missing topics spec: {topics_spec_path}")
@@ -392,6 +509,8 @@ def main() -> None:
     topics_out = apply_topics(records, topics_spec)
     f_topics = out_dir / "phase6_topics.json"
     f_topics.write_text(dumps(topics_out) + "\n", encoding="utf-8")
+
+    # Tone
     tone_spec_path = (root / "phase6/tone/tone-1.0.json").resolve()
     if not tone_spec_path.exists():
         fatal(f"Missing tone spec: {tone_spec_path}")
@@ -399,6 +518,13 @@ def main() -> None:
     tone_out = apply_tone(records, tone_spec)
     f_tone = out_dir / "phase6_tone.json"
     f_tone.write_text(dumps(tone_out) + "\n", encoding="utf-8")
+
+    # Summary (QA)
+    summary_out = build_summary(records, topics_out, tone_out, examples_per_bucket=5)
+    f_summary = out_dir / "phase6_summary.json"
+    f_summary.write_text(dumps(summary_out) + "\n", encoding="utf-8")
+
+    # Manifest with hashes
     manifest = {
         "schema": "phase6_manifest-1.0",
         "run_id": run_id,
@@ -408,7 +534,7 @@ def main() -> None:
             {"name": "phase6_normalized.jsonl", "sha256": sha256_file(f_norm)},
             {"name": "phase6_topics.json", "sha256": sha256_file(f_topics)},
             {"name": "phase6_tone.json", "sha256": sha256_file(f_tone)},
-
+            {"name": "phase6_summary.json", "sha256": sha256_file(f_summary)},
         ],
     }
     (out_dir / "phase6_manifest.json").write_text(dumps(manifest) + "\n", encoding="utf-8")
@@ -418,3 +544,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
