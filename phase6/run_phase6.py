@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
@@ -210,12 +211,45 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
     pos_rules = spec.get("posture_rules", [])
     decision = spec.get("decision", {})
 
-    def match_contains_any(txt: str, terms: Any) -> bool:
+    def match_contains_any(txt: str, terms: Any, mode: str = "substring") -> bool:
+
+
         if not isinstance(terms, list):
+
+
             return False
+
+
         for t in terms:
-            if isinstance(t, str) and t and (t.lower() in txt):
-                return True
+
+
+            if not isinstance(t, str) or not t:
+
+
+                continue
+
+
+            tl = t.lower()
+
+
+            if mode == "word":
+
+
+                if re.search(rf"\\b{re.escape(tl)}\\b", txt):
+
+
+                    return True
+
+
+            else:
+
+
+                if tl in txt:
+
+
+                    return True
+
+
         return False
 
     def decide_polarity(score: int) -> str:
@@ -266,7 +300,7 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                 continue
             if rule.get("type") != "contains_any":
                 continue
-            if match_contains_any(txt, rule.get("terms")):
+            if match_contains_any(txt, rule.get("terms"), rule.get("match", "substring")):
                 rid = rule.get("rule_id")
                 if isinstance(rid, str):
                     fired.append(rid)
@@ -277,7 +311,7 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                 continue
             if rule.get("type") != "contains_any":
                 continue
-            if match_contains_any(txt, rule.get("terms")):
+            if match_contains_any(txt, rule.get("terms"), rule.get("match", "substring")):
                 rid = rule.get("rule_id")
                 if isinstance(rid, str):
                     fired.append(rid)
@@ -288,7 +322,7 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
                 continue
             if rule.get("type") != "contains_any":
                 continue
-            if match_contains_any(txt, rule.get("terms")):
+            if match_contains_any(txt, rule.get("terms"), rule.get("match", "substring")):
                 rid = rule.get("rule_id")
                 if isinstance(rid, str):
                     fired.append(rid)

@@ -8,7 +8,7 @@
   },
   "polarity_rules": [
     {"rule_id": "N_POL_010", "type": "contains_any", "terms": ["sad", "pathetic", "gross", "disgusting"], "polarity_delta": -2},
-    {"rule_id": "P_POL_010", "type": "contains_any", "terms": ["great", "good", "love", "happy"], "polarity_delta": 2}
+    {"rule_id": "P_POL_010", "type": "contains_any", "match": "word",  "terms": ["great", "good", "love", "happy"], "polarity_delta": 2}
   ],
   "intensity_rules": [
     {"rule_id": "I_HI_010", "type": "contains_any", "terms": ["always", "never", "everyone", "no one", "99%"], "intensity_delta": 2},
