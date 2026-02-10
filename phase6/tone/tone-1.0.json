@@ -1,0 +1,40 @@
+{
+  "schema": "tone-1.0",
+  "description": "Deterministic rule-based tone classifier for Phase 6.",
+  "dimensions": {
+    "polarity": ["negative", "neutral", "positive", "unknown"],
+    "intensity": ["low", "medium", "high", "unknown"],
+    "posture": ["assertive", "questioning", "contempt", "mocking", "defensive"]
+  },
+  "polarity_rules": [
+    {"rule_id": "N_POL_010", "type": "contains_any", "terms": ["sad", "pathetic", "gross", "disgusting"], "polarity_delta": -2},
+    {"rule_id": "P_POL_010", "type": "contains_any", "terms": ["great", "good", "love", "happy"], "polarity_delta": 2}
+  ],
+  "intensity_rules": [
+    {"rule_id": "I_HI_010", "type": "contains_any", "terms": ["always", "never", "everyone", "no one", "99%"], "intensity_delta": 2},
+    {"rule_id": "I_HI_020", "type": "contains_any", "terms": ["!", "??", "!!!"], "intensity_delta": 2},
+    {"rule_id": "I_MD_010", "type": "contains_any", "terms": ["pretty", "kinda", "tbh"], "intensity_delta": 1}
+  ],
+  "posture_rules": [
+    {"rule_id": "S_Q_010", "type": "contains_any", "terms": ["why", "who exactly", "what", "how"], "posture_add": "questioning"},
+    {"rule_id": "S_A_010", "type": "contains_any", "terms": ["is optional", "are optional", "it is", "it's"], "posture_add": "assertive"},
+    {"rule_id": "S_DEF_010", "type": "contains_any", "terms": ["i'm not saying", "i didn't", "i never"], "posture_add": "defensive"},
+    {"rule_id": "S_CON_010", "type": "contains_any", "terms": ["pathetic", "sad tbh", "pretty sad"], "posture_add": "contempt"}
+  ],
+  "decision": {
+    "polarity_from_score": {
+      "negative": {"max": -1},
+      "neutral": {"min": 0, "max": 0},
+      "positive": {"min": 1}
+    },
+    "intensity_from_score": {
+      "low": {"max": 0},
+      "medium": {"min": 1, "max": 2},
+      "high": {"min": 3}
+    }
+  },
+  "notes": [
+    "Seed rules are conservative. Expand only after full Phase 5 corpus exists.",
+    "Rules are substring matches on normalized text."
+  ]
+}

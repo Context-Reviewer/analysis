@@ -186,6 +186,135 @@ def apply_topics(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[st
         }
     }
 
+def load_tone_spec(path: Path) -> Dict[str, Any]:
+    spec = json.loads(path.read_text(encoding="utf-8"))
+    if spec.get("schema") != "tone-1.0":
+        fatal("tone spec schema must be 'tone-1.0'")
+    return spec
+
+
+def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str, Any]:
+    # spec sections
+    pol_rules = spec.get("polarity_rules", [])
+    int_rules = spec.get("intensity_rules", [])
+    pos_rules = spec.get("posture_rules", [])
+    decision = spec.get("decision", {})
+
+    def match_contains_any(txt: str, terms: Any) -> bool:
+        if not isinstance(terms, list):
+            return False
+        for t in terms:
+            if isinstance(t, str) and t and (t.lower() in txt):
+                return True
+        return False
+
+    def decide_polarity(score: int) -> str:
+        m = decision.get("polarity_from_score", {})
+        if score <= m.get("negative", {}).get("max", -10**9):
+            return "negative"
+        if score >= m.get("positive", {}).get("min", 10**9):
+            return "positive"
+        if m.get("neutral", {}).get("min", 0) <= score <= m.get("neutral", {}).get("max", 0):
+            return "neutral"
+        return "unknown"
+
+    def decide_intensity(score: int) -> str:
+        m = decision.get("intensity_from_score", {})
+        if score <= m.get("low", {}).get("max", -10**9):
+            return "low"
+        if score >= m.get("high", {}).get("min", 10**9):
+            return "high"
+        if m.get("medium", {}).get("min", 1) <= score <= m.get("medium", {}).get("max", 2):
+            return "medium"
+        return "unknown"
+
+    items = []
+    summary_pol: Dict[str, int] = {}
+    summary_int: Dict[str, int] = {}
+    summary_post: Dict[str, int] = {}
+
+    for r in records:
+        txt = r["derived"]["text_normalized"]
+
+        pol_score = 0
+        int_score = 0
+        post_hits: List[str] = []
+        fired: List[str] = []
+
+        # polarity
+        for rule in pol_rules:
+            if not isinstance(rule, dict):
+                continue
+            if rule.get("type") != "contains_any":
+                continue
+            if match_contains_any(txt, rule.get("terms")):
+                rid = rule.get("rule_id")
+                if isinstance(rid, str):
+                    fired.append(rid)
+                pol_score += int(rule.get("polarity_delta", 0))
+
+        # intensity
+        for rule in int_rules:
+            if not isinstance(rule, dict):
+                continue
+            if rule.get("type") != "contains_any":
+                continue
+            if match_contains_any(txt, rule.get("terms")):
+                rid = rule.get("rule_id")
+                if isinstance(rid, str):
+                    fired.append(rid)
+                int_score += int(rule.get("intensity_delta", 0))
+
+        # posture
+        for rule in pos_rules:
+            if not isinstance(rule, dict):
+                continue
+            if rule.get("type") != "contains_any":
+                continue
+            if match_contains_any(txt, rule.get("terms")):
+                rid = rule.get("rule_id")
+                if isinstance(rid, str):
+                    fired.append(rid)
+                p = rule.get("posture_add")
+                if isinstance(p, str) and p:
+                    post_hits.append(p)
+
+        polarity = decide_polarity(pol_score) if fired else "unknown"
+        intensity = decide_intensity(int_score) if fired else "unknown"
+        posture = sorted(set(post_hits))
+
+        # update summaries
+        summary_pol[polarity] = summary_pol.get(polarity, 0) + 1
+        summary_int[intensity] = summary_int.get(intensity, 0) + 1
+        for p in posture:
+            summary_post[p] = summary_post.get(p, 0) + 1
+
+        items.append({
+            "id": r["id"],
+            "input_ordinal": r["input_ordinal"],
+            "polarity": polarity,
+            "intensity": intensity,
+            "posture": posture,
+            "rules_fired": sorted(set(fired)),
+            "score_total": {
+                "polarity": pol_score,
+                "intensity": int_score,
+                "posture": {p: 1 for p in posture}
+            }
+        })
+
+    items.sort(key=lambda x: x["input_ordinal"])
+
+    return {
+        "schema": "phase6_tone-1.0",
+        "tone_set_version": "tone-1.0",
+        "items": items,
+        "summary": {
+            "polarity_counts": dict(sorted(summary_pol.items(), key=lambda kv: (-kv[1], kv[0]))),
+            "intensity_counts": dict(sorted(summary_int.items(), key=lambda kv: (-kv[1], kv[0]))),
+            "posture_counts": dict(sorted(summary_post.items(), key=lambda kv: (-kv[1], kv[0])))
+        }
+    }
 
 def main() -> None:
     ap = argparse.ArgumentParser()
@@ -263,7 +392,13 @@ def main() -> None:
     topics_out = apply_topics(records, topics_spec)
     f_topics = out_dir / "phase6_topics.json"
     f_topics.write_text(dumps(topics_out) + "\n", encoding="utf-8")
-
+    tone_spec_path = (root / "phase6/tone/tone-1.0.json").resolve()
+    if not tone_spec_path.exists():
+        fatal(f"Missing tone spec: {tone_spec_path}")
+    tone_spec = load_tone_spec(tone_spec_path)
+    tone_out = apply_tone(records, tone_spec)
+    f_tone = out_dir / "phase6_tone.json"
+    f_tone.write_text(dumps(tone_out) + "\n", encoding="utf-8")
     manifest = {
         "schema": "phase6_manifest-1.0",
         "run_id": run_id,
@@ -272,6 +407,8 @@ def main() -> None:
         "outputs": [
             {"name": "phase6_normalized.jsonl", "sha256": sha256_file(f_norm)},
             {"name": "phase6_topics.json", "sha256": sha256_file(f_topics)},
+            {"name": "phase6_tone.json", "sha256": sha256_file(f_tone)},
+
         ],
     }
     (out_dir / "phase6_manifest.json").write_text(dumps(manifest) + "\n", encoding="utf-8")
