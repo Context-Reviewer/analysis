@@ -28,3 +28,6 @@ tools/run_capture_queue_using_capture_fb_graphql.py
 
 # --- local outputs ---
 fb_extract_out/
+
+# phase6 artifacts
+phase6/out/

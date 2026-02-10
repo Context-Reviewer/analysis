@@ -1,0 +1,65 @@
+{
+  "schema": "topics-1.0",
+  "description": "Deterministic rule-based topic taxonomy for Phase 6.",
+  "ordering_policy": "A_input_order_only",
+  "tie_break_precedence": [
+    "violence_threats",
+    "sex_offense_minors",
+    "immigration_ice",
+    "politics_culturewar",
+    "religion_morality",
+    "money_debt_work",
+    "relationships_gender",
+    "meta_social_media",
+    "general_rage_mockery",
+    "uncategorized"
+  ],
+  "topics": [
+    {"id": "relationships_gender", "description": "Marriage, dating, spouse dynamics, gender roles, sexual expectations."},
+    {"id": "meta_social_media", "description": "Discussion about platforms, moderation, censorship, 'people on here', etc."},
+    {"id": "politics_culturewar", "description": "Parties, elections, ideology, culture war framing."},
+    {"id": "immigration_ice", "description": "Immigration, borders, ICE, deportation, citizenship."},
+    {"id": "religion_morality", "description": "Religion, sin, morality claims, virtue/vice framing."},
+    {"id": "money_debt_work", "description": "Jobs, work, wages, debt, money, economics (personal scale)."},
+    {"id": "general_rage_mockery", "description": "Insults, contempt, ridicule, derisive tone without a clearer topical anchor."},
+    {"id": "violence_threats", "description": "Violence, threats, calls to harm."},
+    {"id": "sex_offense_minors", "description": "Any sexual content involving minors / accusations thereof."},
+    {"id": "uncategorized", "description": "No rule match."}
+  ],
+  "confidence_bands": [
+    {"id": "high", "min_score": 6},
+    {"id": "medium", "min_score": 3},
+    {"id": "low", "min_score": 1},
+    {"id": "n_a", "min_score": 0}
+  ],
+  "rules": [
+    {
+      "rule_id": "T_REL_010",
+      "topic": "relationships_gender",
+      "type": "contains_any",
+      "terms": ["marriage", "married", "spouse", "husband", "wife", "divorce", "dating", "relationship"],
+      "score": 3,
+      "tags": ["marriage"]
+    },
+    {
+      "rule_id": "T_REL_020",
+      "topic": "relationships_gender",
+      "type": "contains_any",
+      "terms": ["man", "men", "woman", "women", "gender", "male", "female"],
+      "score": 2,
+      "tags": ["gender"]
+    },
+    {
+      "rule_id": "T_REL_030",
+      "topic": "relationships_gender",
+      "type": "contains_any",
+      "terms": ["sex", "chores", "child birth", "childbirth", "housework", "roles", "provide", "provides"],
+      "score": 2,
+      "tags": ["roles"]
+    }
+  ],
+  "notes": [
+    "Initial rules seeded from current Phase 5 sample. Expand rules only after Phase 5 corpus is regenerated with full target-only output.",
+    "Rules are conservative; uncategorized is acceptable."
+  ]
+}
