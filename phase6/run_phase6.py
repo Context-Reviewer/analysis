@@ -212,44 +212,18 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
     decision = spec.get("decision", {})
 
     def match_contains_any(txt: str, terms: Any, mode: str = "substring") -> bool:
-
-
         if not isinstance(terms, list):
-
-
             return False
-
-
         for t in terms:
-
-
             if not isinstance(t, str) or not t:
-
-
                 continue
-
-
             tl = t.lower()
-
-
             if mode == "word":
-
-
-                if re.search(rf"\\b{re.escape(tl)}\\b", txt):
-
-
+                if re.search(rf"\b{re.escape(tl)}\b", txt):
                     return True
-
-
             else:
-
-
                 if tl in txt:
-
-
                     return True
-
-
         return False
 
     def decide_polarity(score: int) -> str:
@@ -372,6 +346,54 @@ def apply_tone(records: List[Dict[str, Any]], spec: Dict[str, Any]) -> Dict[str,
             "intensity_counts": dict(sorted(summary_int.items(), key=lambda kv: (-kv[1], kv[0]))),
             "posture_counts": dict(sorted(summary_post.items(), key=lambda kv: (-kv[1], kv[0]))),
         },
+    }
+
+
+def build_timeline(
+    normalized: List[Dict[str, Any]],
+    topics_out: Dict[str, Any],
+    tone_out: Dict[str, Any],
+) -> Dict[str, Any]:
+    topics_by_id = {x["id"]: x for x in topics_out.get("items", []) if isinstance(x, dict) and "id" in x}
+    tone_by_id = {x["id"]: x for x in tone_out.get("items", []) if isinstance(x, dict) and "id" in x}
+
+    by_thread: Dict[str, List[Dict[str, Any]]] = {}
+    for r in normalized:
+        thread_id = r.get("thread_id", "")
+        by_thread.setdefault(thread_id, []).append(r)
+
+    threads: List[Dict[str, Any]] = []
+    for thread_id in sorted(by_thread.keys()):
+        rs = sorted(by_thread[thread_id], key=lambda z: int(z.get("input_ordinal", 0)))
+        items: List[Dict[str, Any]] = []
+        for r in rs:
+            rid = r["id"]
+            t = topics_by_id.get(rid, {})
+            n = tone_by_id.get(rid, {})
+            items.append({
+                "id": rid,
+                "input_ordinal": r.get("input_ordinal", 0),
+                "is_reply": bool(r.get("is_reply", False)),
+                "author": r.get("author", ""),
+                "text": r.get("text", ""),
+                "topic": t.get("primary_topic", "unknown"),
+                "topic_tags": t.get("secondary_tags", []),
+                "tone_polarity": n.get("polarity", "unknown"),
+                "tone_intensity": n.get("intensity", "unknown"),
+                "tone_posture": n.get("posture", []),
+            })
+
+        threads.append({"thread_id": thread_id, "count": len(items), "items": items})
+
+    by_thread_counts = {x["thread_id"]: x["count"] for x in threads}
+    return {
+        "schema": "phase6_timeline-1.0",
+        "summary": {
+            "records_total": sum(by_thread_counts.values()),
+            "threads_total": len(threads),
+            "by_thread": dict(sorted(by_thread_counts.items(), key=lambda kv: (-kv[1], kv[0]))),
+        },
+        "threads": threads,
     }
 
 
@@ -553,6 +575,10 @@ def main() -> None:
     f_tone = out_dir / "phase6_tone.json"
     f_tone.write_text(dumps(tone_out) + "\n", encoding="utf-8")
 
+    # Timeline
+    timeline_out = build_timeline(records, topics_out, tone_out)
+    (out_dir / "phase6_timeline.json").write_text(dumps(timeline_out) + "\n", encoding="utf-8")
+
     # Summary (QA)
     summary_out = build_summary(records, topics_out, tone_out, examples_per_bucket=5)
     f_summary = out_dir / "phase6_summary.json"
@@ -562,13 +588,14 @@ def main() -> None:
     manifest = {
         "schema": "phase6_manifest-1.0",
         "run_id": run_id,
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": f"input_sha256:{input_sha}",
         "input": {"path": cfg["input_path"], "sha256": input_sha, "records": len(records)},
         "outputs": [
             {"name": "phase6_normalized.jsonl", "sha256": sha256_file(f_norm)},
             {"name": "phase6_topics.json", "sha256": sha256_file(f_topics)},
             {"name": "phase6_tone.json", "sha256": sha256_file(f_tone)},
             {"name": "phase6_summary.json", "sha256": sha256_file(f_summary)},
+            {"name": "phase6_timeline.json", "sha256": sha256_file(out_dir / "phase6_timeline.json")},
         ],
     }
     (out_dir / "phase6_manifest.json").write_text(dumps(manifest) + "\n", encoding="utf-8")
