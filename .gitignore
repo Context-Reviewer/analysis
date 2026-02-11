@@ -31,3 +31,6 @@ fb_extract_out/
 
 # phase6 artifacts
 phase6/out/
+
+# Editor/ops backups
+phase6/run_phase6.py.bak.*

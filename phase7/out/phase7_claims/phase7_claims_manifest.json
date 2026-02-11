@@ -1,0 +1,15 @@
+{
+  "inputs": {
+    "phase6/out/phase6_71ada6b9/phase6_manifest.json": "60d538d3705ae6de6913995cebfa3c1f7ae0585d5b29198c18ece317ae133275",
+    "phase6/out/phase6_71ada6b9/phase6_normalized.jsonl": "7f6f0736a9a3f4931429f49feea063a9439593d302e1f19db6b77ac52a9f8535",
+    "phase6/out/phase6_71ada6b9/phase6_topics.json": "09f621d3a2197b9a577ab77aef131fa54e2b3f77d961a5368e85a3ac450b7112"
+  },
+  "notes": {
+    "deterministic": true,
+    "no_wall_clock": true
+  },
+  "outputs": {
+    "phase7/out/phase7_claims/phase7_claims.json": "ea999ad9a4e06df7ccf98625171876747419ba26115babbe0bcd61b051568a07"
+  },
+  "schema_version": "phase7_claims_manifest-1.0"
+}
