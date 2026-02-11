@@ -1,0 +1,15 @@
+{
+  "inputs": {
+    "phase6/out/phase6_71ada6b9/phase6_normalized.jsonl": "7f6f0736a9a3f4931429f49feea063a9439593d302e1f19db6b77ac52a9f8535",
+    "phase6/out/phase6_71ada6b9/phase6_tone.json": "75685fe9b6f99c9c4793cc040bad9e338ab1b24c7469e2de52ab17808dfd25a2",
+    "phase7/out/phase7_chrono/phase7_chrono_timeline.json": "63039a8e841aadfc9dd67f99cc57720d590846cbb9a75dee0d76e35b9ddfe960"
+  },
+  "notes": {
+    "deterministic": true,
+    "no_wall_clock": true
+  },
+  "outputs": {
+    "phase7/out/phase7_behavior_windows/phase7_behavior_windows.json": "f0d1a7f2afd5f2a0e991023fbbc91d84c97d8a157e34e3c0b6a194da5e202b0e"
+  },
+  "schema_version": "phase7_behavior_windows_manifest-1.0"
+}

@@ -1,0 +1,37 @@
+{
+  "behavior_windows": [
+    {
+      "behavior_key": "polarity_transition",
+      "end_ordinal": 1,
+      "start_ordinal": 0,
+      "supporting_ids": [
+        "t:9eb94db505d5:b:19:c:1",
+        "t:9eb94db505d5:b:3:c:1"
+      ],
+      "thread_id": "9eb94db505d5"
+    },
+    {
+      "behavior_key": "thread_activity",
+      "end_ordinal": 1,
+      "start_ordinal": 0,
+      "supporting_ids": [],
+      "thread_id": "9eb94db505d5"
+    }
+  ],
+  "build": {
+    "deterministic": true,
+    "ordering_policy": "chrono_order_then_ordinal",
+    "source": {
+      "chrono_schema": "phase7_chrono_timeline-1.0",
+      "tone_schema": "phase6_tone-1.0"
+    }
+  },
+  "notes": {
+    "computed_from": [
+      "phase7_chrono_order",
+      "phase6_tone_labels"
+    ],
+    "no_new_interpretation": true
+  },
+  "schema_version": "phase7_behavior_windows-1.0"
+}
