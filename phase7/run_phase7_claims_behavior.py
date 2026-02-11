@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """
 Phase 7D (v1): Claims ↔ Behavior Cross-Reference
+
 Option B: ordinal-window linking with automatic fallback to global attach.
+
+Behavior input default prefers Phase 7E windows:
+- phase7/out/phase7_behavior_windows/phase7_behavior_windows.json
 
 Inputs:
 - phase7/out/phase7_claims/phase7_claims.json
-- phase7/out/phase7_behavior/phase7_behavior_profile.json
+- phase7/out/phase7_behavior_windows/phase7_behavior_windows.json  (preferred)
+  OR phase7/out/phase7_behavior/phase7_behavior_profile.json       (fallback)
 
 Outputs:
 - phase7/out/phase7_claims_behavior/phase7_claims_behavior.json
@@ -63,21 +68,42 @@ def load_json(p: Path) -> Any:
 
 def extract_behavior_windows(behavior_obj: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
-    Attempts to extract ordinal-indexed behavior segments.
+    Extract ordinal-indexed behavior windows.
 
-    Supported patterns (best-effort, deterministic):
-    - items / segments with start_ordinal & end_ordinal
-    - buckets with explicit ordinals list
-
-    Returns a list of:
+    Preferred (Phase 7E) shape:
       {
-        "behavior_key": str,
-        "start_ordinal": int,
-        "end_ordinal": int
+        "behavior_windows": [
+          {"behavior_key": "...", "start_ordinal": 0, "end_ordinal": 1, ...},
+          ...
+        ]
       }
+
+    Fallback: best-effort scan for:
+    - dicts with start_ordinal & end_ordinal
+    - dicts with an ordinals list
     """
     windows: List[Dict[str, Any]] = []
 
+    # Fast-path: Phase 7E output
+    if isinstance(behavior_obj, dict) and isinstance(behavior_obj.get("behavior_windows"), list):
+        for w in behavior_obj["behavior_windows"]:
+            if not isinstance(w, dict):
+                continue
+            if "behavior_key" not in w or "start_ordinal" not in w or "end_ordinal" not in w:
+                continue
+            try:
+                windows.append({
+                    "behavior_key": str(w["behavior_key"]),
+                    "start_ordinal": int(w["start_ordinal"]),
+                    "end_ordinal": int(w["end_ordinal"]),
+                })
+            except Exception:
+                continue
+
+        uniq = {(x["behavior_key"], x["start_ordinal"], x["end_ordinal"]): x for x in windows}
+        return sorted(uniq.values(), key=lambda x: (x["start_ordinal"], x["end_ordinal"], x["behavior_key"]))
+
+    # Fallback scan
     def add_window(key: str, start: int, end: int):
         if start <= end:
             windows.append({
@@ -86,17 +112,9 @@ def extract_behavior_windows(behavior_obj: Dict[str, Any]) -> List[Dict[str, Any
                 "end_ordinal": end,
             })
 
-    # Common places to look
-    candidates = []
-    if isinstance(behavior_obj, dict):
-        candidates.append(behavior_obj)
-        for v in behavior_obj.values():
-            if isinstance(v, (list, dict)):
-                candidates.append(v)
-
     def walk(obj: Any, prefix: str = ""):
         if isinstance(obj, dict):
-            key = obj.get("key") or obj.get("id") or prefix
+            key = obj.get("behavior_key") or obj.get("key") or obj.get("id") or prefix
             if "start_ordinal" in obj and "end_ordinal" in obj:
                 try:
                     add_window(str(key), int(obj["start_ordinal"]), int(obj["end_ordinal"]))
@@ -114,19 +132,10 @@ def extract_behavior_windows(behavior_obj: Dict[str, Any]) -> List[Dict[str, Any
             for i, v in enumerate(obj):
                 walk(v, f"{prefix}[{i}]")
 
-    for c in candidates:
-        walk(c)
+    walk(behavior_obj)
 
-    # Deduplicate deterministically
-    uniq: Dict[Tuple[str, int, int], Dict[str, Any]] = {}
-    for w in windows:
-        k = (w["behavior_key"], w["start_ordinal"], w["end_ordinal"])
-        uniq[k] = w
-
-    return sorted(
-        uniq.values(),
-        key=lambda x: (x["start_ordinal"], x["end_ordinal"], x["behavior_key"])
-    )
+    uniq2 = {(x["behavior_key"], x["start_ordinal"], x["end_ordinal"]): x for x in windows}
+    return sorted(uniq2.values(), key=lambda x: (x["start_ordinal"], x["end_ordinal"], x["behavior_key"]))
 
 
 def windows_overlap(a_start: int, a_end: int, b_start: int, b_end: int) -> bool:
@@ -140,7 +149,11 @@ def windows_overlap(a_start: int, a_end: int, b_start: int, b_end: int) -> bool:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--claims", default="phase7/out/phase7_claims/phase7_claims.json")
-    ap.add_argument("--behavior", default="phase7/out/phase7_behavior/phase7_behavior_profile.json")
+    ap.add_argument(
+        "--behavior",
+        default="phase7/out/phase7_behavior_windows/phase7_behavior_windows.json",
+        help="Behavior input (prefer Phase 7E windows).",
+    )
     ap.add_argument("--out-dir", default="phase7/out/phase7_claims_behavior")
     args = ap.parse_args()
 
@@ -224,12 +237,12 @@ def main() -> None:
             "linking_mode": linking_mode,
             "source": {
                 "claims_schema": claims_obj.get("schema_version"),
-                "behavior_schema": behavior_obj.get("schema_version"),
+                "behavior_schema": behavior_obj.get("schema_version") or behavior_obj.get("schema"),
             },
         },
-        "behavior_profile_ref": {
-            "schema_version": behavior_obj.get("schema_version"),
-            "summary": behavior_obj.get("summary", {}),
+        "behavior_ref": {
+            "schema_version": behavior_obj.get("schema_version") or behavior_obj.get("schema"),
+            "windows_count": len(behavior_windows),
         },
         "topics": topics_out,
     }
