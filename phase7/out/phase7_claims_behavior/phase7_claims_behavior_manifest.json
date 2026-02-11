@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "phase7/out/phase7_behavior/phase7_behavior_profile.json": "08adb86e1f1f95cec3e92b9bee6bed200b0b953910b6a1705eb45e9e70f17ffc",
+    "phase7/out/phase7_claims/phase7_claims.json": "ea999ad9a4e06df7ccf98625171876747419ba26115babbe0bcd61b051568a07"
+  },
+  "notes": {
+    "deterministic": true,
+    "no_wall_clock": true
+  },
+  "outputs": {
+    "phase7/out/phase7_claims_behavior/phase7_claims_behavior.json": "cfb74e5cf54c889c2d141241d477c77f3e2c00c7d590921de1abaab82579fab1"
+  },
+  "schema_version": "phase7_claims_behavior_manifest-1.0"
+}

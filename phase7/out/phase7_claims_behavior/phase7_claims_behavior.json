@@ -1,0 +1,247 @@
+{
+  "behavior_profile_ref": {
+    "schema_version": null,
+    "summary": {
+      "missing_tone_rows": 0,
+      "missing_topics_rows": 0,
+      "records_total": 2,
+      "threads_total": 1
+    }
+  },
+  "build": {
+    "deterministic": true,
+    "linking_mode": "fallback_global",
+    "ordering_policy": "input_ordinal",
+    "source": {
+      "behavior_schema": null,
+      "claims_schema": "phase7_claims-1.0"
+    }
+  },
+  "schema_version": "phase7_claims_behavior-1.0",
+  "topics": [
+    {
+      "claims": [
+        {
+          "activity_window": {
+            "end_ordinal": 0,
+            "evidence_ordinals": [
+              0
+            ],
+            "start_ordinal": 0
+          },
+          "behavior_links": [],
+          "claim_id": "bde6378705907dc2bfd6f978a409fb00e710a11fe6b75ae2814061ba8cc5c91c",
+          "claim_stats": {
+            "first_ordinal": 0,
+            "last_ordinal": 0,
+            "occurrence_count": 1
+          },
+          "normalized_text": "who exactly would be unhappy because if a woman is defined as someone who only provides sex and chores thats pretty sad tbh"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "9c6448d9285d59a80c3c28ac611c6e457a2bbe584efb63ee7fe4f61cab6dfb20",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "99 of the things women do in marriage are optional"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "d196c186e3d1c676d587fcc12012017a4644938aa6a7b3af7abf3ef5cf9831c1",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "nikki stroud chores are optional child birth is optional sex is optional"
+        }
+      ],
+      "topic_id": "gender"
+    },
+    {
+      "claims": [
+        {
+          "activity_window": {
+            "end_ordinal": 0,
+            "evidence_ordinals": [
+              0
+            ],
+            "start_ordinal": 0
+          },
+          "behavior_links": [],
+          "claim_id": "23aabba6b6b001c079b6cc07fbc06ab0f02edcb2a61c12a19eefe9392cbb9685",
+          "claim_stats": {
+            "first_ordinal": 0,
+            "last_ordinal": 0,
+            "occurrence_count": 1
+          },
+          "normalized_text": "who exactly would be unhappy because if a woman is defined as someone who only provides sex and chores thats pretty sad tbh"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "33e44587afe0b57af3d82bb0a217fce3cc7ef85db38fb75dfd314ec1e800be99",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "99 of the things women do in marriage are optional"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "ea063b522d1d8398002b4ce61376d6d10d14baf56517f89e8d799788ad051b87",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "nikki stroud chores are optional child birth is optional sex is optional"
+        }
+      ],
+      "topic_id": "marriage"
+    },
+    {
+      "claims": [
+        {
+          "activity_window": {
+            "end_ordinal": 0,
+            "evidence_ordinals": [
+              0
+            ],
+            "start_ordinal": 0
+          },
+          "behavior_links": [],
+          "claim_id": "ad68a572669df207f7038148ca10f1fc42d2e0499a13d41a8ca78d29b69f3b77",
+          "claim_stats": {
+            "first_ordinal": 0,
+            "last_ordinal": 0,
+            "occurrence_count": 1
+          },
+          "normalized_text": "who exactly would be unhappy because if a woman is defined as someone who only provides sex and chores thats pretty sad tbh"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "ac6ab378ea637d68e621166135d4ecfe74ee69bbb475f5f9b21ff2b79af7161e",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "99 of the things women do in marriage are optional"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "dd3b602a40e299c85ce19af2d2b52433f35166d9b16161a1404288b44695d364",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "nikki stroud chores are optional child birth is optional sex is optional"
+        }
+      ],
+      "topic_id": "relationships_gender"
+    },
+    {
+      "claims": [
+        {
+          "activity_window": {
+            "end_ordinal": 0,
+            "evidence_ordinals": [
+              0
+            ],
+            "start_ordinal": 0
+          },
+          "behavior_links": [],
+          "claim_id": "e688e51b30393891f39bb2e7292c6f9c68645371a3ced7eb6316eb1d506b1954",
+          "claim_stats": {
+            "first_ordinal": 0,
+            "last_ordinal": 0,
+            "occurrence_count": 1
+          },
+          "normalized_text": "who exactly would be unhappy because if a woman is defined as someone who only provides sex and chores thats pretty sad tbh"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "07fe59f18644027185a1110adce31ee38342569c176645dae511a20c355ac7e6",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "nikki stroud chores are optional child birth is optional sex is optional"
+        },
+        {
+          "activity_window": {
+            "end_ordinal": 1,
+            "evidence_ordinals": [
+              1
+            ],
+            "start_ordinal": 1
+          },
+          "behavior_links": [],
+          "claim_id": "9b289a47e59bf015d4b6a2ed5c831b28a1e5bd1ecff2118c3fe02784d2dfafb4",
+          "claim_stats": {
+            "first_ordinal": 1,
+            "last_ordinal": 1,
+            "occurrence_count": 1
+          },
+          "normalized_text": "99 of the things women do in marriage are optional"
+        }
+      ],
+      "topic_id": "roles"
+    }
+  ]
+}
