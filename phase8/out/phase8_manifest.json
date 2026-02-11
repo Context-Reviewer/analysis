@@ -1,0 +1,18 @@
+{
+  "inputs": {
+    "behavior": "08adb86e1f1f95cec3e92b9bee6bed200b0b953910b6a1705eb45e9e70f17ffc",
+    "behavior_windows": "f0d1a7f2afd5f2a0e991023fbbc91d84c97d8a157e34e3c0b6a194da5e202b0e",
+    "chrono": "63039a8e841aadfc9dd67f99cc57720d590846cbb9a75dee0d76e35b9ddfe960",
+    "claims": "ea999ad9a4e06df7ccf98625171876747419ba26115babbe0bcd61b051568a07",
+    "claims_behavior": "a88ee2f15b027e832ccb696996293f3a7b8350be912fde0fb13e330c5b609647"
+  },
+  "notes": {
+    "deterministic": true,
+    "no_wall_clock": true
+  },
+  "outputs": {
+    "narrative_json": "ee518f337f5aa9d5a4cbbdf4ac2b22b34ce99d8784eadefe72b2914ef160e6e4",
+    "narrative_md": "9d297311992c7f12aebbea6259f4b8a307057a6cd164776cfc96480675d7bdd5"
+  },
+  "schema_version": "phase8_manifest-1.0"
+}
