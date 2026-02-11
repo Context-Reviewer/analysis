@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "phase8_narrative.json": "ee518f337f5aa9d5a4cbbdf4ac2b22b34ce99d8784eadefe72b2914ef160e6e4"
+  },
+  "notes": {
+    "deterministic": true,
+    "no_js": true,
+    "no_wall_clock": true
+  },
+  "outputs": {
+    "phase8_report.html": "ddfd7f7d3a73791bd2f47b1bd62293b423b2183d1ac08052855c798966523bf5"
+  },
+  "schema_version": "phase8_report_manifest-1.0"
+}
