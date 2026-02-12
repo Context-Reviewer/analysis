@@ -37,3 +37,4 @@ phase6/run_phase6.py.bak.*
 
 # Generated outputs (commit only by explicit path)
 phase7/out/*/
+.venv/
