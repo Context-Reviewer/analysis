@@ -1,17 +1,38 @@
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="refresh" content="0; url=conclusion.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Context Reviewer</title>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+    nav { background: #111; color: #fff; padding: 12px 16px; display: flex; gap: 14px; align-items: center; }
+    nav a { color: #fff; text-decoration: none; opacity: 0.9; }
+    nav a.active { font-weight: 700; opacity: 1; }
+    nav a.brand { font-weight: 800; letter-spacing: 0.2px; }
+    main { padding: 24px; }
     code { background: #f3f3f3; padding: 2px 6px; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <p>Redirecting to the latest run summary: <a href="conclusion.html">conclusion.html</a></p>
-  <p>If you are not redirected, open <a href="conclusion.html">conclusion</a> or <a href="signals.html">signals</a>.</p>
-  <p>Other pages: <a href="contradictions.html">contradictions</a> · <a href="topic.html">topics</a></p>
+  <nav>
+    <a href="index.html" class="brand active">Context Reviewer</a>
+    <a href="index.html" class="active">Home</a>
+    <a href="report.html">Report</a>
+    <a href="signals.html">Signals</a>
+    <a href="conclusion.html">Conclusion</a>
+    <a href="contradictions.html">Contradictions</a>
+    <a href="topic.html">Topics</a>
+  </nav>
+
+  <main>
+    <p>Redirecting to the latest run summary: <a href="conclusion.html">conclusion.html</a></p>
+    <p>If you are not redirected, open <a href="conclusion.html">conclusion</a> or <a href="signals.html">signals</a>.</p>
+  </main>
+
+  <script>
+    // Keep a stable legacy entrypoint, but always land users on the latest summary.
+    window.location.replace("conclusion.html");
+  </script>
 </body>
 </html>
